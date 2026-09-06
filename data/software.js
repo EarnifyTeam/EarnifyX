@@ -164,5 +164,10 @@ const SOFTWARE_DATA = [
 ];
 
 if (typeof window !== "undefined") {
-    window.SOFTWARE_DATA = SOFTWARE_DATA;
+    try {
+        const saved = localStorage.getItem("earnifyx_data_software");
+        window.SOFTWARE_DATA = saved ? JSON.parse(saved) : SOFTWARE_DATA;
+    } catch (e) {
+        window.SOFTWARE_DATA = SOFTWARE_DATA;
+    }
 }

@@ -10,6 +10,12 @@ window.setupFilters = function ({ containerId, dataArray, cardGenerator, filterK
     let activeFilter = "All";
     let searchQuery = "";
 
+    const nicheBar = document.getElementById("promptNicheFilters");
+    if (nicheBar && filterKey === "niche") {
+        const niches = [...new Set(dataArray.map(item => item.niche).filter(Boolean))].sort();
+        nicheBar.innerHTML = niches.map(niche => `<button class="filter-pill" data-filter="${niche}">${niche}</button>`).join("");
+    }
+
     function render() {
         let filtered = dataArray;
 
@@ -20,8 +26,10 @@ window.setupFilters = function ({ containerId, dataArray, cardGenerator, filterK
                     return item.badge === activeFilter || item.type === activeFilter || (item.pricing && item.pricing.includes(activeFilter));
                 }
                 if (item.category) {
-                    return item.category.toLowerCase() === activeFilter.toLowerCase();
+                    return item.category.toLowerCase() === activeFilter.toLowerCase()
+                        || (item[filterKey] && item[filterKey].toLowerCase() === activeFilter.toLowerCase());
                 }
+                if (item[filterKey]) return item[filterKey].toLowerCase() === activeFilter.toLowerCase();
                 if (item.tags) {
                     return item.tags.some(t => t.toLowerCase() === activeFilter.toLowerCase());
                 }
@@ -36,7 +44,9 @@ window.setupFilters = function ({ containerId, dataArray, cardGenerator, filterK
                 const title = (item.name || item.title || "").toLowerCase();
                 const desc = (item.shortDescription || item.description || "").toLowerCase();
                 const cat = (item.category || "").toLowerCase();
-                return title.includes(q) || desc.includes(q) || cat.includes(q);
+                const niche = (item.niche || "").toLowerCase();
+                const model = (item.model || "").toLowerCase();
+                return title.includes(q) || desc.includes(q) || cat.includes(q) || niche.includes(q) || model.includes(q);
             });
         }
 

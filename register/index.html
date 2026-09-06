@@ -17,22 +17,104 @@
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between;">
 
+        <!-- Top Navigation Header -->
     <header class="site-header">
         <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                &#9776;
+            </button>
             <a href="./" class="brand-logo">
                 <div class="flask-icon">
-                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Flask Logo" width="28" height="28">
                 </div>
                 <div class="brand-text">
                     <span class="brand-title">Earnify<span>X</span>Lab</span>
-                    <span class="brand-tagline">Tools • Prompts • Resources</span>
+                    <span class="brand-tagline">Tools • PromptBhandar • Resources</span>
                 </div>
             </a>
         </div>
+
+        <!-- Center Top Navigation Menu -->
+        <nav class="header-nav" aria-label="Main Navigation">
+            <a href="extensions/" class="header-nav-link">&#129513; Extensions</a>
+            <a href="software/" class="header-nav-link">&#128187; Software</a>
+            <a href="prompts/" class="header-nav-link">&#129504; PromptBhandar</a>
+            <a href="resources/" class="header-nav-link">&#128230; Resources</a>
+            <div class="header-dropdown">
+                <button class="header-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span>More</span> <span class="dropdown-chevron">&#9662;</span>
+                </button>
+                <div class="header-dropdown-menu">
+                    <a href="ai-tools/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">AI Tools</span>
+                            <span class="item-sub">Directory & platforms</span>
+                        </div>
+                    </a>
+                    <a href="automation/" class="dropdown-item">
+                        <span class="item-icon">&#9889;</span>
+                        <div class="item-text">
+                            <span class="item-title">Automation Tools</span>
+                            <span class="item-sub">Workflows & bots</span>
+                        </div>
+                    </a>
+                    <a href="creator-tools/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Creator Tools</span>
+                            <span class="item-sub">Audio, video & design</span>
+                        </div>
+                    </a>
+                    <a href="blog/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Blog Posts</span>
+                            <span class="item-sub">Guides & articles</span>
+                        </div>
+                    </a>
+                    <a href="tutorials/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Tutorials & Guides</span>
+                            <span class="item-sub">Step-by-step masterclasses</span>
+                        </div>
+                    </a>
+                    <a href="downloads/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Downloads</span>
+                            <span class="item-sub">Software installers</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Right Side Header Controls -->
         <div class="header-right">
+            <div class="header-search">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">&#128269;</span>
+                    <input type="text" class="global-search-input" placeholder="Search..." aria-label="Search">
+                    <span class="search-shortcut-badge">Ctrl K</span>
+                </div>
+            </div>
+            <a href="dashboard/" class="header-saved-btn" title="Saved Items" aria-label="Saved Items">
+                <span>&#10084;</span>
+                <span class="saved-count-badge" style="display:none;">0</span>
+            </a>
             <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
-                <span class="theme-toggle-icon">🌙</span>
+                <span class="theme-toggle-icon">&#127769;</span>
             </button>
+            <div class="header-auth-actions">
+                <a href="login/" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">
+                    Login
+                </a>
+                <a href="register/" class="btn btn-primary" style="font-size: 0.88rem;">
+                    Get Started
+                </a>
+            </div>
         </div>
     </header>
 
@@ -78,6 +160,15 @@
                 </div>
 
                 <div style="margin-bottom: 1.1rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;" for="phone">
+                        Mobile Number
+                    </label>
+                    <input type="tel" id="phone" required inputmode="numeric" autocomplete="tel"
+                           pattern="\+?[0-9 ()\-]{7,20}" placeholder="+91 98765 43210"
+                           style="width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.9rem; outline: none;">
+                </div>
+
+                <div style="margin-bottom: 1.1rem;">
                     <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;" for="password">
                         Password
                     </label>
@@ -112,7 +203,7 @@
     <footer class="site-footer" style="padding: 1.5rem; margin-top: 0;">
         <div class="footer-bottom" style="border-top: none; padding-top: 0;">
             <p>© 2026 EarnifyX Lab.</p>
-            <p><a href="./" style="color: var(--accent-primary);">← Back to Homepage</a></p>
+            <p><a href="./" style="color: var(--accent-primary);">&#8592; Back to Homepage</a></p>
         </div>
     </footer>
 
@@ -122,28 +213,50 @@
 
     <script>
         function handleOAuthSignup(provider) {
-            // FUTURE SUPABASE AUTHENTICATION: Connect provider with signInWithOAuth().
-            showToast(`${provider} authentication will be connected with Supabase.`);
+            showToast(`${provider} authentication will be connected with Firebase Auth.`);
         }
 
-        function handleFormSignup(e) {
+        async function handleFormSignup(e) {
             e.preventDefault();
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
             const pass = document.getElementById("password").value;
             const confirm = document.getElementById("confirmPassword").value;
 
-            if (pass !== confirm) {
-                showToast("⚠️ Passwords do not match!");
+            if (!name || !email || !phone || !pass || !confirm) {
+                showToast("Please complete all fields before creating your account.");
                 return;
             }
 
-            // FUTURE SUPABASE AUTH: Replace this demo session with signUp().
-            AuthUI.setUser({ name: name, email: email, isPro: false, memberSince: new Date().toISOString() });
-            showToast(`🎉 Welcome ${name}! Account created.`);
-            setTimeout(() => {
-                window.location.href = "dashboard/";
-            }, 800);
+            if (pass !== confirm) {
+                showToast("&#9888;&#65039; Passwords do not match!");
+                return;
+            }
+
+            try {
+                await window.initializeFirebase();
+                const user = await window.FirebaseService.registerUser({ name, email, phone, password: pass });
+                AuthUI.setUser({
+                    name,
+                    email: user.email,
+                    phone,
+                    isPro: false,
+                    plan: "free",
+                    subscriptionStatus: "inactive",
+                    premiumUntil: null,
+                    memberSince: new Date().toISOString(),
+                    uid: user.uid,
+                    role: "user"
+                });
+                showToast(`&#127881; Welcome ${name}! Account created.`);
+                setTimeout(() => {
+                    window.location.href = "dashboard/";
+                }, 800);
+            } catch (error) {
+                console.error(error);
+                showToast(error?.message || "Account creation failed. Please try again.");
+            }
         }
     </script>
 </body>

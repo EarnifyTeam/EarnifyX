@@ -53,5 +53,10 @@ const BLOG_DATA = [
 ];
 
 if (typeof window !== "undefined") {
-    window.BLOG_DATA = BLOG_DATA;
+    try {
+        const saved = localStorage.getItem("earnifyx_data_blog");
+        window.BLOG_DATA = saved ? JSON.parse(saved) : BLOG_DATA;
+    } catch (e) {
+        window.BLOG_DATA = BLOG_DATA;
+    }
 }

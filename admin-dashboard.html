@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard — EarnifyX Lab</title>
-    <meta name="description" content="EarnifyX Lab Admin Panel for publishing tools, software, prompts, and blog posts.">
+    <title>Admin Control Center — EarnifyX Lab</title>
+    <meta name="description" content="Manage all Chrome extensions, blog posts, prompts, software, and AI tools in real-time from the EarnifyX Lab Admin Panel.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,246 +16,812 @@
 </head>
 <body class="admin-page">
 
-    <!--
-        FUTURE SUPABASE ADMIN AUTH & RBAC:
-        // const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-        // if (profile.role !== 'admin') window.location.href = '/dashboard/';
-    -->
-
+    <!-- Top Navigation Header -->
     <header class="site-header">
         <div class="header-left">
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                ☰
+            </button>
             <a href="./" class="brand-logo">
                 <div class="flask-icon">
-                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Flask Logo" width="28" height="28">
                 </div>
                 <div class="brand-text">
                     <span class="brand-title">Earnify<span>X</span>Lab</span>
-                    <span class="brand-tagline">Admin Control Panel</span>
+                    <span class="brand-tagline">Admin Control Center</span>
                 </div>
             </a>
         </div>
 
+        <!-- Center Top Navigation Menu -->
+        <nav class="header-nav" aria-label="Main Navigation">
+            <a href="ai-tools/" class="header-nav-link">🤖 AI Tools</a>
+            <a href="extensions/" class="header-nav-link">🧩 Extensions</a>
+            <a href="software/" class="header-nav-link">💻 Software</a>
+            <a href="prompts/" class="header-nav-link">🧠 PromptBhandar</a>
+            <a href="blog/" class="header-nav-link">📝 Blog</a>
+            <a href="admin-dashboard/" class="header-nav-link active">⚙️ Admin Panel</a>
+        </nav>
+
+        <!-- Right Side Header Controls -->
         <div class="header-right">
+            <a href="./" class="btn btn-secondary btn-sm" style="font-weight: 600;">
+                👁️ View Live Website
+            </a>
             <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
                 <span class="theme-toggle-icon">🌙</span>
             </button>
-            <a href="./" class="btn btn-secondary">Exit Admin</a>
+            <div class="header-auth-actions">
+                <a href="dashboard/" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">
+                    Dashboard
+                </a>
+            </div>
         </div>
     </header>
 
     <div class="sidebar-backdrop"></div>
 
-    <div class="app-container full-width">
-        <aside class="app-sidebar">
+    <!-- Main Admin Container -->
+    <div class="app-container full-width" style="display: grid; grid-template-columns: 260px 1fr; gap: 2rem; max-width: 1560px; margin: 0 auto; padding: 1.5rem 2rem;">
+        
+        <!-- Left Admin Navigation Sidebar -->
+        <aside style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.25rem; height: fit-content; position: sticky; top: calc(var(--header-height) + 1.5rem);">
+            <div style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem; padding-left: 0.5rem; letter-spacing: 0.05em;">
+                Management Tabs
+            </div>
             <nav class="sidebar-nav-group">
-                <a href="#tab-extensions" class="sidebar-link active admin-tab-btn" data-tab="tab-extensions">
+                <a href="#tab-overview" class="sidebar-link active admin-tab-btn" data-tab="tab-overview">
+                    <span class="link-icon">📊</span>
+                    <span>Dashboard Overview</span>
+                </a>
+                <a href="#tab-extensions" class="sidebar-link admin-tab-btn" data-tab="tab-extensions">
                     <span class="link-icon">🧩</span>
-                    <span>Manage Extensions</span>
-                </a>
-                <a href="#tab-software" class="sidebar-link admin-tab-btn" data-tab="tab-software">
-                    <span class="link-icon">💻</span>
-                    <span>Manage Software</span>
-                </a>
-                <a href="#tab-prompts" class="sidebar-link admin-tab-btn" data-tab="tab-prompts">
-                    <span class="link-icon">🧠</span>
-                    <span>Manage Prompts</span>
-                </a>
-                <a href="#tab-tools" class="sidebar-link admin-tab-btn" data-tab="tab-tools">
-                    <span class="link-icon">🤖</span>
-                    <span>Manage AI Tools</span>
+                    <span>Chrome Extensions</span>
                 </a>
                 <a href="#tab-blog" class="sidebar-link admin-tab-btn" data-tab="tab-blog">
                     <span class="link-icon">📝</span>
-                    <span>Manage Blog Posts</span>
+                    <span>Blog Posts & Guides</span>
                 </a>
-                <a href="#tab-json" class="sidebar-link admin-tab-btn" data-tab="tab-json">
+                <a href="#tab-prompts" class="sidebar-link admin-tab-btn" data-tab="tab-prompts">
+                    <span class="link-icon">🧠</span>
+                    <span>PromptBhandar</span>
+                </a>
+                <a href="#tab-software" class="sidebar-link admin-tab-btn" data-tab="tab-software">
+                    <span class="link-icon">💻</span>
+                    <span>Software & Apps</span>
+                </a>
+                <a href="#tab-tools" class="sidebar-link admin-tab-btn" data-tab="tab-tools">
+                    <span class="link-icon">🤖</span>
+                    <span>AI Tools Directory</span>
+                </a>
+                <a href="#tab-resources" class="sidebar-link admin-tab-btn" data-tab="tab-resources">
                     <span class="link-icon">📦</span>
-                    <span>Export JSON Snippets</span>
+                    <span>Creator Resources</span>
                 </a>
-                <a href="#tab-users" class="sidebar-link admin-tab-btn" data-tab="tab-users">
-                    <span class="link-icon">👥</span>
-                    <span>Manage Users</span>
+                <a href="#tab-tutorials" class="sidebar-link admin-tab-btn" data-tab="tab-tutorials">
+                    <span class="link-icon">📚</span>
+                    <span>Tutorials & Guides</span>
+                </a>
+
+                <div class="sidebar-divider" style="margin: 0.85rem 0;"></div>
+
+                <a href="#tab-backup" class="sidebar-link admin-tab-btn" data-tab="tab-backup">
+                    <span class="link-icon">💾</span>
+                    <span>Backup & Code Export</span>
                 </a>
             </nav>
+
+            <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); text-align: center;">
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">Live Auto-Sync</div>
+                <p style="font-size: 0.72rem; color: var(--text-secondary); line-height: 1.35; margin-bottom: 0.75rem;">
+                    Updates save instantly to your browser and can be exported as clean JS.
+                </p>
+                <button class="btn btn-sm btn-subtle" style="width: 100%; font-size: 0.75rem;" onclick="Admin.exportAllBackupJSON()">
+                    📦 Full JSON Backup
+                </button>
+            </div>
         </aside>
 
-        <main class="main-content">
-            <!-- 1. Extensions Tab -->
-            <div id="tab-extensions" class="admin-tab-content">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
-                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">🧩 Add / Manage Chrome Extensions</h2>
-                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1.5rem;">
-                        Fill out the details below to generate a new extension object ready for <code>data/extensions.js</code>.
+        <!-- Main Content Area -->
+        <main class="main-content" style="min-width: 0;">
+
+            <!-- 0. Overview Tab -->
+            <div id="tab-overview" class="admin-tab-content">
+                <div style="margin-bottom: 1.5rem;">
+                    <h1 style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.4rem;">
+                        Admin Control Dashboard ⚡
+                    </h1>
+                    <p class="text-secondary" style="font-size: 0.95rem;">
+                        Manage your website catalog, publish articles, update extensions, and generate production datasets.
                     </p>
-
-                    <form onsubmit="handleAdminSubmit('Extension', event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div>
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Extension Name</label>
-                            <input type="text" required placeholder="e.g. YouTube Transcript AI" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        </div>
-                        <div>
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Badge Status</label>
-                            <select style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                                <option>Free</option>
-                                <option>Premium</option>
-                                <option>New</option>
-                            </select>
-                        </div>
-                        <div style="grid-column: 1 / -1;">
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Short Description</label>
-                            <input type="text" required placeholder="One-line summary for creator cards..." style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        </div>
-                        <div style="grid-column: 1 / -1;">
-                            <button type="submit" class="btn btn-primary">Generate & Copy Object</button>
-                        </div>
-                    </form>
                 </div>
-            </div>
 
-            <!-- 2. Software Tab -->
-            <div id="tab-software" class="admin-tab-content" style="display: none;">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
-                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">💻 Add Software & Desktop Apps</h2>
-                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1.5rem;">
-                        Publish native creator tools to <code>data/software.js</code>.
-                    </p>
-
-                    <form onsubmit="handleAdminSubmit('Software', event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div>
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Software Name</label>
-                            <input type="text" required placeholder="e.g. EarnifyX Video Studio" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        </div>
-                        <div>
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Platform</label>
-                            <input type="text" required value="Windows / Mac / Web" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        </div>
-                        <div style="grid-column: 1 / -1;">
-                            <button type="submit" class="btn btn-primary">Generate & Copy Object</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 3. Prompts Tab -->
-            <div id="tab-prompts" class="admin-tab-content" style="display: none;">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
-                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">🧠 Add Master Prompts</h2>
-                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1.5rem;">
-                        Add tested ChatGPT / Claude / Midjourney prompts to <code>data/prompts.js</code>.
-                    </p>
-
-                    <form onsubmit="handleAdminSubmit('Prompt', event)" style="display: flex; flex-direction: column; gap: 1rem;">
-                        <div>
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Prompt Title</label>
-                            <input type="text" required placeholder="e.g. Viral TikTok Retention Script" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        </div>
-                        <div>
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Raw Prompt Content</label>
-                            <textarea rows="6" required placeholder="Act as a senior copywriter..." style="width: 100%; padding: 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.85rem;"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary">Publish Prompt Object</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 4. AI Tools Tab -->
-            <div id="tab-tools" class="admin-tab-content" style="display: none;">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
-                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">🤖 Add AI Tool to Directory</h2>
-                    <form onsubmit="handleAdminSubmit('AI Tool', event)" style="display: flex; flex-direction: column; gap: 1rem;">
-                        <input type="text" required placeholder="Tool Name (e.g. Perplexity AI)" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        <button type="submit" class="btn btn-primary">Publish AI Tool</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 5. Blog Tab -->
-            <div id="tab-blog" class="admin-tab-content" style="display: none;">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
-                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">📝 Publish Blog Post</h2>
-                    <form onsubmit="handleAdminSubmit('Blog Post', event)" style="display: flex; flex-direction: column; gap: 1rem;">
-                        <input type="text" required placeholder="Article Title" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-                        <textarea rows="6" placeholder="Article Markdown content..." style="width: 100%; padding: 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: var(--font-mono);"></textarea>
-                        <button type="submit" class="btn btn-primary">Generate Article Entry</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- 6. JSON Snippet Tab -->
-            <div id="tab-json" class="admin-tab-content" style="display: none;">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
-                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">📦 Ready-to-Paste Data Snippet</h2>
-                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1rem;">
-                        Copy this snippet directly into your respective <code>data/*.js</code> file.
-                    </p>
-                    <div id="jsonOutput" class="prompt-full-box">// Submit any form above to view formatted code snippet</div>
-                </div>
-            </div>
-
-            <div id="tab-users" class="admin-tab-content" style="display: none;">
-                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
-                    <div class="flex items-center justify-between" style="gap: 1rem; margin-bottom: 1.5rem;">
-                        <div><h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">👥 User Management</h2><p class="text-secondary" style="font-size: 0.88rem;">View account details available in this frontend demo.</p></div>
-                        <span class="badge badge-warning">Local demo data</span>
+                <!-- Metrics Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div class="admin-stat-card" onclick="Admin.switchTab('tab-extensions')">
+                        <span style="font-size: 1.5rem; margin-bottom: 0.5rem;">🧩</span>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); line-height: 1;" id="adminStatExtensions">0</div>
+                        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 0.35rem;">Chrome Extensions</div>
                     </div>
-                    <div id="adminUserSummary" style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1rem;"></div>
-                    <div style="overflow-x: auto;"><table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;"><thead><tr style="text-align: left; border-bottom: 1px solid var(--border-color);"><th style="padding: .75rem 0;">Name</th><th style="padding: .75rem 0;">Email</th><th style="padding: .75rem 0;">Role</th><th style="padding: .75rem 0;">Updated</th></tr></thead><tbody id="adminUsersTable"></tbody></table></div>
-                    <p class="text-muted" style="font-size: .78rem; margin-top: 1rem;">// FUTURE ROLE BASED ACCESS: Only Supabase-authorized admins can access or modify users. Browser localStorage is not secure.</p>
+                    <div class="admin-stat-card" onclick="Admin.switchTab('tab-blog')">
+                        <span style="font-size: 1.5rem; margin-bottom: 0.5rem;">📝</span>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); line-height: 1;" id="adminStatBlog">0</div>
+                        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 0.35rem;">Blog Articles</div>
+                    </div>
+                    <div class="admin-stat-card" onclick="Admin.switchTab('tab-prompts')">
+                        <span style="font-size: 1.5rem; margin-bottom: 0.5rem;">🧠</span>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); line-height: 1;" id="adminStatPrompts">0</div>
+                        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 0.35rem;">PromptBhandar</div>
+                    </div>
+                    <div class="admin-stat-card" onclick="Admin.switchTab('tab-software')">
+                        <span style="font-size: 1.5rem; margin-bottom: 0.5rem;">💻</span>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); line-height: 1;" id="adminStatSoftware">0</div>
+                        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 0.35rem;">Software Apps</div>
+                    </div>
+                    <div class="admin-stat-card" onclick="Admin.switchTab('tab-tools')">
+                        <span style="font-size: 1.5rem; margin-bottom: 0.5rem;">🤖</span>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); line-height: 1;" id="adminStatTools">0</div>
+                        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 0.35rem;">AI Tools</div>
+                    </div>
+                    <div class="admin-stat-card" onclick="Admin.switchTab('tab-resources')">
+                        <span style="font-size: 1.5rem; margin-bottom: 0.5rem;">📦</span>
+                        <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); line-height: 1;" id="adminStatResources">0</div>
+                        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 0.35rem;">Creator Packs</div>
+                    </div>
+                </div>
+
+                <!-- Fast Action Launchpad -->
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+                        ⚡ Quick Action Launchpad
+                    </h3>
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="Admin.switchTab('tab-extensions')">➕ New Extension</button>
+                        <button class="btn btn-secondary" onclick="Admin.switchTab('tab-blog')">📝 Write Blog Post</button>
+                        <button class="btn btn-secondary" onclick="Admin.switchTab('tab-prompts')">🧠 Add AI Prompt</button>
+                        <button class="btn btn-secondary" onclick="Admin.switchTab('tab-software')">💻 Publish Software</button>
+                        <button class="btn btn-secondary" onclick="Admin.switchTab('tab-tools')">🤖 List AI Tool</button>
+                        <button class="btn btn-subtle" onclick="Admin.exportAllBackupJSON()">📦 Export Backup</button>
+                    </div>
+                </div>
+
+                <div class="admin-form-box" style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">🔗 Social Channel Links</h3>
+                    <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1rem;">Update these URLs once and the homepage buttons and footer icons will change automatically.</p>
+                    <form onsubmit="Admin.saveSocialLinks(event)">
+                        <div class="admin-form-grid">
+                            <div><label class="admin-input-label">WhatsApp Channel URL</label><input id="socialLink_whatsapp" type="url" required class="admin-form-input" placeholder="https://whatsapp.com/channel/..."></div>
+                            <div><label class="admin-input-label">YouTube Channel URL</label><input id="socialLink_youtube" type="url" required class="admin-form-input" placeholder="https://youtube.com/@yourchannel"></div>
+                            <div><label class="admin-input-label">Telegram Channel URL</label><input id="socialLink_telegram" type="url" required class="admin-form-input" placeholder="https://t.me/yourchannel"></div>
+                            <div><label class="admin-input-label">Instagram Profile URL</label><input id="socialLink_instagram" type="url" required class="admin-form-input" placeholder="https://instagram.com/yourprofile"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">💾 Save Social Links</button>
+                    </form>
+                </div>
+
+                <div class="admin-form-box" style="margin-bottom: 2rem;">
+                    <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem;">📢 Ad Network Settings</h3>
+                    <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1rem;">Paste code from Adsterra or AdSense. Ads are excluded from login, register, and admin pages.</p>
+                    <form onsubmit="Admin.saveAdSettings(event)">
+                        <div class="admin-form-grid">
+                            <div><label class="admin-input-label">Network</label><select id="adsNetwork" class="admin-form-select"><option value="none">Select network</option><option value="adsterra">Adsterra</option><option value="adsense">Google AdSense</option><option value="other">Other</option></select></div>
+                            <div style="display:flex;align-items:center;gap:.6rem;padding-top:1.6rem;"><input id="adsEnabled" type="checkbox" style="accent-color:var(--accent-primary);"><label for="adsEnabled" class="admin-input-label" style="margin:0;">Enable ads on public pages</label></div>
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Top Banner Code</label><textarea id="adsTopCode" rows="4" class="admin-form-textarea" placeholder="Paste the ad code for the area below the header..."></textarea></div>
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Content Ad Code</label><textarea id="adsContentCode" rows="4" class="admin-form-textarea" placeholder="Paste the ad code for the main content area..."></textarea></div>
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Footer Ad Code</label><textarea id="adsFooterCode" rows="4" class="admin-form-textarea" placeholder="Paste the ad code for the footer area..."></textarea></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top:1rem;">💾 Save Ad Settings</button>
+                    </form>
+                </div>
+
+                <div class="admin-form-box" style="margin-bottom:2rem;">
+                    <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:.4rem;">👤 About Us Profile</h3>
+                    <p class="text-secondary" style="font-size:.85rem;margin-bottom:1rem;">Add your picture URL and details. These values appear on the public About Us page.</p>
+                    <form onsubmit="Admin.saveAboutSettings(event)">
+                        <div class="admin-form-grid">
+                            <div><label class="admin-input-label">Your Name *</label><input id="aboutName" required class="admin-form-input" placeholder="Suraj Kumar"></div>
+                            <div><label class="admin-input-label">Role / Title</label><input id="aboutRole" class="admin-form-input" placeholder="Founder, Creator & AI Researcher"></div>
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Profile Picture URL</label><input id="aboutImageUrl" type="url" class="admin-form-input" placeholder="https://.../your-picture.jpg"></div>
+                            <div><label class="admin-input-label">Location</label><input id="aboutLocation" class="admin-form-input" placeholder="India"></div>
+                            <div><label class="admin-input-label">Contact Email</label><input id="aboutEmail" type="email" class="admin-form-input" placeholder="hello@example.com"></div>
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Short Bio</label><textarea id="aboutShortBio" rows="3" class="admin-form-textarea" placeholder="One or two lines about you..."></textarea></div>
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Full About Details</label><textarea id="aboutDetails" rows="6" class="admin-form-textarea" placeholder="Tell visitors about your story, work and mission..."></textarea></div>
+                            <div><label class="admin-input-label">Instagram URL</label><input id="aboutInstagram" type="url" class="admin-form-input" placeholder="https://instagram.com/..."></div>
+                            <div><label class="admin-input-label">YouTube URL</label><input id="aboutYouTube" type="url" class="admin-form-input" placeholder="https://youtube.com/@..."></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top:1rem;">💾 Save About Us</button>
+                    </form>
                 </div>
             </div>
+
+            <!-- 1. Chrome Extensions Tab -->
+            <div id="tab-extensions" class="admin-tab-content" style="display: none;">
+                <div class="flex items-center justify-between" style="margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">🧩 Chrome Extensions Manager</h2>
+                        <p class="text-secondary" style="font-size: 0.88rem;">Add, edit, delete, and download browser extensions.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('extensions')">
+                        📥 Download extensions.js
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <div class="admin-form-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Add / Edit Extension</h3>
+                    <form id="form_extensions" onsubmit="Admin.handleFormSubmit('extensions', event)">
+                        <div class="admin-form-grid">
+                            <div>
+                                <label class="admin-input-label">Extension Name *</label>
+                                <input type="text" name="name" required class="admin-form-input" placeholder="e.g. YouTube Transcript AI">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Category</label>
+                                <select name="category" class="admin-form-select">
+                                    <option value="AI">AI</option>
+                                    <option value="Productivity">Productivity</option>
+                                    <option value="Research">Research</option>
+                                    <option value="Automation">Automation</option>
+                                    <option value="Social">Social</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Badge Text & Status</label>
+                                <select name="badge" class="admin-form-select">
+                                    <option value="Free">Free</option>
+                                    <option value="Premium">Premium</option>
+                                    <option value="New">New</option>
+                                    <option value="Trending">Trending</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Version & Rating</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" name="version" class="admin-form-input" placeholder="v2.0.0" value="v1.0.0">
+                                    <input type="number" step="0.1" name="rating" class="admin-form-input" placeholder="4.9" value="4.8">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Active Users</label>
+                                <input type="text" name="users" class="admin-form-input" placeholder="10,000+" value="5,000+">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Chrome Web Store / Download URL</label>
+                                <input type="text" name="downloadUrl" class="admin-form-input" placeholder="https://chromewebstore.google.com/..." value="https://chromewebstore.google.com">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Icon Emoji / Text & Background</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" name="iconText" class="admin-form-input" style="max-width: 80px;" placeholder="🧩" value="🧩">
+                                    <input type="text" name="iconBg" class="admin-form-input" placeholder="#111827" value="#111827">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Short Description (Cards)</label>
+                                <input type="text" name="shortDescription" required class="admin-form-input" placeholder="1-line summary for creator cards...">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Full Details (Modal View)</label>
+                                <textarea name="description" rows="3" class="admin-form-textarea" placeholder="Comprehensive breakdown of features..."></textarea>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Features List (1 per line)</label>
+                                <textarea name="features" rows="4" class="admin-form-textarea" placeholder="One-click summarization&#10;Privacy-first offline storage&#10;Instant prompt injector"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">➕ Save Extension</button>
+                            <button type="button" id="cancelEditBtn_extensions" class="btn btn-secondary" style="display: none;" onclick="Admin.cancelEdit('extensions')">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Search & Table -->
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; gap: 1rem; flex-wrap: wrap;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700;">Live Extensions Catalog</h3>
+                        <input type="text" placeholder="Search extensions..." style="max-width: 280px; height: 38px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);" oninput="Admin.handleSearch('extensions', this.value)">
+                    </div>
+                    <div id="tableContainer_extensions"></div>
+                </div>
+            </div>
+
+            <!-- 2. Blog Posts Tab -->
+            <div id="tab-blog" class="admin-tab-content" style="display: none;">
+                <div class="flex items-center justify-between" style="margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">📝 Blog Posts & Articles Manager</h2>
+                        <p class="text-secondary" style="font-size: 0.88rem;">Publish and edit articles, tutorials, and strategy teardowns.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('blog')">
+                        📥 Download blog.js
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <div class="admin-form-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Write / Edit Article</h3>
+                    <form id="form_blog" onsubmit="Admin.handleFormSubmit('blog', event)">
+                        <div class="admin-form-grid">
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Article Title *</label>
+                                <input type="text" name="title" required class="admin-form-input" placeholder="e.g. How I Automated My Entire Creator Business in 2026">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Category</label>
+                                <select name="category" class="admin-form-select">
+                                    <option value="AI Prompts">AI Prompts</option>
+                                    <option value="Extensions">Extensions</option>
+                                    <option value="Automation">Automation</option>
+                                    <option value="Strategy">Strategy</option>
+                                    <option value="Creator Tools">Creator Tools</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Author & Read Time</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" name="author" class="admin-form-input" value="EarnifyX Team">
+                                    <input type="text" name="readTime" class="admin-form-input" placeholder="5 min read" value="6 min read">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Publish Date</label>
+                                <input type="text" name="date" class="admin-form-input" value="Mar 06, 2026">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Thumbnail URL</label>
+                                <input type="text" name="thumbnail" class="admin-form-input" value="assets/images/blog-1.svg">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Short Summary (Preview Cards)</label>
+                                <input type="text" name="shortDescription" required class="admin-form-input" placeholder="2-sentence teaser for readers...">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Full Article Markdown Content</label>
+                                <textarea name="content" rows="8" class="admin-form-textarea" placeholder="Write full article here in clean markdown format..."></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">➕ Publish Article</button>
+                            <button type="button" id="cancelEditBtn_blog" class="btn btn-secondary" style="display: none;" onclick="Admin.cancelEdit('blog')">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; gap: 1rem; flex-wrap: wrap;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700;">Published Articles</h3>
+                        <input type="text" placeholder="Search blog posts..." style="max-width: 280px; height: 38px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);" oninput="Admin.handleSearch('blog', this.value)">
+                    </div>
+                    <div id="tableContainer_blog"></div>
+                </div>
+            </div>
+
+            <!-- 3. PromptBhandar Tab -->
+            <div id="tab-prompts" class="admin-tab-content" style="display: none;">
+                <div class="flex items-center justify-between" style="margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">🧠 PromptBhandar Vault</h2>
+                        <p class="text-secondary" style="font-size: 0.88rem;">Create and curate ready-to-copy prompts for ChatGPT, Claude & Midjourney.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('prompts')">
+                        📥 Download prompts.js
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <div class="admin-form-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Add / Edit Prompt</h3>
+                    <form id="form_prompts" onsubmit="Admin.handleFormSubmit('prompts', event)">
+                        <div class="admin-form-grid">
+                            <div>
+                                <label class="admin-input-label">Prompt Title *</label>
+                                <input type="text" name="title" required class="admin-form-input" placeholder="e.g. Viral 30-Day Content Matrix">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Category</label>
+                                <select name="category" class="admin-form-select">
+                                    <option value="ChatGPT">ChatGPT</option>
+                                    <option value="Claude">Claude</option>
+                                    <option value="Copywriting">Copywriting</option>
+                                    <option value="Coding">Coding</option>
+                                    <option value="Midjourney">Midjourney</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Productivity">Productivity</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Badge & Tier</label>
+                                <select name="badge" class="admin-form-select">
+                                    <option value="Free">Free</option>
+                                    <option value="Premium">Premium (Locked)</option>
+                                    <option value="Masterclass">Masterclass</option>
+                                    <option value="Trending">Trending</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Icon Emoji</label>
+                                <input type="text" name="icon" class="admin-form-input" value="🧠">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Niche</label>
+                                <input type="text" name="niche" class="admin-form-input" placeholder="Animals, History, Finance...">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Required AI Model</label>
+                                <input type="text" name="model" class="admin-form-input" placeholder="ChatGPT, Claude, Veo...">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Content Format</label>
+                                <select name="contentType" class="admin-form-select">
+                                    <option value="Text">Text</option>
+                                    <option value="Image">Image</option>
+                                    <option value="Video">Video</option>
+                                    <option value="Shorts/Reels">Shorts/Reels</option>
+                                    <option value="Audio">Audio</option>
+                                </select>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Short Description</label>
+                                <input type="text" name="shortDescription" required class="admin-form-input" placeholder="What this prompt accomplishes in 1 line...">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Full Prompt Content (Raw Text)</label>
+                                <textarea name="promptText" rows="6" required class="admin-form-textarea" style="font-family: var(--font-mono); font-size: 0.85rem;" placeholder="Act as a world-class copywriter..."></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">➕ Save Prompt</button>
+                            <button type="button" id="cancelEditBtn_prompts" class="btn btn-secondary" style="display: none;" onclick="Admin.cancelEdit('prompts')">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; gap: 1rem; flex-wrap: wrap;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700;">Prompts Directory</h3>
+                        <input type="text" placeholder="Search prompts..." style="max-width: 280px; height: 38px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);" oninput="Admin.handleSearch('prompts', this.value)">
+                    </div>
+                    <div id="tableContainer_prompts"></div>
+                </div>
+            </div>
+
+            <!-- 4. Software Tab -->
+            <div id="tab-software" class="admin-tab-content" style="display: none;">
+                <div class="flex items-center justify-between" style="margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">💻 Software & Desktop Apps</h2>
+                        <p class="text-secondary" style="font-size: 0.88rem;">Manage native apps, scripts, and downloadable creator tools.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('software')">
+                        📥 Download software.js
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <div class="admin-form-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Add / Edit Software</h3>
+                    <form id="form_software" onsubmit="Admin.handleFormSubmit('software', event)">
+                        <div class="admin-form-grid">
+                            <div>
+                                <label class="admin-input-label">Software Name *</label>
+                                <input type="text" name="name" required class="admin-form-input" placeholder="e.g. EarnifyX Video Studio">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Platform</label>
+                                <input type="text" name="platform" class="admin-form-input" value="Windows / Mac / Web">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Badge & Version</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" name="badge" class="admin-form-input" value="Free">
+                                    <input type="text" name="version" class="admin-form-input" value="v1.0.0">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Download Count & Rating</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" name="downloads" class="admin-form-input" value="5,000+">
+                                    <input type="number" step="0.1" name="rating" class="admin-form-input" value="4.8">
+                                </div>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Short Description</label>
+                                <input type="text" name="shortDescription" required class="admin-form-input" placeholder="1-line summary...">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Full Description</label>
+                                <textarea name="description" rows="3" class="admin-form-textarea"></textarea>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Features (1 per line)</label>
+                                <textarea name="features" rows="4" class="admin-form-textarea" placeholder="Hardware acceleration&#10;Cloud auto backup&#10;Lossless export"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">➕ Save Software</button>
+                            <button type="button" id="cancelEditBtn_software" class="btn btn-secondary" style="display: none;" onclick="Admin.cancelEdit('software')">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; gap: 1rem; flex-wrap: wrap;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700;">Software Catalog</h3>
+                        <input type="text" placeholder="Search software..." style="max-width: 280px; height: 38px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);" oninput="Admin.handleSearch('software', this.value)">
+                    </div>
+                    <div id="tableContainer_software"></div>
+                </div>
+            </div>
+
+            <!-- 5. AI Tools Directory Tab -->
+            <div id="tab-tools" class="admin-tab-content" style="display: none;">
+                <div class="flex items-center justify-between" style="margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">🤖 AI Tools Directory</h2>
+                        <p class="text-secondary" style="font-size: 0.88rem;">Manage directory listings, pricing badges, and recommendations.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('tools')">
+                        📥 Download tools.js
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <div class="admin-form-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Add / Edit AI Tool</h3>
+                    <form id="form_tools" onsubmit="Admin.handleFormSubmit('tools', event)">
+                        <div class="admin-form-grid">
+                            <div>
+                                <label class="admin-input-label">Tool Name *</label>
+                                <input type="text" name="name" required class="admin-form-input" placeholder="e.g. Perplexity AI">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Category</label>
+                                <select name="category" class="admin-form-select">
+                                    <option value="AI Writing">AI Writing</option>
+                                    <option value="AI Image">AI Image</option>
+                                    <option value="AI Video">AI Video</option>
+                                    <option value="AI Audio">AI Audio</option>
+                                    <option value="AI Coding">AI Coding</option>
+                                    <option value="AI Automation">AI Automation</option>
+                                    <option value="AI Research">AI Research</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Pricing Model</label>
+                                <select name="pricing" class="admin-form-select">
+                                    <option value="Free">Free</option>
+                                    <option value="Freemium">Freemium</option>
+                                    <option value="Paid">Paid</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Official Website URL</label>
+                                <input type="text" name="url" required class="admin-form-input" placeholder="https://...">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Preview Image URL</label>
+                                <input type="url" name="imageUrl" class="admin-form-input" placeholder="https://.../tool-preview.jpg">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Description</label>
+                                <input type="text" name="shortDescription" required class="admin-form-input" placeholder="Core functionality in 1 line...">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">➕ Save AI Tool</button>
+                            <button type="button" id="cancelEditBtn_tools" class="btn btn-secondary" style="display: none;" onclick="Admin.cancelEdit('tools')">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; gap: 1rem; flex-wrap: wrap;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700;">AI Tools Listings</h3>
+                        <input type="text" placeholder="Search tools..." style="max-width: 280px; height: 38px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);" oninput="Admin.handleSearch('tools', this.value)">
+                    </div>
+                    <div id="tableContainer_tools"></div>
+                </div>
+            </div>
+
+            <!-- 6. Creator Resources Tab -->
+            <div id="tab-resources" class="admin-tab-content" style="display: none;">
+                <div class="flex items-center justify-between" style="margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">📦 Creator Resources & Packs</h2>
+                        <p class="text-secondary" style="font-size: 0.88rem;">Manage templates, sound packs, and checklists.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('resources')">
+                        📥 Download resources.js
+                    </button>
+                </div>
+
+                <div class="admin-form-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Add / Edit Resource Pack</h3>
+                    <form id="form_resources" onsubmit="Admin.handleFormSubmit('resources', event)">
+                        <div class="admin-form-grid">
+                            <div>
+                                <label class="admin-input-label">Resource Title *</label>
+                                <input type="text" name="title" required class="admin-form-input" placeholder="e.g. 100+ Creator Sound FX Pack">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Category</label>
+                                <input type="text" name="category" class="admin-form-input" value="Creator Packs">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Access Type</label>
+                                <select name="type" class="admin-form-select">
+                                    <option value="Free">Free</option>
+                                    <option value="Premium">Premium</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Downloads Count</label>
+                                <input type="text" name="downloads" class="admin-form-input" value="10,000+">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Description</label>
+                                <textarea name="description" rows="3" class="admin-form-textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">➕ Save Resource</button>
+                            <button type="button" id="cancelEditBtn_resources" class="btn btn-secondary" style="display: none;" onclick="Admin.cancelEdit('resources')">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                    <div id="tableContainer_resources"></div>
+                </div>
+            </div>
+
+            <!-- 7. Tutorials Tab -->
+            <div id="tab-tutorials" class="admin-tab-content" style="display: none;">
+                <div class="flex items-center justify-between" style="margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">📚 Tutorials & Guides</h2>
+                        <p class="text-secondary" style="font-size: 0.88rem;">Manage step-by-step masterclasses and automation guides.</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('tutorials')">
+                        📥 Download tutorials.js
+                    </button>
+                </div>
+
+                <div class="admin-form-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Add / Edit Tutorial</h3>
+                    <form id="form_tutorials" onsubmit="Admin.handleFormSubmit('tutorials', event)">
+                        <div class="admin-form-grid">
+                            <div>
+                                <label class="admin-input-label">Tutorial Title *</label>
+                                <input type="text" name="title" required class="admin-form-input" placeholder="e.g. Build an AI Agent in 15 Minutes">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Category</label>
+                                <input type="text" name="category" class="admin-form-input" value="Automation Guides">
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Difficulty & Duration</label>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" name="difficulty" class="admin-form-input" value="Beginner">
+                                    <input type="text" name="time" class="admin-form-input" value="15 min">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="admin-input-label">Thumbnail</label>
+                                <input type="text" name="thumbnail" class="admin-form-input" value="assets/images/tut-1.svg">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Description</label>
+                                <textarea name="description" rows="3" class="admin-form-textarea"></textarea>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="admin-input-label">Steps (1 per line)</label>
+                                <textarea name="steps" rows="4" class="admin-form-textarea" placeholder="Step 1: Setting up environment&#10;Step 2: Connecting API keys"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <button type="submit" class="btn btn-primary">➕ Save Tutorial</button>
+                            <button type="button" id="cancelEditBtn_tutorials" class="btn btn-secondary" style="display: none;" onclick="Admin.cancelEdit('tutorials')">Cancel Edit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                    <div id="tableContainer_tutorials"></div>
+                </div>
+            </div>
+
+            <!-- 8. Backup & Code Export Tab -->
+            <div id="tab-backup" class="admin-tab-content" style="display: none;">
+                <div style="margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">💾 Backup, Sync & File Exporter</h2>
+                    <p class="text-secondary" style="font-size: 0.88rem;">Download updated data files to commit to your GitHub repository.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">🧩 data/extensions.js</h4>
+                        <p class="text-secondary" style="font-size: 0.82rem; margin-bottom: 1rem;">Export all latest Chrome extensions with descriptions and ratings.</p>
+                        <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('extensions')">Download extensions.js</button>
+                    </div>
+
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">📝 data/blog.js</h4>
+                        <p class="text-secondary" style="font-size: 0.82rem; margin-bottom: 1rem;">Export all blog posts, markdown content, and article metadata.</p>
+                        <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('blog')">Download blog.js</button>
+                    </div>
+
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">🧠 data/prompts.js</h4>
+                        <p class="text-secondary" style="font-size: 0.82rem; margin-bottom: 1rem;">Export master prompt vault with copy-ready strings.</p>
+                        <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('prompts')">Download prompts.js</button>
+                    </div>
+
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">💻 data/software.js</h4>
+                        <p class="text-secondary" style="font-size: 0.82rem; margin-bottom: 1rem;">Export native applications and download links.</p>
+                        <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('software')">Download software.js</button>
+                    </div>
+
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">🤖 data/tools.js</h4>
+                        <p class="text-secondary" style="font-size: 0.82rem; margin-bottom: 1rem;">Export AI tools directory listings.</p>
+                        <button class="btn btn-primary btn-sm" onclick="Admin.downloadDataFile('tools')">Download tools.js</button>
+                    </div>
+
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem;">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">📦 Complete Site JSON Backup</h4>
+                        <p class="text-secondary" style="font-size: 0.82rem; margin-bottom: 1rem;">Export a single master JSON containing all sections.</p>
+                        <button class="btn btn-secondary btn-sm" onclick="Admin.exportAllBackupJSON()">Export Full JSON</button>
+                    </div>
+                </div>
+
+                <div class="admin-form-box">
+                    <h3 style="font-size:1.15rem;font-weight:700;margin-bottom:.4rem;">🗺️ Sitemap Manager</h3>
+                    <p class="text-secondary" style="font-size:.85rem;margin-bottom:1rem;">Manage public URLs and download a fresh sitemap.xml for GitHub Pages.</p>
+                    <form onsubmit="Admin.generateSitemap(event)">
+                        <div class="admin-form-grid">
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Website Base URL</label><input id="sitemapBaseUrl" type="url" required class="admin-form-input" value="https://earnifyxlab.in" placeholder="https://example.com"></div>
+                            <div style="grid-column:1 / -1;"><label class="admin-input-label">Public Paths (one per line)</label><textarea id="sitemapPaths" rows="8" required class="admin-form-textarea">/
+about/
+ai-tools/
+extensions/
+software/
+prompts/
+resources/
+blog/
+tutorials/
+downloads/</textarea></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top:1rem;">🗺️ Save &amp; Download sitemap.xml</button>
+                    </form>
+                </div>
+            </div>
+
         </main>
     </div>
+
+    <!-- Scripts -->
+    <script src="data/extensions.js"></script>
+    <script src="data/software.js"></script>
+    <script src="data/prompts.js"></script>
+    <script src="data/tools.js"></script>
+    <script src="data/resources.js"></script>
+    <script src="data/blog.js"></script>
+    <script src="data/tutorials.js"></script>
 
     <script src="js/theme.js"></script>
     <script src="js/auth-ui.js"></script>
     <script src="js/main.js"></script>
-
-    <script>
-        // FUTURE ROLE BASED ACCESS: Verify the authenticated user's admin role server-side with Supabase before rendering admin actions.
-        // FUTURE USER DATABASE: Admin user management will use Supabase profiles and policies.
-        document.addEventListener("DOMContentLoaded", () => {
-            if (window.AuthUI && !AuthUI.requireLogin()) window.location.href = "login/";
-        });
-        document.addEventListener("DOMContentLoaded", () => {
-            const tabs = document.querySelectorAll(".admin-tab-btn");
-            const contents = document.querySelectorAll(".admin-tab-content");
-            renderAdminUsers();
-
-            tabs.forEach(tab => {
-                tab.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    tabs.forEach(t => t.classList.remove("active"));
-                    contents.forEach(c => c.style.display = "none");
-
-                    tab.classList.add("active");
-                    const targetId = tab.getAttribute("data-tab");
-                    const targetContent = document.getElementById(targetId);
-                    if (targetContent) targetContent.style.display = "block";
-                });
-            });
-        });
-
-        function renderAdminUsers() {
-            const currentUser = AuthUI.getUser();
-            const users = AuthUI.getUsers();
-            const summary = document.getElementById("adminUserSummary");
-            const table = document.getElementById("adminUsersTable");
-            if (!summary || !table) return;
-            summary.innerHTML = `<strong>Current account:</strong> ${currentUser ? currentUser.name : "Unknown"} · ${currentUser ? currentUser.email : "-"} · <span class="badge badge-primary">${currentUser && currentUser.role ? currentUser.role : "user"}</span>`;
-            table.innerHTML = users.length ? users.map(user => `<tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: .75rem 0;">${user.name || "-"}</td><td style="padding: .75rem 0;">${user.email}</td><td style="padding: .75rem 0;">${user.role || "user"}</td><td style="padding: .75rem 0;">${user.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : "-"}</td></tr>`).join("") : `<tr><td colspan="4" style="padding: 1rem 0; color: var(--text-secondary);">No demo users yet.</td></tr>`;
-        }
-
-        function handleAdminSubmit(type, e) {
-            e.preventDefault();
-            const jsonBox = document.getElementById("jsonOutput");
-            const sample = `{\n  id: "${type.toLowerCase()}-${Date.now()}",\n  name: "New ${type} Entry",\n  badge: "New",\n  badgeType: "primary",\n  date: "${new Date().toLocaleDateString()}"\n}`;
-            jsonBox.textContent = sample;
-            showToast(`✅ Generated ${type} structure! Check the 'Export JSON' tab.`);
-        }
-    </script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
 

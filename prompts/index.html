@@ -4,7 +4,7 @@
     <base href="../">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Prompts — EarnifyX Lab</title>
+    <title>PromptBhandar — EarnifyX Lab</title>
     <meta name="description" content="Discover ready-to-use AI prompts for content creation, image generation, video generation, business, social media and more.">
     
     <!-- Google Fonts -->
@@ -20,12 +20,15 @@
 <body>
 
     <!-- Header -->
+        <!-- Top Navigation Header -->
     <header class="site-header">
         <div class="header-left">
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                ☰
+            </button>
             <a href="./" class="brand-logo">
                 <div class="flask-icon">
-                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Flask Logo" width="28" height="28">
                 </div>
                 <div class="brand-text">
                     <span class="brand-title">Earnify<span>X</span>Lab</span>
@@ -34,20 +37,81 @@
             </a>
         </div>
 
-        <div class="header-search">
-            <div class="search-input-wrapper">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="global-search-input" placeholder="Search tools, extensions, software, prompts..." aria-label="Search">
-                <span class="search-shortcut-badge">Ctrl K</span>
+        <!-- Center Top Navigation Menu -->
+        <nav class="header-nav" aria-label="Main Navigation">
+            <a href="ai-tools/" class="header-nav-link">🤖 AI Tools</a>
+            <a href="extensions/" class="header-nav-link">🧩 Extensions</a>
+            <a href="software/" class="header-nav-link">💻 Software</a>
+            <a href="prompts/" class="header-nav-link active">🧠 PromptBhandar</a>
+            <a href="resources/" class="header-nav-link">📦 Resources</a>
+            <div class="header-dropdown">
+                <button class="header-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span>More</span> <span class="dropdown-chevron">▾</span>
+                </button>
+                <div class="header-dropdown-menu">
+                    <a href="automation/" class="dropdown-item">
+                        <span class="item-icon">⚡</span>
+                        <div class="item-text">
+                            <span class="item-title">Automation Tools</span>
+                            <span class="item-sub">Workflows & bots</span>
+                        </div>
+                    </a>
+                    <a href="creator-tools/" class="dropdown-item">
+                        <span class="item-icon">🎬</span>
+                        <div class="item-text">
+                            <span class="item-title">Creator Tools</span>
+                            <span class="item-sub">Audio, video & design</span>
+                        </div>
+                    </a>
+                    <a href="blog/" class="dropdown-item">
+                        <span class="item-icon">📝</span>
+                        <div class="item-text">
+                            <span class="item-title">Blog Posts</span>
+                            <span class="item-sub">Guides & articles</span>
+                        </div>
+                    </a>
+                    <a href="tutorials/" class="dropdown-item">
+                        <span class="item-icon">📚</span>
+                        <div class="item-text">
+                            <span class="item-title">Tutorials & Guides</span>
+                            <span class="item-sub">Step-by-step masterclasses</span>
+                        </div>
+                    </a>
+                    <a href="downloads/" class="dropdown-item">
+                        <span class="item-icon">📥</span>
+                        <div class="item-text">
+                            <span class="item-title">Downloads</span>
+                            <span class="item-sub">Software installers</span>
+                        </div>
+                    </a>
+                </div>
             </div>
-        </div>
+        </nav>
 
+        <!-- Right Side Header Controls -->
         <div class="header-right">
+            <div class="header-search">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="global-search-input" placeholder="Search..." aria-label="Search">
+                    <span class="search-shortcut-badge">Ctrl K</span>
+                </div>
+            </div>
+            <a href="dashboard/" class="header-saved-btn" title="Saved Items" aria-label="Saved Items">
+                <span>❤️</span>
+                <span class="saved-count-badge" style="display:none;">0</span>
+            </a>
             <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
                 <span class="theme-toggle-icon">🌙</span>
             </button>
-            <a href="login/" class="btn btn-subtle">Login</a>
-            <a href="signup/" class="btn btn-primary">Get Started</a>
+            <div class="header-auth-actions">
+                <a href="login/" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">
+                    Login
+                </a>
+                <a href="register/" class="btn btn-primary" style="font-size: 0.88rem;">
+                    Get Started
+                </a>
+            </div>
         </div>
     </header>
 
@@ -77,7 +141,7 @@
                 </a>
                 <a href="prompts/" class="sidebar-link active">
                     <span class="link-icon">🧠</span>
-                    <span>Master Prompts</span>
+                    <span>PromptBhandar</span>
                 </a>
                 <a href="automation/" class="sidebar-link">
                     <span class="link-icon">⚡</span>
@@ -122,7 +186,7 @@
                     <span class="premium-card-title">Go Premium</span>
                 </div>
                 <p class="premium-card-desc">Unlock 500+ premium prompt frameworks.</p>
-                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Master Prompts Vault')">Upgrade Now →</button>
+                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX PromptBhandar Vault')">Upgrade Now →</button>
             </div>
         </aside>
 
@@ -133,7 +197,7 @@
             <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-xs);">
                 <div class="flex items-center gap-2" style="margin-bottom: 0.5rem;">
                     <span style="font-size: 1.5rem;">🧠</span>
-                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Master Prompts Hub</h1>
+                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">PromptBhandar</h1>
                 </div>
                 <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px; margin-bottom: 1.5rem;">
                     Discover ready-to-use AI prompts for content creation, image generation, video generation, business, social media and more.
@@ -148,7 +212,7 @@
 
                 <!-- Filter Category Pills -->
                 <div class="filter-pills-bar">
-                    <button class="filter-pill active" data-filter="All">All Prompts</button>
+                    <button class="filter-pill active" data-filter="All">All PromptBhandar</button>
                     <button class="filter-pill" data-filter="Free">Free</button>
                     <button class="filter-pill" data-filter="Premium">Premium 🔒</button>
                     <button class="filter-pill" data-filter="YouTube">YouTube</button>
@@ -158,6 +222,7 @@
                     <button class="filter-pill" data-filter="Business">Business</button>
                     <button class="filter-pill" data-filter="Social Media">Social Media</button>
                     <button class="filter-pill" data-filter="Automation">Automation</button>
+                    <span id="promptNicheFilters" style="display: contents;"></span>
                 </div>
             </div>
 
@@ -173,7 +238,7 @@
     <footer class="site-footer">
         <div class="footer-bottom">
             <p>© 2026 EarnifyX Lab. All rights reserved.</p>
-            <p>Master Prompts • Hosted on GitHub Pages</p>
+            <p>PromptBhandar • Hosted on GitHub Pages</p>
         </div>
     </footer>
 
@@ -202,12 +267,13 @@
                     containerId: "promptsCatalogContainer",
                     dataArray: window.PROMPTS_DATA,
                     cardGenerator: Components.createPromptCard,
-                    filterKey: "category"
+                    filterKey: "niche"
                 });
             }
         });
     </script>
 </body>
 </html>
+
 
 

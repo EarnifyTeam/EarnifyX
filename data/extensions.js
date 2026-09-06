@@ -150,7 +150,12 @@ const EXTENSIONS_DATA = [
     }
 ];
 
-// Export for browser global scope
+// Export for browser global scope with live admin sync
 if (typeof window !== "undefined") {
-    window.EXTENSIONS_DATA = EXTENSIONS_DATA;
+    try {
+        const saved = localStorage.getItem("earnifyx_data_extensions");
+        window.EXTENSIONS_DATA = saved ? JSON.parse(saved) : EXTENSIONS_DATA;
+    } catch (e) {
+        window.EXTENSIONS_DATA = EXTENSIONS_DATA;
+    }
 }

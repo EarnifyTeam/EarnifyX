@@ -27,6 +27,43 @@ const AuthUI = {
         return Boolean(this.getUser());
     },
 
+    async waitForFirebaseSession() {
+        if (!window.FirebaseService) return this.getUser();
+        try {
+            await window.initializeFirebase();
+            const { auth, helpers } = await window.FirebaseService.ensureReady();
+            return await new Promise(resolve => {
+                let settled = false;
+                const finish = user => {
+                    if (settled) return;
+                    settled = true;
+                    resolve(user);
+                };
+                helpers.onAuthStateChanged(auth, async firebaseUser => {
+                    if (!firebaseUser) {
+                        finish(this.getUser());
+                        return;
+                    }
+                    const profile = await window.FirebaseService.getUserProfile(firebaseUser);
+                    this.setUser({
+                        ...profile,
+                        uid: firebaseUser.uid,
+                        name: profile.name || firebaseUser.displayName || firebaseUser.email.split("@")[0],
+                        email: firebaseUser.email,
+                        role: profile.role || "user",
+                        plan: profile.plan || "free",
+                        isPro: profile.isPro === true,
+                        memberSince: profile.createdAt || profile.memberSince || new Date().toISOString()
+                    });
+                    finish(this.getUser());
+                });
+            });
+        } catch (error) {
+            console.warn("Firebase session check failed:", error);
+            return this.getUser();
+        }
+    },
+
     setUser(userData) {
         localStorage.setItem(this.USER_KEY, JSON.stringify(userData));
         const users = this.getUsers();
@@ -43,7 +80,13 @@ const AuthUI = {
     },
 
     logout() {
-        // FUTURE SESSION MANAGEMENT: Replace local session cleanup with Supabase signOut().
+        try {
+            if (window.FirebaseService && window.firebaseAuth) {
+                window.FirebaseService.logoutUser().catch(() => {});
+            }
+        } catch (e) {
+            // ignore Firebase logout errors
+        }
         localStorage.removeItem(this.USER_KEY);
     },
 
@@ -151,6 +194,10 @@ window.toggleSaveItem = function (type, id, title, event) {
         }
     }
 
+    if (window.updateSavedCountBadge) {
+        window.updateSavedCountBadge();
+    }
+
     if (window.showToast) {
         window.showToast(saved ? `Saved "${title}" to your library` : `Removed "${title}" from saved items`);
     }
@@ -161,7 +208,7 @@ window.showAuthPrompt = function () {
     const overlay = document.createElement("div");
     overlay.id = "authPromptOverlay";
     overlay.style.cssText = "position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(15,23,42,.45);";
-    overlay.innerHTML = `<div style="max-width:380px;width:100%;padding:2rem;background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-xl);text-align:center"><h2 style="margin-bottom:.5rem">Please login to continue.</h2><p class="text-secondary" style="margin-bottom:1.5rem">Create an account or login to save items, bookmark prompts and manage downloads.</p><div class="flex gap-3" style="justify-content:center"><button class="btn btn-secondary" onclick="document.getElementById('authPromptOverlay').remove()">Cancel</button><a class="btn btn-primary" href="login/">Login</a><a class="btn btn-secondary" href="signup/">Create Account</a></div></div>`;
+    overlay.innerHTML = `<div style="max-width:380px;width:100%;padding:2rem;background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-xl);text-align:center"><h2 style="margin-bottom:.5rem">Please login to continue.</h2><p class="text-secondary" style="margin-bottom:1.5rem">Create an account or login to save items, bookmark prompts and manage downloads.</p><div class="flex gap-3" style="justify-content:center"><button class="btn btn-secondary" onclick="document.getElementById('authPromptOverlay').remove()">Cancel</button><a class="btn btn-primary" href="login/">Login</a><a class="btn btn-secondary" href="register/">Create Account</a></div></div>`;
     document.body.appendChild(overlay);
 };
 
@@ -172,11 +219,11 @@ window.confirmLogout = function () {
     window.location.href = "./";
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    const user = AuthUI.getUser();
+function renderAuthUI(user) {
     if (user) {
         document.body.classList.add("authenticated-view");
-        addAuthenticatedTopNav();
+    } else {
+        document.body.classList.remove("authenticated-view");
     }
     document.querySelectorAll("[data-auth-user-name]").forEach(element => {
         element.textContent = user ? user.name : "Guest";
@@ -185,32 +232,73 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!user) return;
         container.innerHTML = `<a href="dashboard/" class="btn btn-subtle">Dashboard</a><button class="btn btn-primary" onclick="confirmLogout()">Logout</button>`;
     });
-    document.querySelectorAll(".header-right").forEach(container => {
-        const loginLink = container.querySelector('a[href="login/"]');
-        const signupLink = container.querySelector('a[href="signup/"]');
-        if (user && loginLink && signupLink) {
-            loginLink.outerHTML = `<a href="dashboard/" class="btn btn-subtle">Dashboard</a>`;
-            signupLink.outerHTML = `<button class="btn btn-primary" onclick="confirmLogout()">Logout</button>`;
-        }
+    document.querySelectorAll(".header-auth-actions").forEach(container => {
+        if (!user) return;
+        container.innerHTML = `<a href="dashboard/" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">Dashboard</a><button class="btn btn-primary" style="font-size: 0.88rem;" onclick="confirmLogout()">Logout</button>`;
     });
-});
 
-function addAuthenticatedTopNav() {
-    const header = document.querySelector(".site-header");
-    if (!header || header.querySelector(".dashboard-top-nav")) return;
-    const nav = document.createElement("nav");
-    nav.className = "dashboard-top-nav";
-    nav.setAttribute("aria-label", "Authenticated navigation");
-    nav.innerHTML = `
-        <a href="./">🏠 Home</a>
-        <a href="ai-tools/">🤖 AI Tools</a>
-        <a href="extensions/">🧩 Extensions</a>
-        <a href="software/">💻 Software</a>
-        <a href="prompts/">🧠 Prompts</a>
-        <a href="automation/">⚡ Automation</a>
-        <a href="resources/">📦 Resources</a>
-        <a href="dashboard/">❤️ Saved</a>
-        <a href="downloads/">📥 Downloads</a>`;
-    const headerRight = header.querySelector(".header-right");
-    header.insertBefore(nav, headerRight || null);
+    // Dynamic Welcome Card Sync
+    const welcomeTitle = document.querySelector(".welcome-title");
+    const welcomeSubtitle = document.querySelector(".welcome-subtitle");
+    const welcomeBtn = document.querySelector(".btn-login-account");
+    if (welcomeTitle) {
+        if (user) {
+            welcomeTitle.innerHTML = `<span>Welcome back, ${user.name || "Creator"}</span> <span>👋</span>`;
+            if (welcomeSubtitle) welcomeSubtitle.textContent = "Ready to create something amazing today?";
+            if (welcomeBtn) {
+                welcomeBtn.textContent = "Go to Dashboard →";
+                welcomeBtn.setAttribute("href", "dashboard/");
+            }
+        } else {
+            welcomeTitle.innerHTML = `<span>Welcome to EarnifyX</span> <span>👋</span>`;
+            if (welcomeSubtitle) welcomeSubtitle.textContent = "Discover tools, prompts & resources for creators.";
+            if (welcomeBtn) {
+                welcomeBtn.textContent = "Login / Join Free →";
+                welcomeBtn.setAttribute("href", "login/");
+            }
+        }
+    }
+
+    // Dynamic Stats Count Badges (if data arrays loaded)
+    const statTools = document.querySelector(".stat-tools-count");
+    const statExts = document.querySelector(".stat-extensions-count");
+    const statSoft = document.querySelector(".stat-software-count");
+    const statPrompts = document.querySelector(".stat-prompts-count");
+    if (statTools && window.TOOLS_DATA) statTools.textContent = `${window.TOOLS_DATA.length}+`;
+    if (statExts && window.EXTENSIONS_DATA) statExts.textContent = `${window.EXTENSIONS_DATA.length}+`;
+    if (statSoft && window.SOFTWARE_DATA) statSoft.textContent = `${window.SOFTWARE_DATA.length}+`;
+    if (statPrompts && window.PROMPTS_DATA) statPrompts.textContent = `${window.PROMPTS_DATA.length}+`;
+
+    if (window.updateSavedCountBadge) {
+        window.updateSavedCountBadge();
+    }
 }
+
+window.renderAuthUI = renderAuthUI;
+document.addEventListener("DOMContentLoaded", async () => {
+    renderAuthUI(AuthUI.getUser());
+
+    if (!window.FirebaseService) return;
+    try {
+        await window.initializeFirebase();
+        const { auth, helpers } = await window.FirebaseService.ensureReady();
+        helpers.onAuthStateChanged(auth, async firebaseUser => {
+            if (!firebaseUser) return;
+
+            const profile = await window.FirebaseService.getUserProfile(firebaseUser);
+            AuthUI.setUser({
+                ...profile,
+                uid: firebaseUser.uid,
+                name: profile.name || firebaseUser.displayName || firebaseUser.email.split("@")[0],
+                email: firebaseUser.email,
+                role: profile.role || "user",
+                plan: profile.plan || "free",
+                isPro: profile.isPro === true,
+                memberSince: profile.createdAt || profile.memberSince || new Date().toISOString()
+            });
+            renderAuthUI(AuthUI.getUser());
+        });
+    } catch (error) {
+        console.warn("Firebase auth state sync failed:", error);
+    }
+});

@@ -71,6 +71,7 @@ const Components = {
      */
     createPromptCard(prompt) {
         const isSaved = window.AuthUI ? window.AuthUI.isSaved("prompt", prompt.id) : false;
+        const detectedFormat = prompt.contentType || (prompt.tags || []).find(tag => ["Video", "Image", "Audio", "Shorts/Reels"].includes(tag));
         return `
             <div class="prompt-card" data-id="${prompt.id}" data-category="${prompt.category}">
                 <div>
@@ -82,6 +83,11 @@ const Components = {
                         <span class="badge badge-${prompt.badgeType || 'success'}">${prompt.badge}</span>
                     </div>
                     <h3 class="card-title" style="margin-bottom: 0.5rem;">${prompt.title}</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; font-size: 0.72rem; color: var(--text-muted);">
+                        ${prompt.niche ? `<span class="prompt-category-tag">Niche: ${prompt.niche}</span>` : ""}
+                        ${prompt.model ? `<span class="prompt-category-tag">Model: ${prompt.model}</span>` : ""}
+                        ${detectedFormat ? `<span class="prompt-category-tag">Format: ${detectedFormat}</span>` : ""}
+                    </div>
                     <div class="prompt-body-preview">
                         ${prompt.locked ? (prompt.previewText || prompt.shortDescription) : prompt.shortDescription}
                     </div>
@@ -108,9 +114,9 @@ const Components = {
             <div class="item-card" data-id="${tool.id}" data-category="${tool.category}">
                 <div>
                     <div class="card-top">
-                        <div class="card-icon-box" style="background-color: ${tool.iconBg}; color: ${tool.iconColor};">
-                            ${tool.iconText}
-                        </div>
+                        ${tool.imageUrl
+                            ? `<img src="${tool.imageUrl}" alt="${tool.name} preview" loading="lazy" style="width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-md);">`
+                            : `<div class="card-icon-box" style="background-color: ${tool.iconBg}; color: ${tool.iconColor};">${tool.iconText}</div>`}
                         <span class="badge badge-${tool.badgeType || 'primary'}">${tool.pricing}</span>
                     </div>
                     <h3 class="card-title">${tool.name}</h3>

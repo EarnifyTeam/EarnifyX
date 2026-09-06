@@ -17,12 +17,15 @@
 </head>
 <body>
 
+        <!-- Top Navigation Header -->
     <header class="site-header">
         <div class="header-left">
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                ☰
+            </button>
             <a href="./" class="brand-logo">
                 <div class="flask-icon">
-                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Flask Logo" width="28" height="28">
                 </div>
                 <div class="brand-text">
                     <span class="brand-title">Earnify<span>X</span>Lab</span>
@@ -31,11 +34,87 @@
             </a>
         </div>
 
+        <!-- Center Top Navigation Menu -->
+        <nav class="header-nav" aria-label="Main Navigation">
+            <a href="extensions/" class="header-nav-link">🧩 Extensions</a>
+            <a href="software/" class="header-nav-link">💻 Software</a>
+            <a href="prompts/" class="header-nav-link">🧠 PromptBhandar</a>
+            <a href="resources/" class="header-nav-link">📦 Resources</a>
+            <div class="header-dropdown">
+                <button class="header-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span>More</span> <span class="dropdown-chevron">▾</span>
+                </button>
+                <div class="header-dropdown-menu">
+                    <a href="ai-tools/" class="dropdown-item">
+                        <span class="item-icon">🤖</span>
+                        <div class="item-text">
+                            <span class="item-title">AI Tools</span>
+                            <span class="item-sub">Directory & platforms</span>
+                        </div>
+                    </a>
+                    <a href="automation/" class="dropdown-item">
+                        <span class="item-icon">⚡</span>
+                        <div class="item-text">
+                            <span class="item-title">Automation Tools</span>
+                            <span class="item-sub">Workflows & bots</span>
+                        </div>
+                    </a>
+                    <a href="creator-tools/" class="dropdown-item">
+                        <span class="item-icon">🎬</span>
+                        <div class="item-text">
+                            <span class="item-title">Creator Tools</span>
+                            <span class="item-sub">Audio, video & design</span>
+                        </div>
+                    </a>
+                    <a href="blog/" class="dropdown-item">
+                        <span class="item-icon">📝</span>
+                        <div class="item-text">
+                            <span class="item-title">Blog Posts</span>
+                            <span class="item-sub">Guides & articles</span>
+                        </div>
+                    </a>
+                    <a href="tutorials/" class="dropdown-item">
+                        <span class="item-icon">📚</span>
+                        <div class="item-text">
+                            <span class="item-title">Tutorials & Guides</span>
+                            <span class="item-sub">Step-by-step masterclasses</span>
+                        </div>
+                    </a>
+                    <a href="downloads/" class="dropdown-item">
+                        <span class="item-icon">📥</span>
+                        <div class="item-text">
+                            <span class="item-title">Downloads</span>
+                            <span class="item-sub">Software installers</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Right Side Header Controls -->
         <div class="header-right">
+            <div class="header-search">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="global-search-input" placeholder="Search..." aria-label="Search">
+                    <span class="search-shortcut-badge">Ctrl K</span>
+                </div>
+            </div>
+            <a href="dashboard/" class="header-saved-btn" title="Saved Items" aria-label="Saved Items">
+                <span>❤️</span>
+                <span class="saved-count-badge" style="display:none;">0</span>
+            </a>
             <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
                 <span class="theme-toggle-icon">🌙</span>
             </button>
-            <a href="dashboard/" class="btn btn-secondary">Dashboard</a>
+            <div class="header-auth-actions">
+                <a href="login/" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">
+                    Login
+                </a>
+                <a href="register/" class="btn btn-primary" style="font-size: 0.88rem;">
+                    Get Started
+                </a>
+            </div>
         </div>
     </header>
 
@@ -62,7 +141,7 @@
                 </a>
                 <a href="prompts/" class="sidebar-link">
                     <span class="link-icon">🧠</span>
-                    <span>Master Prompts</span>
+                    <span>PromptBhandar</span>
                 </a>
                 <a href="dashboard/" class="sidebar-link">
                     <span class="link-icon">❤️</span>
@@ -141,5 +220,6 @@
     </script>
 </body>
 </html>
+
 
 

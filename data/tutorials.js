@@ -56,5 +56,10 @@ const TUTORIALS_DATA = [
 ];
 
 if (typeof window !== "undefined") {
-    window.TUTORIALS_DATA = TUTORIALS_DATA;
+    try {
+        const saved = localStorage.getItem("earnifyx_data_tutorials");
+        window.TUTORIALS_DATA = saved ? JSON.parse(saved) : TUTORIALS_DATA;
+    } catch (e) {
+        window.TUTORIALS_DATA = TUTORIALS_DATA;
+    }
 }

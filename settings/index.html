@@ -6,12 +6,111 @@
     <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-    <header class="site-header"><div class="header-left"><button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button><a href="./" class="brand-logo"><div class="flask-icon"><img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28"></div><div class="brand-text"><span class="brand-title">Earnify<span>X</span>Lab</span><span class="brand-tagline">Your workspace</span></div></a></div><div class="header-right"><button class="theme-toggle-btn" title="Toggle Light / Dark Mode"><span class="theme-toggle-icon">🌙</span></button><a href="dashboard/" class="btn btn-secondary">Dashboard</a></div></header>
-    <div class="sidebar-backdrop"></div><div class="app-container full-width"><aside class="app-sidebar"><nav class="sidebar-nav-group"><a href="dashboard/" class="sidebar-link"><span class="link-icon">🏠</span><span>Dashboard</span></a><a href="dashboard/" class="sidebar-link"><span class="link-icon">❤️</span><span>Saved Items</span></a><a href="downloads/" class="sidebar-link"><span class="link-icon">📥</span><span>My Downloads</span></a><a href="profile/" class="sidebar-link"><span class="link-icon">👤</span><span>My Profile</span></a><a href="settings/" class="sidebar-link active"><span class="link-icon">⚙️</span><span>Settings</span></a><a href="#" class="sidebar-link" onclick="confirmLogout(); return false;"><span class="link-icon">🚪</span><span>Logout</span></a></nav></aside>
-    <main class="main-content"><section class="content-section"><div class="section-header"><div><h1 class="section-title">Settings</h1><p class="section-subtitle">Manage your account preferences.</p></div></div><div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; max-width: 720px;"><div style="padding: 1rem 0; border-bottom: 1px solid var(--border-color);"><h3>Account</h3><p class="text-secondary">Your account details are managed from your profile.</p><a href="profile/" class="btn btn-secondary" style="margin-top: .75rem;">My Profile</a></div><div style="padding: 1rem 0;"><h3>Appearance</h3><p class="text-secondary" style="margin: .35rem 0 1rem;">Choose your preferred theme.</p><div class="flex gap-3"><button class="btn btn-secondary" onclick="setTheme('light')">☀️ Light</button><button class="btn btn-secondary" onclick="setTheme('dark')">🌙 Dark</button></div></div></div></section></main></div>
+        <!-- Top Navigation Header -->
+    <header class="site-header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                &#9776;
+            </button>
+            <a href="./" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Flask Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Tools • PromptBhandar • Resources</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Center Top Navigation Menu -->
+        <nav class="header-nav" aria-label="Main Navigation">
+            <a href="extensions/" class="header-nav-link">&#129513; Extensions</a>
+            <a href="software/" class="header-nav-link">&#128187; Software</a>
+            <a href="prompts/" class="header-nav-link">&#129504; PromptBhandar</a>
+            <a href="resources/" class="header-nav-link">&#128230; Resources</a>
+            <div class="header-dropdown">
+                <button class="header-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span>More</span> <span class="dropdown-chevron">&#9662;</span>
+                </button>
+                <div class="header-dropdown-menu">
+                    <a href="ai-tools/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">AI Tools</span>
+                            <span class="item-sub">Directory & platforms</span>
+                        </div>
+                    </a>
+                    <a href="automation/" class="dropdown-item">
+                        <span class="item-icon">&#9889;</span>
+                        <div class="item-text">
+                            <span class="item-title">Automation Tools</span>
+                            <span class="item-sub">Workflows & bots</span>
+                        </div>
+                    </a>
+                    <a href="creator-tools/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Creator Tools</span>
+                            <span class="item-sub">Audio, video & design</span>
+                        </div>
+                    </a>
+                    <a href="blog/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Blog Posts</span>
+                            <span class="item-sub">Guides & articles</span>
+                        </div>
+                    </a>
+                    <a href="tutorials/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Tutorials & Guides</span>
+                            <span class="item-sub">Step-by-step masterclasses</span>
+                        </div>
+                    </a>
+                    <a href="downloads/" class="dropdown-item">
+                        <span class="item-icon">&#128105;</span>
+                        <div class="item-text">
+                            <span class="item-title">Downloads</span>
+                            <span class="item-sub">Software installers</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Right Side Header Controls -->
+        <div class="header-right">
+            <div class="header-search">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">&#128269;</span>
+                    <input type="text" class="global-search-input" placeholder="Search..." aria-label="Search">
+                    <span class="search-shortcut-badge">Ctrl K</span>
+                </div>
+            </div>
+            <a href="dashboard/" class="header-saved-btn" title="Saved Items" aria-label="Saved Items">
+                <span>&#10084;</span>
+                <span class="saved-count-badge" style="display:none;">0</span>
+            </a>
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">&#127769;</span>
+            </button>
+            <div class="header-auth-actions">
+                <a href="login/" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">
+                    Login
+                </a>
+                <a href="register/" class="btn btn-primary" style="font-size: 0.88rem;">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="sidebar-backdrop"></div><div class="app-container full-width"><aside class="app-sidebar"><nav class="sidebar-nav-group"><a href="dashboard/" class="sidebar-link"><span class="link-icon">&#127968;</span><span>Dashboard</span></a><a href="dashboard/" class="sidebar-link"><span class="link-icon">&#10084;</span><span>Saved Items</span></a><a href="downloads/" class="sidebar-link"><span class="link-icon">&#128229;</span><span>My Downloads</span></a><a href="profile/" class="sidebar-link"><span class="link-icon">&#128100;</span><span>My Profile</span></a><a href="settings/" class="sidebar-link active"><span class="link-icon">&#9881;</span><span>Settings</span></a><a href="#" class="sidebar-link" onclick="confirmLogout(); return false;"><span class="link-icon">&#128682;</span><span>Logout</span></a></nav></aside>
+    <main class="main-content"><section class="content-section"><div class="section-header"><div><h1 class="section-title">Settings</h1><p class="section-subtitle">Manage your account preferences.</p></div></div><div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; max-width: 720px;"><div style="padding: 1rem 0; border-bottom: 1px solid var(--border-color);"><h3>Account</h3><p class="text-secondary">Your account details are managed from your profile.</p><a href="profile/" class="btn btn-secondary" style="margin-top: .75rem;">My Profile</a></div><div style="padding: 1rem 0;"><h3>Appearance</h3><p class="text-secondary" style="margin: .35rem 0 1rem;">Choose your preferred theme.</p><div class="flex gap-3"><button class="btn btn-secondary" onclick="setTheme('light')">&#9728; Light</button><button class="btn btn-secondary" onclick="setTheme('dark')">&#127769; Dark</button></div></div></div></section></main></div>
     <script src="js/theme.js"></script><script src="js/auth-ui.js"></script><script src="js/main.js"></script><script>
         document.addEventListener("DOMContentLoaded", () => { if (!AuthUI.requireLogin()) window.location.href = "login/"; });
-        function setTheme(theme) { document.documentElement.setAttribute("data-theme", theme); localStorage.setItem("earnifyx_theme", theme); document.querySelectorAll(".theme-toggle-icon").forEach(icon => icon.textContent = theme === "dark" ? "☀️" : "🌙"); showToast(`${theme === "dark" ? "Dark" : "Light"} theme saved`); }
+        function setTheme(theme) { document.documentElement.setAttribute("data-theme", theme); localStorage.setItem("earnifyx_theme", theme); document.querySelectorAll(".theme-toggle-icon").forEach(icon => icon.textContent = theme === "dark" ? "&#9728;" : "&#127769;"); showToast(`${theme === "dark" ? "Dark" : "Light"} theme saved`); }
     </script>
 </body>
 </html>

@@ -198,5 +198,10 @@ Generate a comprehensive article with:
 ];
 
 if (typeof window !== "undefined") {
-    window.PROMPTS_DATA = PROMPTS_DATA;
+    try {
+        const saved = localStorage.getItem("earnifyx_data_prompts");
+        window.PROMPTS_DATA = saved ? JSON.parse(saved) : PROMPTS_DATA;
+    } catch (e) {
+        window.PROMPTS_DATA = PROMPTS_DATA;
+    }
 }

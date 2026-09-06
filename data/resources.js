@@ -62,5 +62,10 @@ const RESOURCES_DATA = [
 ];
 
 if (typeof window !== "undefined") {
-    window.RESOURCES_DATA = RESOURCES_DATA;
+    try {
+        const saved = localStorage.getItem("earnifyx_data_resources");
+        window.RESOURCES_DATA = saved ? JSON.parse(saved) : RESOURCES_DATA;
+    } catch (e) {
+        window.RESOURCES_DATA = RESOURCES_DATA;
+    }
 }

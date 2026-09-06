@@ -134,5 +134,10 @@ const TOOLS_DATA = [
 ];
 
 if (typeof window !== "undefined") {
-    window.TOOLS_DATA = TOOLS_DATA;
+    try {
+        const saved = localStorage.getItem("earnifyx_data_tools");
+        window.TOOLS_DATA = saved ? JSON.parse(saved) : TOOLS_DATA;
+    } catch (e) {
+        window.TOOLS_DATA = TOOLS_DATA;
+    }
 }

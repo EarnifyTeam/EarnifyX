@@ -34,8 +34,9 @@ EarnifyXlabs/
 ├── blog.html                   # Blog Posts & Articles
 ├── tutorials.html              # Step-by-Step Guides with time & difficulty
 ├── search.html                 # Unified Global Search Engine across all items
-├── login.html                  # User Sign-In (Supabase Auth ready)
-├── signup.html                 # User Registration (Supabase Auth ready)
+├── login.html                  # User Sign-In (Firebase Auth)
+├── register.html               # User Registration (Firebase Auth + profile)
+├── firestore.rules             # Firestore access rules for users and site data
 ├── profile.html                # User Profile Management
 ├── dashboard.html              # User Dashboard (Saved Items, Downloads, Stats)
 ├── admin-dashboard.html        # Platform Admin Panel
@@ -76,6 +77,18 @@ EarnifyXlabs/
 ├── sitemap.xml                 # Search engine sitemap
 └── README.md                   # Documentation & guide
 ```
+
+## Firebase User Database
+
+Firestore does not use SQL tables. The registration flow creates one document per account at:
+
+```text
+users/{firebaseAuthUid}
+```
+
+Each new account starts with `plan: "free"`, `isPro: false`, and `subscriptionStatus: "inactive"`. The document also stores the name, email, mobile number, role, timestamps, and a future `premiumUntil` value. Payment integration can later update the premium fields from a trusted server or Firebase Admin SDK.
+
+Deploy `firestore.rules` from the Firebase CLI or paste its contents into Firebase Console > Firestore Database > Rules. Admin writes require a Firebase custom claim named `admin`; never grant premium access only from browser code.
 
 ---
 
@@ -224,7 +237,7 @@ You don't need to write HTML boilerplate to add new content. Simply open the res
 
 The frontend is structured to connect to **Supabase** whenever you are ready:
 
-- **Authentication**: `login.html` & `signup.html` contain code comments for `supabase.auth.signInWithPassword` and OAuth providers.
+- **Authentication**: `login.html` & `register.html` contain code comments for `supabase.auth.signInWithPassword` and OAuth providers.
 - **Database Schema**:
   - `tools`
   - `extensions`
