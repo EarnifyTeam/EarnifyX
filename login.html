@@ -19,7 +19,7 @@
     <!-- Minimal Header -->
     <header class="site-header">
         <div class="header-left">
-            <a href="index.html" class="brand-logo">
+            <a href="./" class="brand-logo">
                 <div class="flask-icon">
                     <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
                 </div>
@@ -90,7 +90,7 @@
             </form>
 
             <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
-                Don't have an account? <a href="signup.html" style="color: var(--accent-primary); font-weight: 600;">Create Account</a>
+                Don't have an account? <a href="signup/" style="color: var(--accent-primary); font-weight: 600;">Create Account</a>
             </div>
         </div>
     </main>
@@ -99,7 +99,7 @@
     <footer class="site-footer" style="padding: 1.5rem; margin-top: 0;">
         <div class="footer-bottom" style="border-top: none; padding-top: 0;">
             <p>© 2026 EarnifyX Lab.</p>
-            <p><a href="index.html" style="color: var(--accent-primary);">← Back to Homepage</a></p>
+            <p><a href="./" style="color: var(--accent-primary);">← Back to Homepage</a></p>
         </div>
     </footer>
 
@@ -120,9 +120,10 @@
             AuthUI.setUser({ name: email.split("@")[0], email: email, isPro: false, memberSince: new Date().toISOString() });
             showToast("Welcome back! Signing in...");
             setTimeout(() => {
-                window.location.href = "dashboard.html";
+                window.location.href = "dashboard/";
             }, 800);
         }
     </script>
 </body>
 </html>
+

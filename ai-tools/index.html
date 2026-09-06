@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+    <base href="../">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog & Creator Insights — EarnifyX Lab</title>
-    <meta name="description" content="Latest articles, growth strategies, and technical teardowns from EarnifyX Lab.">
+    <title>AI Tools Directory — EarnifyX Lab</title>
+    <meta name="description" content="Curated directory of the best AI tools for writing, image generation, video, coding, research and automation.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,7 +57,7 @@
                     <span class="link-icon">🏠</span>
                     <span>Home</span>
                 </a>
-                <a href="ai-tools/" class="sidebar-link">
+                <a href="ai-tools/" class="sidebar-link active">
                     <span class="link-icon">🤖</span>
                     <span>AI Tools</span>
                 </a>
@@ -84,7 +85,7 @@
                     <span class="link-icon">📦</span>
                     <span>Resources</span>
                 </a>
-                <a href="blog/" class="sidebar-link active">
+                <a href="blog/" class="sidebar-link">
                     <span class="link-icon">📝</span>
                     <span>Blog Posts</span>
                 </a>
@@ -114,23 +115,40 @@
                     <span class="premium-crown-icon">👑</span>
                     <span class="premium-card-title">Go Premium</span>
                 </div>
-                <p class="premium-card-desc">Support EarnifyX Lab and get perks.</p>
-                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Membership')">Upgrade Now →</button>
+                <p class="premium-card-desc">Exclusive AI prompt templates & discounts.</p>
+                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Pro')">Upgrade Now →</button>
             </div>
         </aside>
 
         <main class="main-content">
             <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-xs);">
                 <div class="flex items-center gap-2" style="margin-bottom: 0.5rem;">
-                    <span style="font-size: 1.5rem;">📝</span>
-                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Latest from EarnifyX Lab</h1>
+                    <span style="font-size: 1.5rem;">🤖</span>
+                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">AI Tools Directory</h1>
                 </div>
-                <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px;">
-                    In-depth case studies, prompt engineering frameworks, and creator business teardowns.
+                <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px; margin-bottom: 1.5rem;">
+                    Hand-picked AI engines, writing assistants, image models, and productivity tools tested by EarnifyX Lab.
                 </p>
+
+                <div style="position: relative; max-width: 480px; margin-bottom: 1.25rem;">
+                    <span style="position: absolute; left: 14px; top: 11px; color: var(--text-muted);">🔍</span>
+                    <input type="text" id="pageSearchInput" placeholder="Search AI tools by name, category or capability..." 
+                           style="width: 100%; height: 42px; padding: 0 1rem 0 2.5rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); outline: none;">
+                </div>
+
+                <div class="filter-pills-bar">
+                    <button class="filter-pill active" data-filter="All">All Tools</button>
+                    <button class="filter-pill" data-filter="AI Writing">AI Writing</button>
+                    <button class="filter-pill" data-filter="AI Image">AI Image</button>
+                    <button class="filter-pill" data-filter="AI Video">AI Video</button>
+                    <button class="filter-pill" data-filter="AI Audio">AI Audio</button>
+                    <button class="filter-pill" data-filter="AI Research">AI Research</button>
+                    <button class="filter-pill" data-filter="AI Coding">AI Coding</button>
+                    <button class="filter-pill" data-filter="AI Automation">AI Automation</button>
+                </div>
             </div>
 
-            <div class="cards-grid-wide" id="blogCatalogContainer">
+            <div class="cards-grid-large" id="aiToolsCatalogContainer">
                 <!-- Dynamically rendered -->
             </div>
         </main>
@@ -139,7 +157,7 @@
     <footer class="site-footer">
         <div class="footer-bottom">
             <p>© 2026 EarnifyX Lab. All rights reserved.</p>
-            <p>Blog Posts • Hosted on GitHub Pages</p>
+            <p>AI Tools • Hosted on GitHub Pages</p>
         </div>
     </footer>
 
@@ -150,21 +168,27 @@
         </div>
     </div>
 
-    <script src="data/blog.js"></script>
+    <script src="data/tools.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/auth-ui.js"></script>
     <script src="js/components.js"></script>
+    <script src="js/filters.js"></script>
     <script src="js/search.js"></script>
     <script src="js/main.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("blogCatalogContainer");
-            if (container && window.BLOG_DATA) {
-                container.innerHTML = window.BLOG_DATA.map(Components.createBlogCard).join("");
+            if (window.TOOLS_DATA && window.setupFilters) {
+                setupFilters({
+                    containerId: "aiToolsCatalogContainer",
+                    dataArray: window.TOOLS_DATA,
+                    cardGenerator: Components.createToolCard,
+                    filterKey: "category"
+                });
             }
         });
     </script>
 </body>
 </html>
+
 

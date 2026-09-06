@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+    <base href="../">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog & Creator Insights — EarnifyX Lab</title>
-    <meta name="description" content="Latest articles, growth strategies, and technical teardowns from EarnifyX Lab.">
+    <title>Master Prompts — EarnifyX Lab</title>
+    <meta name="description" content="Discover ready-to-use AI prompts for content creation, image generation, video generation, business, social media and more.">
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
 </head>
 <body>
 
+    <!-- Header -->
     <header class="site-header">
         <div class="header-left">
             <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
@@ -49,7 +53,10 @@
 
     <div class="sidebar-backdrop"></div>
 
+    <!-- Main Container (2-Column Layout for Hub) -->
     <div class="app-container full-width">
+        
+        <!-- Left Sidebar Navigation -->
         <aside class="app-sidebar">
             <nav class="sidebar-nav-group">
                 <a href="./" class="sidebar-link">
@@ -68,7 +75,7 @@
                     <span class="link-icon">💻</span>
                     <span>Software & Apps</span>
                 </a>
-                <a href="prompts/" class="sidebar-link">
+                <a href="prompts/" class="sidebar-link active">
                     <span class="link-icon">🧠</span>
                     <span>Master Prompts</span>
                 </a>
@@ -84,7 +91,7 @@
                     <span class="link-icon">📦</span>
                     <span>Resources</span>
                 </a>
-                <a href="blog/" class="sidebar-link active">
+                <a href="blog/" class="sidebar-link">
                     <span class="link-icon">📝</span>
                     <span>Blog Posts</span>
                 </a>
@@ -114,35 +121,63 @@
                     <span class="premium-crown-icon">👑</span>
                     <span class="premium-card-title">Go Premium</span>
                 </div>
-                <p class="premium-card-desc">Support EarnifyX Lab and get perks.</p>
-                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Membership')">Upgrade Now →</button>
+                <p class="premium-card-desc">Unlock 500+ premium prompt frameworks.</p>
+                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Master Prompts Vault')">Upgrade Now →</button>
             </div>
         </aside>
 
+        <!-- Main Content Area -->
         <main class="main-content">
+            
+            <!-- Page Heading & Search -->
             <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-xs);">
                 <div class="flex items-center gap-2" style="margin-bottom: 0.5rem;">
-                    <span style="font-size: 1.5rem;">📝</span>
-                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Latest from EarnifyX Lab</h1>
+                    <span style="font-size: 1.5rem;">🧠</span>
+                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Master Prompts Hub</h1>
                 </div>
-                <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px;">
-                    In-depth case studies, prompt engineering frameworks, and creator business teardowns.
+                <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px; margin-bottom: 1.5rem;">
+                    Discover ready-to-use AI prompts for content creation, image generation, video generation, business, social media and more.
                 </p>
+
+                <!-- Page Filter Search Input -->
+                <div style="position: relative; max-width: 480px; margin-bottom: 1.25rem;">
+                    <span style="position: absolute; left: 14px; top: 11px; color: var(--text-muted);">🔍</span>
+                    <input type="text" id="pageSearchInput" placeholder="Search prompts by title, keyword or platform..." 
+                           style="width: 100%; height: 42px; padding: 0 1rem 0 2.5rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); outline: none;">
+                </div>
+
+                <!-- Filter Category Pills -->
+                <div class="filter-pills-bar">
+                    <button class="filter-pill active" data-filter="All">All Prompts</button>
+                    <button class="filter-pill" data-filter="Free">Free</button>
+                    <button class="filter-pill" data-filter="Premium">Premium 🔒</button>
+                    <button class="filter-pill" data-filter="YouTube">YouTube</button>
+                    <button class="filter-pill" data-filter="Video">Video</button>
+                    <button class="filter-pill" data-filter="Image">Image</button>
+                    <button class="filter-pill" data-filter="Writing">Writing</button>
+                    <button class="filter-pill" data-filter="Business">Business</button>
+                    <button class="filter-pill" data-filter="Social Media">Social Media</button>
+                    <button class="filter-pill" data-filter="Automation">Automation</button>
+                </div>
             </div>
 
-            <div class="cards-grid-wide" id="blogCatalogContainer">
-                <!-- Dynamically rendered -->
+            <!-- Prompts Grid -->
+            <div class="cards-grid-large" id="promptsCatalogContainer">
+                <!-- Dynamically populated from data/prompts.js via js/filters.js -->
             </div>
+
         </main>
     </div>
 
+    <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-bottom">
             <p>© 2026 EarnifyX Lab. All rights reserved.</p>
-            <p>Blog Posts • Hosted on GitHub Pages</p>
+            <p>Master Prompts • Hosted on GitHub Pages</p>
         </div>
     </footer>
 
+    <!-- Global Modal Container -->
     <div id="globalModalOverlay" class="modal-overlay">
         <div class="modal-box">
             <button id="globalModalCloseBtn" class="modal-close-btn" aria-label="Close modal">✕</button>
@@ -150,21 +185,29 @@
         </div>
     </div>
 
-    <script src="data/blog.js"></script>
+    <!-- Scripts -->
+    <script src="data/prompts.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/auth-ui.js"></script>
     <script src="js/components.js"></script>
+    <script src="js/prompts.js"></script>
+    <script src="js/filters.js"></script>
     <script src="js/search.js"></script>
     <script src="js/main.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("blogCatalogContainer");
-            if (container && window.BLOG_DATA) {
-                container.innerHTML = window.BLOG_DATA.map(Components.createBlogCard).join("");
+            if (window.PROMPTS_DATA && window.setupFilters) {
+                setupFilters({
+                    containerId: "promptsCatalogContainer",
+                    dataArray: window.PROMPTS_DATA,
+                    cardGenerator: Components.createPromptCard,
+                    filterKey: "category"
+                });
             }
         });
     </script>
 </body>
 </html>
+
 

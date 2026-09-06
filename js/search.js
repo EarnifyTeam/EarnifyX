@@ -17,7 +17,7 @@ const GlobalSearch = {
                     description: item.shortDescription,
                     category: item.category,
                     icon: item.iconText || "🧩",
-                    url: "extensions.html"
+                    url: "extensions/"
                 });
             });
         }
@@ -32,7 +32,7 @@ const GlobalSearch = {
                     description: item.shortDescription,
                     category: item.platform,
                     icon: item.iconText || "💻",
-                    url: "software.html"
+                    url: "software/"
                 });
             });
         }
@@ -47,7 +47,7 @@ const GlobalSearch = {
                     description: item.shortDescription,
                     category: item.category,
                     icon: item.icon || "🧠",
-                    url: "prompts.html"
+                    url: "prompts/"
                 });
             });
         }
@@ -62,7 +62,7 @@ const GlobalSearch = {
                     description: item.shortDescription,
                     category: item.category,
                     icon: item.iconText || "🤖",
-                    url: "ai-tools.html"
+                    url: "ai-tools/"
                 });
             });
         }
@@ -77,7 +77,7 @@ const GlobalSearch = {
                     description: item.description,
                     category: item.category,
                     icon: item.icon || "📦",
-                    url: "resources.html"
+                    url: "resources/"
                 });
             });
         }
@@ -92,7 +92,7 @@ const GlobalSearch = {
                     description: item.shortDescription,
                     category: item.category,
                     icon: "📝",
-                    url: "blog.html"
+                    url: "blog/"
                 });
             });
         }
@@ -107,7 +107,7 @@ const GlobalSearch = {
                     description: item.description,
                     category: item.category,
                     icon: "📚",
-                    url: "tutorials.html"
+                    url: "tutorials/"
                 });
             });
         }
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
     headerSearchInputs.forEach(input => {
         input.addEventListener("keydown", (e) => {
             if (e.key === "Enter" && input.value.trim() !== "") {
-                window.location.href = `search.html?q=${encodeURIComponent(input.value.trim())}`;
+                window.location.href = `search/?q=${encodeURIComponent(input.value.trim())}`;
             }
         });
     });
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 firstSearch.focus();
                 firstSearch.select();
             } else {
-                window.location.href = "search.html";
+                window.location.href = "search/";
             }
         }
     });

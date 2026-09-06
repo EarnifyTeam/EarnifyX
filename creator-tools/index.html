@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+    <base href="../">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog & Creator Insights — EarnifyX Lab</title>
-    <meta name="description" content="Latest articles, growth strategies, and technical teardowns from EarnifyX Lab.">
+    <title>Creator Tools — EarnifyX Lab</title>
+    <meta name="description" content="Dedicated creator tools for video production, audio editing, thumbnail design, and audience growth.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,7 +77,7 @@
                     <span class="link-icon">⚡</span>
                     <span>Automation Tools</span>
                 </a>
-                <a href="creator-tools/" class="sidebar-link">
+                <a href="creator-tools/" class="sidebar-link active">
                     <span class="link-icon">🎬</span>
                     <span>Creator Tools</span>
                 </a>
@@ -84,7 +85,7 @@
                     <span class="link-icon">📦</span>
                     <span>Resources</span>
                 </a>
-                <a href="blog/" class="sidebar-link active">
+                <a href="blog/" class="sidebar-link">
                     <span class="link-icon">📝</span>
                     <span>Blog Posts</span>
                 </a>
@@ -114,23 +115,31 @@
                     <span class="premium-crown-icon">👑</span>
                     <span class="premium-card-title">Go Premium</span>
                 </div>
-                <p class="premium-card-desc">Support EarnifyX Lab and get perks.</p>
-                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Membership')">Upgrade Now →</button>
+                <p class="premium-card-desc">Access creator asset packs & studio tools.</p>
+                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Creator Pro')">Upgrade Now →</button>
             </div>
         </aside>
 
         <main class="main-content">
             <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-xs);">
                 <div class="flex items-center gap-2" style="margin-bottom: 0.5rem;">
-                    <span style="font-size: 1.5rem;">📝</span>
-                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Latest from EarnifyX Lab</h1>
+                    <span style="font-size: 1.5rem;">🎬</span>
+                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Creator Tools Hub</h1>
                 </div>
-                <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px;">
-                    In-depth case studies, prompt engineering frameworks, and creator business teardowns.
+                <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px; margin-bottom: 1.5rem;">
+                    Curated software, extensions, and web tools crafted specifically for YouTubers, video editors, and solo content creators.
                 </p>
+
+                <div class="filter-pills-bar">
+                    <button class="filter-pill active" data-filter="All">All Tools</button>
+                    <button class="filter-pill" data-filter="YouTube">YouTube</button>
+                    <button class="filter-pill" data-filter="Video">Video Editing</button>
+                    <button class="filter-pill" data-filter="Design">Thumbnails & Graphics</button>
+                    <button class="filter-pill" data-filter="Audio">Voice & Audio</button>
+                </div>
             </div>
 
-            <div class="cards-grid-wide" id="blogCatalogContainer">
+            <div class="cards-grid-large" id="creatorToolsContainer">
                 <!-- Dynamically rendered -->
             </div>
         </main>
@@ -139,7 +148,7 @@
     <footer class="site-footer">
         <div class="footer-bottom">
             <p>© 2026 EarnifyX Lab. All rights reserved.</p>
-            <p>Blog Posts • Hosted on GitHub Pages</p>
+            <p>Creator Tools • Hosted on GitHub Pages</p>
         </div>
     </footer>
 
@@ -150,21 +159,35 @@
         </div>
     </div>
 
-    <script src="data/blog.js"></script>
+    <script src="data/software.js"></script>
+    <script src="data/extensions.js"></script>
+    <script src="data/prompts.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/auth-ui.js"></script>
     <script src="js/components.js"></script>
+    <script src="js/prompts.js"></script>
+    <script src="js/filters.js"></script>
     <script src="js/search.js"></script>
     <script src="js/main.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("blogCatalogContainer");
-            if (container && window.BLOG_DATA) {
-                container.innerHTML = window.BLOG_DATA.map(Components.createBlogCard).join("");
+            const container = document.getElementById("creatorToolsContainer");
+            if (container) {
+                const creatorSoft = (window.SOFTWARE_DATA || []).filter(s => s.tags.includes("Creator"));
+                const creatorExt = (window.EXTENSIONS_DATA || []).filter(e => e.tags.includes("Creator"));
+                const creatorPrompts = (window.PROMPTS_DATA || []).filter(p => p.category === "YouTube" || p.category === "Social Media");
+
+                let html = "";
+                html += creatorSoft.map(Components.createSoftwareCard).join("");
+                html += creatorExt.map(Components.createExtensionCard).join("");
+                html += creatorPrompts.map(Components.createPromptCard).join("");
+
+                container.innerHTML = html;
             }
         });
     </script>
 </body>
 </html>
+
 

@@ -161,7 +161,7 @@ window.showAuthPrompt = function () {
     const overlay = document.createElement("div");
     overlay.id = "authPromptOverlay";
     overlay.style.cssText = "position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(15,23,42,.45);";
-    overlay.innerHTML = `<div style="max-width:380px;width:100%;padding:2rem;background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-xl);text-align:center"><h2 style="margin-bottom:.5rem">Please login to continue.</h2><p class="text-secondary" style="margin-bottom:1.5rem">Create an account or login to save items, bookmark prompts and manage downloads.</p><div class="flex gap-3" style="justify-content:center"><button class="btn btn-secondary" onclick="document.getElementById('authPromptOverlay').remove()">Cancel</button><a class="btn btn-primary" href="login.html">Login</a><a class="btn btn-secondary" href="signup.html">Create Account</a></div></div>`;
+    overlay.innerHTML = `<div style="max-width:380px;width:100%;padding:2rem;background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-xl);text-align:center"><h2 style="margin-bottom:.5rem">Please login to continue.</h2><p class="text-secondary" style="margin-bottom:1.5rem">Create an account or login to save items, bookmark prompts and manage downloads.</p><div class="flex gap-3" style="justify-content:center"><button class="btn btn-secondary" onclick="document.getElementById('authPromptOverlay').remove()">Cancel</button><a class="btn btn-primary" href="login/">Login</a><a class="btn btn-secondary" href="signup/">Create Account</a></div></div>`;
     document.body.appendChild(overlay);
 };
 
@@ -169,7 +169,7 @@ window.confirmLogout = function () {
     if (!window.confirm("Are you sure you want to logout?")) return;
     // FUTURE SUPABASE AUTH: Supabase session termination belongs here.
     AuthUI.logout();
-    window.location.href = "index.html";
+    window.location.href = "./";
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -183,13 +183,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.querySelectorAll(".public-auth-actions").forEach(container => {
         if (!user) return;
-        container.innerHTML = `<a href="dashboard.html" class="btn btn-subtle">Dashboard</a><button class="btn btn-primary" onclick="confirmLogout()">Logout</button>`;
+        container.innerHTML = `<a href="dashboard/" class="btn btn-subtle">Dashboard</a><button class="btn btn-primary" onclick="confirmLogout()">Logout</button>`;
     });
     document.querySelectorAll(".header-right").forEach(container => {
-        const loginLink = container.querySelector('a[href="login.html"]');
-        const signupLink = container.querySelector('a[href="signup.html"]');
+        const loginLink = container.querySelector('a[href="login/"]');
+        const signupLink = container.querySelector('a[href="signup/"]');
         if (user && loginLink && signupLink) {
-            loginLink.outerHTML = `<a href="dashboard.html" class="btn btn-subtle">Dashboard</a>`;
+            loginLink.outerHTML = `<a href="dashboard/" class="btn btn-subtle">Dashboard</a>`;
             signupLink.outerHTML = `<button class="btn btn-primary" onclick="confirmLogout()">Logout</button>`;
         }
     });
@@ -202,15 +202,15 @@ function addAuthenticatedTopNav() {
     nav.className = "dashboard-top-nav";
     nav.setAttribute("aria-label", "Authenticated navigation");
     nav.innerHTML = `
-        <a href="index.html">🏠 Home</a>
-        <a href="ai-tools.html">🤖 AI Tools</a>
-        <a href="extensions.html">🧩 Extensions</a>
-        <a href="software.html">💻 Software</a>
-        <a href="prompts.html">🧠 Prompts</a>
-        <a href="automation.html">⚡ Automation</a>
-        <a href="resources.html">📦 Resources</a>
-        <a href="dashboard.html">❤️ Saved</a>
-        <a href="downloads.html">📥 Downloads</a>`;
+        <a href="./">🏠 Home</a>
+        <a href="ai-tools/">🤖 AI Tools</a>
+        <a href="extensions/">🧩 Extensions</a>
+        <a href="software/">💻 Software</a>
+        <a href="prompts/">🧠 Prompts</a>
+        <a href="automation/">⚡ Automation</a>
+        <a href="resources/">📦 Resources</a>
+        <a href="dashboard/">❤️ Saved</a>
+        <a href="downloads/">📥 Downloads</a>`;
     const headerRight = header.querySelector(".header-right");
     header.insertBefore(nav, headerRight || null);
 }
