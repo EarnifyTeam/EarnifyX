@@ -699,6 +699,8 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   position: relative;
   min-width: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
 }
 
 .hero-visual-img {
@@ -710,6 +712,8 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   display: block;
+  transform: scale(1.18);
+  transform-origin: center center;
 }
 
 /* ==========================================================================
