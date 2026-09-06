@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found — EarnifyX Lab</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between;">
+
+    <header class="site-header">
+        <div class="header-left">
+            <a href="index.html" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Tools • Prompts • Resources</span>
+                </div>
+            </a>
+        </div>
+        <div class="header-right">
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <main style="display: flex; align-items: center; justify-content: center; padding: 4rem 1rem; flex: 1;">
+        <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 3rem 2rem; max-width: 520px; width: 100%; text-align: center; box-shadow: var(--shadow-sm);">
+            <div style="font-size: 4rem; margin-bottom: 0.5rem;">🧪</div>
+            <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">404 - Lost in the Lab?</h1>
+            <p class="text-secondary" style="font-size: 0.95rem; margin-bottom: 2rem;">
+                The resource or page you are looking for has been moved or does not exist.
+            </p>
+            <div class="flex items-center justify-center gap-3">
+                <a href="index.html" class="btn btn-primary btn-lg">← Back to Homepage</a>
+                <a href="prompts.html" class="btn btn-secondary btn-lg">Browse Prompts</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer" style="padding: 1.5rem;">
+        <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+            <p>© 2026 EarnifyX Lab. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+</body>
+</html>

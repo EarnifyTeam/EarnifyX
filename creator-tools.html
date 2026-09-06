@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Tools — EarnifyX Lab</title>
+    <meta name="description" content="Dedicated creator tools for video production, audio editing, thumbnail design, and audience growth.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <a href="index.html" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Tools • Prompts • Resources</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="header-search">
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="global-search-input" placeholder="Search tools, extensions, software, prompts..." aria-label="Search">
+                <span class="search-shortcut-badge">Ctrl K</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">🌙</span>
+            </button>
+            <a href="login.html" class="btn btn-subtle">Login</a>
+            <a href="signup.html" class="btn btn-primary">Get Started</a>
+        </div>
+    </header>
+
+    <div class="sidebar-backdrop"></div>
+
+    <div class="app-container full-width">
+        <aside class="app-sidebar">
+            <nav class="sidebar-nav-group">
+                <a href="index.html" class="sidebar-link">
+                    <span class="link-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="ai-tools.html" class="sidebar-link">
+                    <span class="link-icon">🤖</span>
+                    <span>AI Tools</span>
+                </a>
+                <a href="extensions.html" class="sidebar-link">
+                    <span class="link-icon">🧩</span>
+                    <span>Chrome Extensions</span>
+                </a>
+                <a href="software.html" class="sidebar-link">
+                    <span class="link-icon">💻</span>
+                    <span>Software & Apps</span>
+                </a>
+                <a href="prompts.html" class="sidebar-link">
+                    <span class="link-icon">🧠</span>
+                    <span>Master Prompts</span>
+                </a>
+                <a href="automation.html" class="sidebar-link">
+                    <span class="link-icon">⚡</span>
+                    <span>Automation Tools</span>
+                </a>
+                <a href="creator-tools.html" class="sidebar-link active">
+                    <span class="link-icon">🎬</span>
+                    <span>Creator Tools</span>
+                </a>
+                <a href="resources.html" class="sidebar-link">
+                    <span class="link-icon">📦</span>
+                    <span>Resources</span>
+                </a>
+                <a href="blog.html" class="sidebar-link">
+                    <span class="link-icon">📝</span>
+                    <span>Blog Posts</span>
+                </a>
+                <a href="tutorials.html" class="sidebar-link">
+                    <span class="link-icon">📚</span>
+                    <span>Tutorials & Guides</span>
+                </a>
+
+                <div class="sidebar-divider"></div>
+
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="link-icon">❤️</span>
+                    <span>Saved Items</span>
+                </a>
+                <a href="profile.html" class="sidebar-link">
+                    <span class="link-icon">👤</span>
+                    <span>My Account</span>
+                </a>
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="link-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-premium-card">
+                <div class="premium-card-header">
+                    <span class="premium-crown-icon">👑</span>
+                    <span class="premium-card-title">Go Premium</span>
+                </div>
+                <p class="premium-card-desc">Access creator asset packs & studio tools.</p>
+                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Creator Pro')">Upgrade Now →</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-xs);">
+                <div class="flex items-center gap-2" style="margin-bottom: 0.5rem;">
+                    <span style="font-size: 1.5rem;">🎬</span>
+                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Creator Tools Hub</h1>
+                </div>
+                <p class="text-secondary" style="font-size: 0.95rem; max-width: 650px; margin-bottom: 1.5rem;">
+                    Curated software, extensions, and web tools crafted specifically for YouTubers, video editors, and solo content creators.
+                </p>
+
+                <div class="filter-pills-bar">
+                    <button class="filter-pill active" data-filter="All">All Tools</button>
+                    <button class="filter-pill" data-filter="YouTube">YouTube</button>
+                    <button class="filter-pill" data-filter="Video">Video Editing</button>
+                    <button class="filter-pill" data-filter="Design">Thumbnails & Graphics</button>
+                    <button class="filter-pill" data-filter="Audio">Voice & Audio</button>
+                </div>
+            </div>
+
+            <div class="cards-grid-large" id="creatorToolsContainer">
+                <!-- Dynamically rendered -->
+            </div>
+        </main>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>© 2026 EarnifyX Lab. All rights reserved.</p>
+            <p>Creator Tools • Hosted on GitHub Pages</p>
+        </div>
+    </footer>
+
+    <div id="globalModalOverlay" class="modal-overlay">
+        <div class="modal-box">
+            <button id="globalModalCloseBtn" class="modal-close-btn" aria-label="Close modal">✕</button>
+            <div id="globalModalContent"></div>
+        </div>
+    </div>
+
+    <script src="data/software.js"></script>
+    <script src="data/extensions.js"></script>
+    <script src="data/prompts.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/prompts.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("creatorToolsContainer");
+            if (container) {
+                const creatorSoft = (window.SOFTWARE_DATA || []).filter(s => s.tags.includes("Creator"));
+                const creatorExt = (window.EXTENSIONS_DATA || []).filter(e => e.tags.includes("Creator"));
+                const creatorPrompts = (window.PROMPTS_DATA || []).filter(p => p.category === "YouTube" || p.category === "Social Media");
+
+                let html = "";
+                html += creatorSoft.map(Components.createSoftwareCard).join("");
+                html += creatorExt.map(Components.createExtensionCard).join("");
+                html += creatorPrompts.map(Components.createPromptCard).join("");
+
+                container.innerHTML = html;
+            }
+        });
+    </script>
+</body>
+</html>

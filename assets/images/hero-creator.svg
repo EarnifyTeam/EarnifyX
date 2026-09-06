@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#eff6ff" />
+      <stop offset="100%" stop-color="#dbeafe" />
+    </linearGradient>
+    <linearGradient id="laptopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background decorative elements -->
+  <circle cx="340" cy="180" r="160" fill="#e0f2fe" opacity="0.6" />
+  <circle cx="480" cy="100" r="80" fill="#dbeafe" opacity="0.7" />
+
+  <!-- Floating Checklist / Feature Badges on Top Right -->
+  <g transform="translate(420, 45)" filter="url(#cardShadow)">
+    <rect width="165" height="110" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2" />
+    <text x="14" y="26" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#2563eb">✓ Better Tools</text>
+    <text x="14" y="52" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#2563eb">✓ Smarter Workflows</text>
+    <text x="14" y="78" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#2563eb">✓ Bigger Possibilities</text>
+    <line x1="14" y1="92" x2="150" y2="92" stroke="#f1f5f9" stroke-width="1" />
+    <text x="14" y="103" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#64748b">Same Tools. Bigger Reach.</text>
+  </g>
+
+  <!-- Potted Plant on Desk Left -->
+  <g transform="translate(180, 220)">
+    <!-- Pot -->
+    <path d="M15 45 L35 45 L32 75 L18 75 Z" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5" />
+    <!-- Plant Leaves -->
+    <path d="M25 45 Q20 20 10 25 Q15 40 25 45" fill="#22c55e" />
+    <path d="M25 45 Q25 10 32 15 Q30 35 25 45" fill="#16a34a" />
+    <path d="M25 45 Q35 25 45 30 Q35 45 25 45" fill="#4ade80" />
+  </g>
+
+  <!-- Stack of Books Right -->
+  <g transform="translate(455, 220)" filter="url(#cardShadow)">
+    <rect x="0" y="36" width="95" height="15" rx="3" fill="#1e293b" />
+    <text x="12" y="47" font-family="system-ui, sans-serif" font-size="8" font-weight="700" fill="#ffffff">GROWTH</text>
+    <rect x="4" y="23" width="88" height="14" rx="3" fill="#334155" />
+    <text x="14" y="33" font-family="system-ui, sans-serif" font-size="8" font-weight="700" fill="#ffffff">PROMPTS</text>
+    <rect x="8" y="11" width="80" height="13" rx="3" fill="#475569" />
+    <text x="18" y="21" font-family="system-ui, sans-serif" font-size="8" font-weight="700" fill="#ffffff">TOOLS</text>
+    <rect x="12" y="0" width="72" height="12" rx="3" fill="#2563eb" />
+    <text x="22" y="9" font-family="system-ui, sans-serif" font-size="8" font-weight="700" fill="#ffffff">IDEAS</text>
+  </g>
+
+  <!-- Creator Illustration & Character -->
+  <!-- Body / Torso -->
+  <g transform="translate(290, 60)">
+    <!-- Head & Cap -->
+    <circle cx="65" cy="55" r="28" fill="#e2a176" />
+    <!-- White Baseball Cap with Indian Flag Accent / Lab Motif -->
+    <path d="M37 50 C37 32 50 24 65 24 C80 24 93 32 93 50 Z" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    <path d="M35 50 C45 46 85 46 100 50 L95 56 C80 52 45 52 35 56 Z" fill="#ffffff" />
+    <!-- Cap Badge -->
+    <circle cx="65" cy="38" r="4" fill="#2563eb" />
+
+    <!-- Beard / Smile / Hair Details -->
+    <path d="M48 62 C50 78 80 78 82 62 Z" fill="#475569" opacity="0.3" />
+    <path d="M56 68 Q65 74 74 68" stroke="#1e293b" stroke-width="1.8" fill="none" stroke-linecap="round" />
+    <!-- Eyes -->
+    <circle cx="56" cy="52" r="2.2" fill="#1e293b" />
+    <circle cx="74" cy="52" r="2.2" fill="#1e293b" />
+
+    <!-- T-Shirt & Shoulders -->
+    <path d="M15 110 L45 88 C55 95 75 95 85 88 L115 110 L125 180 L5 180 Z" fill="#2e7d32" />
+    <path d="M45 88 C55 98 75 98 85 88 Z" fill="#e2a176" />
+    <!-- Badge / Flag on T-shirt -->
+    <rect x="25" y="120" width="16" height="10" rx="2" fill="#ffffff" />
+    <rect x="25" y="120" width="16" height="3.3" fill="#ff9933" />
+    <rect x="25" y="126.6" width="16" height="3.3" fill="#138808" />
+  </g>
+
+  <!-- Modern Desk Surface -->
+  <rect x="140" y="275" width="430" height="8" rx="4" fill="#cbd5e1" />
+
+  <!-- Modern Sleek Laptop in Foreground -->
+  <g transform="translate(235, 175)" filter="url(#cardShadow)">
+    <!-- Screen Back / Bezel -->
+    <rect x="20" y="0" width="180" height="110" rx="6" fill="url(#laptopGrad)" stroke="#64748b" stroke-width="1" />
+    <!-- Screen Display -->
+    <rect x="26" y="6" width="168" height="98" rx="4" fill="url(#screenGrad)" />
+    <!-- Screen Content (EarnifyX Lab Logo on Screen) -->
+    <g transform="translate(70, 30)">
+      <!-- Mini Flask -->
+      <path d="M28 10 L34 10 L34 18 L44 36 C45 39 43 42 40 42 L22 42 C19 42 17 39 18 36 L28 18 Z" fill="#2563eb" opacity="0.9"/>
+      <text x="50" y="28" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="800" fill="#0f172a">EarnifyXLab</text>
+      <text x="50" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="7" font-weight="600" fill="#64748b">More Tools. More Freedom.</text>
+    </g>
+    <!-- Laptop Base / Keyboard Deck -->
+    <path d="M0 108 L220 108 L200 120 L20 120 Z" fill="#94a3b8" />
+    <rect x="85" y="108" width="50" height="4" rx="2" fill="#cbd5e1" />
+  </g>
+
+  <!-- Speech / Motivation Quote Bubble -->
+  <g transform="translate(260, 45)">
+    <path d="M0 0 L110 0 C115 0 120 5 120 10 L120 30 C120 35 115 40 110 40 L30 40 L10 52 L15 40 L0 40 C-5 40 -10 35 -10 30 L-10 10 C-10 5 -5 0 0 0 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" filter="url(#cardShadow)"/>
+    <text x="6" y="18" font-family="Caveat, 'Segoe Print', cursive, sans-serif" font-size="12" font-weight="700" fill="#1e293b">Turn Your Ideas</text>
+    <text x="14" y="32" font-family="Caveat, 'Segoe Print', cursive, sans-serif" font-size="12" font-weight="700" fill="#2563eb">Into Reality</text>
+  </g>
+</svg>

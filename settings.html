@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Settings - EarnifyX Lab</title>
+    <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <header class="site-header"><div class="header-left"><button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button><a href="index.html" class="brand-logo"><div class="flask-icon"><img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28"></div><div class="brand-text"><span class="brand-title">Earnify<span>X</span>Lab</span><span class="brand-tagline">Your workspace</span></div></a></div><div class="header-right"><button class="theme-toggle-btn" title="Toggle Light / Dark Mode"><span class="theme-toggle-icon">🌙</span></button><a href="dashboard.html" class="btn btn-secondary">Dashboard</a></div></header>
+    <div class="sidebar-backdrop"></div><div class="app-container full-width"><aside class="app-sidebar"><nav class="sidebar-nav-group"><a href="dashboard.html" class="sidebar-link"><span class="link-icon">🏠</span><span>Dashboard</span></a><a href="dashboard.html" class="sidebar-link"><span class="link-icon">❤️</span><span>Saved Items</span></a><a href="downloads.html" class="sidebar-link"><span class="link-icon">📥</span><span>My Downloads</span></a><a href="profile.html" class="sidebar-link"><span class="link-icon">👤</span><span>My Profile</span></a><a href="settings.html" class="sidebar-link active"><span class="link-icon">⚙️</span><span>Settings</span></a><a href="#" class="sidebar-link" onclick="confirmLogout(); return false;"><span class="link-icon">🚪</span><span>Logout</span></a></nav></aside>
+    <main class="main-content"><section class="content-section"><div class="section-header"><div><h1 class="section-title">Settings</h1><p class="section-subtitle">Manage your account preferences.</p></div></div><div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; max-width: 720px;"><div style="padding: 1rem 0; border-bottom: 1px solid var(--border-color);"><h3>Account</h3><p class="text-secondary">Your account details are managed from your profile.</p><a href="profile.html" class="btn btn-secondary" style="margin-top: .75rem;">My Profile</a></div><div style="padding: 1rem 0;"><h3>Appearance</h3><p class="text-secondary" style="margin: .35rem 0 1rem;">Choose your preferred theme.</p><div class="flex gap-3"><button class="btn btn-secondary" onclick="setTheme('light')">☀️ Light</button><button class="btn btn-secondary" onclick="setTheme('dark')">🌙 Dark</button></div></div></div></section></main></div>
+    <script src="js/theme.js"></script><script src="js/auth-ui.js"></script><script src="js/main.js"></script><script>
+        document.addEventListener("DOMContentLoaded", () => { if (!AuthUI.requireLogin()) window.location.href = "login.html"; });
+        function setTheme(theme) { document.documentElement.setAttribute("data-theme", theme); localStorage.setItem("earnifyx_theme", theme); document.querySelectorAll(".theme-toggle-icon").forEach(icon => icon.textContent = theme === "dark" ? "☀️" : "🌙"); showToast(`${theme === "dark" ? "Dark" : "Light"} theme saved`); }
+    </script>
+</body>
+</html>

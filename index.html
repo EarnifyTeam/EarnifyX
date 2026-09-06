@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnifyX Lab — Tools • Prompts • Resources</title>
+    <meta name="description" content="Discover useful AI tools, powerful prompts, Chrome extensions, software and creator resources — all in one place.">
+    <meta property="og:title" content="EarnifyX Lab — Tools • Prompts • Resources">
+    <meta property="og:description" content="Curated creator platform for AI tools, Chrome extensions, desktop software and master prompts.">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+</head>
+<body>
+
+    <!-- Top Navigation Header -->
+    <header class="site-header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+                ☰
+            </button>
+            <a href="index.html" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Flask Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Tools • Prompts • Resources</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Center Global Search Input -->
+        <div class="header-search">
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="global-search-input" placeholder="Search tools, extensions, software, prompts, blogs..." aria-label="Search">
+                <span class="search-shortcut-badge">Ctrl K</span>
+            </div>
+        </div>
+
+        <!-- Right Side Header Controls -->
+        <div class="header-right">
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">🌙</span>
+            </button>
+            <a href="login.html" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">
+                Login
+            </a>
+            <a href="signup.html" class="btn btn-primary" style="font-size: 0.88rem;">
+                Get Started
+            </a>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Backdrop -->
+    <div class="sidebar-backdrop"></div>
+
+    <!-- Main 3-Column Application Container -->
+    <div class="app-container">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="app-sidebar">
+            <div>
+                <nav class="sidebar-nav-group">
+                    <a href="index.html" class="sidebar-link active">
+                        <span class="link-icon">🏠</span>
+                        <span>Home</span>
+                    </a>
+                    <a href="ai-tools.html" class="sidebar-link">
+                        <span class="link-icon">🤖</span>
+                        <span>AI Tools</span>
+                    </a>
+                    <a href="extensions.html" class="sidebar-link">
+                        <span class="link-icon">🧩</span>
+                        <span>Chrome Extensions</span>
+                    </a>
+                    <a href="software.html" class="sidebar-link">
+                        <span class="link-icon">💻</span>
+                        <span>Software & Apps</span>
+                    </a>
+                    <a href="prompts.html" class="sidebar-link">
+                        <span class="link-icon">🧠</span>
+                        <span>Master Prompts</span>
+                    </a>
+                    <a href="automation.html" class="sidebar-link">
+                        <span class="link-icon">⚡</span>
+                        <span>Automation Tools</span>
+                    </a>
+                    <a href="creator-tools.html" class="sidebar-link">
+                        <span class="link-icon">🎬</span>
+                        <span>Creator Tools</span>
+                    </a>
+                    <a href="resources.html" class="sidebar-link">
+                        <span class="link-icon">📦</span>
+                        <span>Resources</span>
+                    </a>
+                    <a href="blog.html" class="sidebar-link">
+                        <span class="link-icon">📝</span>
+                        <span>Blog Posts</span>
+                    </a>
+                    <a href="tutorials.html" class="sidebar-link">
+                        <span class="link-icon">📚</span>
+                        <span>Tutorials & Guides</span>
+                    </a>
+
+                    <div class="sidebar-divider"></div>
+
+                    <a href="dashboard.html" class="sidebar-link">
+                        <span class="link-icon">❤️</span>
+                        <span>Saved Items</span>
+                    </a>
+                    <a href="profile.html" class="sidebar-link">
+                        <span class="link-icon">👤</span>
+                        <span>My Account</span>
+                    </a>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <span class="link-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Go Premium Sidebar Card -->
+            <div class="sidebar-premium-card">
+                <div class="premium-card-header">
+                    <span class="premium-crown-icon">👑</span>
+                    <span class="premium-card-title">Go Premium</span>
+                </div>
+                <p class="premium-card-desc">
+                    Unlock exclusive prompts, tools and resources.
+                </p>
+                <button class="btn btn-upgrade" onclick="openUnlockModal('EarnifyX Premium Membership')">
+                    Upgrade Now →
+                </button>
+            </div>
+        </aside>
+
+        <!-- Center Main Content -->
+        <main class="main-content">
+            
+            <!-- Hero Banner Section -->
+            <section class="hero-banner">
+                <div class="hero-text-content">
+                    <span class="hero-tag">AI TOOLS • PROMPTS • EXTENSIONS • RESOURCES FOR CREATORS</span>
+                    <h1 class="hero-title">
+                        Create Smarter.<br>
+                        <span class="title-accent">Grow Faster.</span>
+                    </h1>
+                    <p class="hero-description">
+                        Discover powerful tools, prompts, extensions and resources to boost your creativity and productivity.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="ai-tools.html" class="btn btn-primary btn-lg">
+                            Explore Tools →
+                        </a>
+                        <a href="prompts.html" class="btn btn-secondary btn-lg">
+                            Browse Prompts
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <img src="assets/images/hero-creator.jpg" alt="EarnifyX Lab Creator" class="hero-visual-img" onerror="this.onerror=null; this.src='assets/images/hero-creator.svg';">
+                </div>
+            </section>
+
+            <!-- 1. Latest Chrome Extensions Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <span class="section-icon">🧩</span>
+                        <div>
+                            <h2 class="section-title">Latest Chrome Extensions</h2>
+                            <p class="section-subtitle">Useful extensions to boost your productivity</p>
+                        </div>
+                    </div>
+                    <a href="extensions.html" class="see-all-link">See All →</a>
+                </div>
+                <div class="cards-grid" id="homeExtensionsContainer">
+                    <!-- Populated dynamically from data/extensions.js -->
+                </div>
+            </section>
+
+            <!-- 2. Our Software & Apps Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <span class="section-icon">💻</span>
+                        <div>
+                            <h2 class="section-title">Our Software & Apps</h2>
+                            <p class="section-subtitle">Tools and apps developed for creators</p>
+                        </div>
+                    </div>
+                    <a href="software.html" class="see-all-link">See All →</a>
+                </div>
+                <div class="cards-grid" id="homeSoftwareContainer">
+                    <!-- Populated dynamically from data/software.js -->
+                </div>
+            </section>
+
+            <!-- 3. Popular Master Prompts Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <span class="section-icon">🧠</span>
+                        <div>
+                            <h2 class="section-title">Popular Prompts</h2>
+                            <p class="section-subtitle">Ready-to-use prompts for better AI results</p>
+                        </div>
+                    </div>
+                    <a href="prompts.html" class="see-all-link">See All →</a>
+                </div>
+                <div class="cards-grid" id="homePromptsContainer">
+                    <!-- Populated dynamically from data/prompts.js -->
+                </div>
+            </section>
+
+            <!-- 4. Featured AI Tools Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <span class="section-icon">🤖</span>
+                        <div>
+                            <h2 class="section-title">Featured AI Tools</h2>
+                            <p class="section-subtitle">Top curated tools for creators and digital builders</p>
+                        </div>
+                    </div>
+                    <a href="ai-tools.html" class="see-all-link">See All →</a>
+                </div>
+                <div class="cards-grid" id="homeToolsContainer">
+                    <!-- Populated dynamically from data/tools.js -->
+                </div>
+            </section>
+
+            <!-- 5. Creator Resources Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <span class="section-icon">📦</span>
+                        <div>
+                            <h2 class="section-title">Creator Resources</h2>
+                            <p class="section-subtitle">Templates, checklists, and creator productivity packs</p>
+                        </div>
+                    </div>
+                    <a href="resources.html" class="see-all-link">See All →</a>
+                </div>
+                <div class="cards-grid" id="homeResourcesContainer">
+                    <!-- Populated dynamically from data/resources.js -->
+                </div>
+            </section>
+
+            <!-- 6. Latest Blog Posts Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <span class="section-icon">📝</span>
+                        <div>
+                            <h2 class="section-title">Latest from EarnifyX Lab</h2>
+                            <p class="section-subtitle">Articles, teardowns, and creator growth strategies</p>
+                        </div>
+                    </div>
+                    <a href="blog.html" class="see-all-link">See All Posts →</a>
+                </div>
+                <div class="cards-grid-large" id="homeBlogContainer">
+                    <!-- Populated dynamically from data/blog.js -->
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Right Side Info / Widget Column (Desktop) -->
+        <aside class="app-rightbar">
+            
+            <!-- User Welcome Card -->
+            <div class="user-welcome-card">
+                <div class="welcome-title">
+                    <span>Welcome back, Suraj</span>
+                    <span>👋</span>
+                </div>
+                <p class="welcome-subtitle">
+                    Let's create something amazing today!
+                </p>
+                <a href="login.html" class="btn btn-login-account">
+                    Login to Your Account
+                </a>
+
+                <!-- Platform Stats Badges -->
+                <div class="stats-badges-grid">
+                    <div class="stat-box">
+                        <span class="stat-icon">🤖</span>
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Tools</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-icon">🧩</span>
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Extensions</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-icon">💻</span>
+                        <span class="stat-number">20+</span>
+                        <span class="stat-label">Software</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-icon">🧠</span>
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">Prompts</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links Card -->
+            <div class="quick-links-card">
+                <h3 class="card-widget-heading">
+                    <span>🔗</span>
+                    <span>Quick Links</span>
+                </h3>
+                <ul class="quick-links-list">
+                    <li>
+                        <a href="admin-dashboard.html#submit-extension" class="quick-link-item">
+                            <span class="quick-link-left"><span>🧩</span> Submit Your Extension</span>
+                            <span>›</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin-dashboard.html#submit-software" class="quick-link-item">
+                            <span class="quick-link-left"><span>💻</span> Submit Your Software</span>
+                            <span>›</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin-dashboard.html#share-prompt" class="quick-link-item">
+                            <span class="quick-link-left"><span>🧠</span> Share Your Prompt</span>
+                            <span>›</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin-dashboard.html#write-blog" class="quick-link-item">
+                            <span class="quick-link-left"><span>📝</span> Write a Blog Post</span>
+                            <span>›</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="admin-dashboard.html#request-tool" class="quick-link-item">
+                            <span class="quick-link-left"><span>💡</span> Request a Tool</span>
+                            <span>›</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Stay Updated Newsletter Card -->
+            <div class="newsletter-card">
+                <h3 class="card-widget-heading">
+                    <span>✉️</span>
+                    <span>Stay Updated</span>
+                </h3>
+                <p class="newsletter-desc">
+                    Get the latest tools, prompts and guides delivered to your inbox.
+                </p>
+                <form id="newsletterForm" class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email" required aria-label="Email address">
+                    <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+                </form>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- Simple Clean Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>
+                <a href="index.html" class="brand-logo">
+                    <div class="flask-icon">
+                        <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-title">Earnify<span>X</span>Lab</span>
+                        <span class="brand-tagline">Tools • Prompts • Resources</span>
+                    </div>
+                </a>
+                <p class="footer-brand-desc">
+                    Tools, prompts and resources for creators. Build faster, automate workflows, and create high-converting content.
+                </p>
+                <div class="footer-social-links">
+                    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="YouTube">📺</a>
+                    <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Telegram">✈️</a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Instagram">📷</a>
+                    <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="WhatsApp">💬</a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="footer-col-title">Platform</h4>
+                <ul class="footer-links-list">
+                    <li><a href="ai-tools.html">AI Tools</a></li>
+                    <li><a href="extensions.html">Chrome Extensions</a></li>
+                    <li><a href="software.html">Software & Apps</a></li>
+                    <li><a href="prompts.html">Master Prompts</a></li>
+                    <li><a href="automation.html">Automation Tools</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-col-title">Resources</h4>
+                <ul class="footer-links-list">
+                    <li><a href="resources.html">Creator Resources</a></li>
+                    <li><a href="blog.html">Blog & Insights</a></li>
+                    <li><a href="tutorials.html">Tutorials & Guides</a></li>
+                    <li><a href="dashboard.html">User Dashboard</a></li>
+                    <li><a href="admin-dashboard.html">Admin Panel</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-col-title">Legal & Support</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                    <li><a href="admin-dashboard.html#request-tool">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 EarnifyX Lab. All rights reserved.</p>
+            <p>Designed for Creators • Hosted on GitHub Pages</p>
+        </div>
+    </footer>
+
+    <!-- Global Modal Container -->
+    <div id="globalModalOverlay" class="modal-overlay">
+        <div class="modal-box">
+            <button id="globalModalCloseBtn" class="modal-close-btn" aria-label="Close modal">✕</button>
+            <div id="globalModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data/extensions.js"></script>
+    <script src="data/software.js"></script>
+    <script src="data/prompts.js"></script>
+    <script src="data/tools.js"></script>
+    <script src="data/resources.js"></script>
+    <script src="data/blog.js"></script>
+    <script src="data/tutorials.js"></script>
+    
+    <script src="js/theme.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/prompts.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Homepage Initialization Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Render selected cards on homepage (4-6 max per section)
+            const extContainer = document.getElementById("homeExtensionsContainer");
+            if (extContainer && window.EXTENSIONS_DATA) {
+                extContainer.innerHTML = window.EXTENSIONS_DATA.slice(0, 5).map(Components.createExtensionCard).join("");
+            }
+
+            const softContainer = document.getElementById("homeSoftwareContainer");
+            if (softContainer && window.SOFTWARE_DATA) {
+                softContainer.innerHTML = window.SOFTWARE_DATA.slice(0, 5).map(Components.createSoftwareCard).join("");
+            }
+
+            const promptContainer = document.getElementById("homePromptsContainer");
+            if (promptContainer && window.PROMPTS_DATA) {
+                promptContainer.innerHTML = window.PROMPTS_DATA.slice(0, 5).map(Components.createPromptCard).join("");
+            }
+
+            const toolsContainer = document.getElementById("homeToolsContainer");
+            if (toolsContainer && window.TOOLS_DATA) {
+                toolsContainer.innerHTML = window.TOOLS_DATA.slice(0, 5).map(Components.createToolCard).join("");
+            }
+
+            const resContainer = document.getElementById("homeResourcesContainer");
+            if (resContainer && window.RESOURCES_DATA) {
+                resContainer.innerHTML = window.RESOURCES_DATA.slice(0, 3).map(Components.createResourceCard).join("");
+            }
+
+            const blogContainer = document.getElementById("homeBlogContainer");
+            if (blogContainer && window.BLOG_DATA) {
+                blogContainer.innerHTML = window.BLOG_DATA.slice(0, 3).map(Components.createBlogCard).join("");
+            }
+        });
+    </script>
+</body>
+</html>

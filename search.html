@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Search — EarnifyX Lab</title>
+    <meta name="description" content="Search across all AI tools, Chrome extensions, software, master prompts, resources and tutorials.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <a href="index.html" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Tools • Prompts • Resources</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">🌙</span>
+            </button>
+            <a href="login.html" class="btn btn-subtle">Login</a>
+            <a href="signup.html" class="btn btn-primary">Get Started</a>
+        </div>
+    </header>
+
+    <div class="sidebar-backdrop"></div>
+
+    <div class="app-container full-width">
+        <aside class="app-sidebar">
+            <nav class="sidebar-nav-group">
+                <a href="index.html" class="sidebar-link">
+                    <span class="link-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="ai-tools.html" class="sidebar-link">
+                    <span class="link-icon">🤖</span>
+                    <span>AI Tools</span>
+                </a>
+                <a href="extensions.html" class="sidebar-link">
+                    <span class="link-icon">🧩</span>
+                    <span>Chrome Extensions</span>
+                </a>
+                <a href="software.html" class="sidebar-link">
+                    <span class="link-icon">💻</span>
+                    <span>Software & Apps</span>
+                </a>
+                <a href="prompts.html" class="sidebar-link">
+                    <span class="link-icon">🧠</span>
+                    <span>Master Prompts</span>
+                </a>
+                <a href="automation.html" class="sidebar-link">
+                    <span class="link-icon">⚡</span>
+                    <span>Automation Tools</span>
+                </a>
+                <a href="creator-tools.html" class="sidebar-link">
+                    <span class="link-icon">🎬</span>
+                    <span>Creator Tools</span>
+                </a>
+                <a href="resources.html" class="sidebar-link">
+                    <span class="link-icon">📦</span>
+                    <span>Resources</span>
+                </a>
+                <a href="blog.html" class="sidebar-link">
+                    <span class="link-icon">📝</span>
+                    <span>Blog Posts</span>
+                </a>
+                <a href="tutorials.html" class="sidebar-link">
+                    <span class="link-icon">📚</span>
+                    <span>Tutorials & Guides</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2.2rem; box-shadow: var(--shadow-xs);">
+                <div class="flex items-center gap-2" style="margin-bottom: 0.75rem;">
+                    <span style="font-size: 1.5rem;">🔍</span>
+                    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary);">Search EarnifyX Lab</h1>
+                </div>
+                <p class="text-secondary" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
+                    Instant unified search across all extensions, software, AI prompts, tools, blog posts, and resources.
+                </p>
+
+                <div style="position: relative; width: 100%;">
+                    <span style="position: absolute; left: 16px; top: 14px; color: var(--text-muted); font-size: 1.1rem;">🔍</span>
+                    <input type="text" id="liveSearchInput" placeholder="Type keywords (e.g. YouTube, Claude, Prompt, Video, Script)..." 
+                           style="width: 100%; height: 50px; padding: 0 1.25rem 0 3rem; background: var(--bg-surface-subtle); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); font-size: 1rem; color: var(--text-primary); outline: none;">
+                </div>
+
+                <div id="searchResultsMeta" style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                    Showing all resources
+                </div>
+            </div>
+
+            <!-- Results Grid -->
+            <div id="searchResultsContainer" class="cards-grid-large">
+                <!-- Dynamically rendered -->
+            </div>
+        </main>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>© 2026 EarnifyX Lab. All rights reserved.</p>
+            <p>Unified Search • Hosted on GitHub Pages</p>
+        </div>
+    </footer>
+
+    <div id="globalModalOverlay" class="modal-overlay">
+        <div class="modal-box">
+            <button id="globalModalCloseBtn" class="modal-close-btn" aria-label="Close modal">✕</button>
+            <div id="globalModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Data dependencies -->
+    <script src="data/extensions.js"></script>
+    <script src="data/software.js"></script>
+    <script src="data/prompts.js"></script>
+    <script src="data/tools.js"></script>
+    <script src="data/resources.js"></script>
+    <script src="data/blog.js"></script>
+    <script src="data/tutorials.js"></script>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/prompts.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchInput = document.getElementById("liveSearchInput");
+            const resultsContainer = document.getElementById("searchResultsContainer");
+            const meta = document.getElementById("searchResultsMeta");
+
+            function renderResults(query) {
+                const results = query && query.trim() !== "" 
+                    ? GlobalSearch.query(query)
+                    : GlobalSearch.getAllData();
+
+                meta.textContent = query && query.trim() !== "" 
+                    ? `Found ${results.length} results matching "${query}"`
+                    : `Showing all ${results.length} platform items`;
+
+                if (results.length === 0) {
+                    resultsContainer.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔍</div>
+                            <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">No items matched "${query}"</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">Try searching for broad terms like "YouTube", "AI", "Extension", or "Prompt"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                resultsContainer.innerHTML = results.map(item => `
+                    <div class="item-card">
+                        <div>
+                            <div class="card-top">
+                                <div class="card-icon-box" style="background: var(--bg-surface-subtle); color: var(--accent-primary);">
+                                    ${item.icon}
+                                </div>
+                                <span class="badge badge-${item.typeBadge}">${item.type}</span>
+                            </div>
+                            <h3 class="card-title">${item.title}</h3>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">Category: ${item.category}</div>
+                            <p class="card-description">${item.description}</p>
+                        </div>
+                        <div class="card-footer-action">
+                            <a href="${item.url}" class="card-action-btn">
+                                Open in ${item.type} →
+                            </a>
+                        </div>
+                    </div>
+                `).join("");
+            }
+
+            // Parse URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialQuery = urlParams.get("q") || "";
+            if (initialQuery) {
+                searchInput.value = initialQuery;
+            }
+
+            renderResults(initialQuery);
+
+            searchInput.addEventListener("input", (e) => {
+                renderResults(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>

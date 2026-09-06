@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="100%" height="100%">
+  <rect width="400" height="220" fill="#0f291e" rx="8" />
+  <circle cx="200" cy="90" r="45" fill="#10b981" opacity="0.25" />
+  <text x="200" y="98" font-family="system-ui, sans-serif" font-size="42" text-anchor="middle" fill="#6ee7b7">⚡</text>
+  <text x="200" y="155" font-family="system-ui, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#ffffff">Autonomous AI Workflows</text>
+  <text x="200" y="180" font-family="system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#a7f3d0">Make + Supabase + Claude Automation</text>
+</svg>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard — EarnifyX Lab</title>
+    <meta name="description" content="Access your saved tools, bookmarked prompts, software downloads, and creator workspace.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+</head>
+<body class="dashboard-page">
+
+    <header class="site-header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <a href="index.html" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Tools • Prompts • Resources</span>
+                </div>
+            </a>
+        </div>
+
+        <nav class="dashboard-top-nav" aria-label="Dashboard navigation">
+            <a href="dashboard.html" class="active">🏠 Home</a>
+            <a href="ai-tools.html">🤖 AI Tools</a>
+            <a href="extensions.html">🧩 Extensions</a>
+            <a href="software.html">💻 Software</a>
+            <a href="prompts.html">🧠 Prompts</a>
+            <a href="automation.html">⚡ Automation</a>
+            <a href="resources.html">📦 Resources</a>
+            <a href="dashboard.html#saved">❤️ Saved</a>
+            <a href="downloads.html">📥 Downloads</a>
+        </nav>
+
+        <div class="header-right">
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">🌙</span>
+            </button>
+            <a href="profile.html" class="btn btn-secondary">Profile</a>
+        </div>
+    </header>
+
+    <div class="sidebar-backdrop"></div>
+
+    <div class="app-container full-width">
+        <aside class="app-sidebar">
+            <nav class="sidebar-nav-group">
+                <a href="index.html" class="sidebar-link">
+                    <span class="link-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="ai-tools.html" class="sidebar-link">
+                    <span class="link-icon">🤖</span>
+                    <span>AI Tools</span>
+                </a>
+                <a href="extensions.html" class="sidebar-link">
+                    <span class="link-icon">🧩</span>
+                    <span>Chrome Extensions</span>
+                </a>
+                <a href="software.html" class="sidebar-link">
+                    <span class="link-icon">💻</span>
+                    <span>Software & Apps</span>
+                </a>
+                <a href="prompts.html" class="sidebar-link">
+                    <span class="link-icon">🧠</span>
+                    <span>Master Prompts</span>
+                </a>
+                <a href="dashboard.html" class="sidebar-link active">
+                    <span class="link-icon">❤️</span>
+                    <span>Saved Items</span>
+                </a>
+                <a href="profile.html" class="sidebar-link">
+                    <span class="link-icon">👤</span>
+                    <span>My Account</span>
+                </a>
+                <a href="downloads.html" class="sidebar-link">
+                    <span class="link-icon">📥</span>
+                    <span>My Downloads</span>
+                </a>
+                <a href="settings.html" class="sidebar-link">
+                    <span class="link-icon">⚙️</span>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="sidebar-link" onclick="confirmLogout(); return false;">
+                    <span class="link-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Welcome Banner -->
+            <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-xs);">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.25rem;">Welcome back, <span data-auth-user-name>User</span> 👋</h1>
+                        <p class="text-secondary" style="font-size: 0.95rem;">Explore new tools, prompts and resources from EarnifyX Lab.</p>
+                    </div>
+                    <a class="btn btn-primary" href="ai-tools.html">Explore Tools</a>
+                </div>
+
+                <!-- Stats Overview -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                    <div style="background-color: var(--bg-surface-subtle); padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <div class="text-muted" style="font-size: 0.8rem; font-weight: 600;">SAVED ITEMS</div>
+                        <div id="savedCountStat" style="font-size: 1.75rem; font-weight: 800; color: var(--accent-primary); margin-top: 0.25rem;">0 Saved Items</div>
+                    </div>
+                    <div style="background-color: var(--bg-surface-subtle); padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <div class="text-muted" style="font-size: 0.8rem; font-weight: 600;">DOWNLOADS</div>
+                        <div id="downloadsCountStat" style="font-size: 1.75rem; font-weight: 800; color: #10b981; margin-top: 0.25rem;">0 Downloads</div>
+                    </div>
+                    <div style="background-color: var(--bg-surface-subtle); padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <div class="text-muted" style="font-size: 0.8rem; font-weight: 600;">BOOKMARKS</div>
+                        <div id="bookmarksCountStat" style="font-size: 1.25rem; font-weight: 800; color: #f59e0b; margin-top: 0.6rem;">0 Bookmarks</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Saved Items Section -->
+            <section class="content-section">
+                <div class="section-header">
+                    <div class="section-title-wrapper">
+                        <span class="section-icon">❤️</span>
+                        <div>
+                            <h2 class="section-title">Your Saved Library</h2>
+                            <p class="section-subtitle">Items you bookmarked across the platform</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-subtle" onclick="clearAllBookmarks()">Clear Library</button>
+                </div>
+                <div class="cards-grid-large" id="savedItemsContainer">
+                    <!-- Dynamically populated from AuthUI.getBookmarks() -->
+                </div>
+            </section>
+            <section class="content-section">
+                <div class="section-header"><div class="section-title-wrapper"><span class="section-icon">🕘</span><div><h2 class="section-title">Recently Viewed</h2><p class="section-subtitle">Your latest catalog activity.</p></div></div></div>
+                <div class="cards-grid-large" id="recentItemsContainer"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data/extensions.js"></script>
+    <script src="data/software.js"></script>
+    <script src="data/prompts.js"></script>
+    <script src="data/tools.js"></script>
+    <script src="data/resources.js"></script>
+    
+    <script src="js/theme.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/prompts.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        function loadDashboard() {
+            if (!AuthUI.requireLogin()) {
+                window.location.href = "login.html";
+                return;
+            }
+            const bookmarks = AuthUI.getBookmarks();
+            const downloads = AuthUI.getDownloads();
+            const recent = AuthUI.getRecentlyViewed();
+            const countStat = document.getElementById("savedCountStat");
+            const container = document.getElementById("savedItemsContainer");
+            if (countStat) countStat.textContent = `${bookmarks.length} Saved Items`;
+            if (document.getElementById("bookmarksCountStat")) document.getElementById("bookmarksCountStat").textContent = `${bookmarks.length} Bookmarks`;
+            if (document.getElementById("downloadsCountStat")) document.getElementById("downloadsCountStat").textContent = `${downloads.length} Downloads`;
+
+            if (!container) return;
+            document.getElementById("recentItemsContainer").innerHTML = recent.length ? recent.map(item => `<div class="item-card"><span class="badge badge-primary">${item.type}</span><h3 class="card-title">${item.title}</h3><p class="card-description">Viewed recently</p></div>`).join("") : `<div style="grid-column: 1 / -1; padding: 1.5rem; color: var(--text-secondary);">No recently viewed items yet.</div>`;
+
+            if (bookmarks.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+                        <div style="font-size: 3rem; margin-bottom: 0.75rem;">🤍</div>
+                        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary);">No saved items yet</h3>
+                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.25rem; margin-bottom: 1rem;">Click the heart icon on any tool, prompt, extension or software to save it here.</p>
+                        <a href="prompts.html" class="btn btn-primary">Browse Prompts →</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bookmarks.map(b => `
+                <div class="item-card">
+                    <div>
+                        <div class="card-top">
+                            <span class="badge badge-primary">${b.type.toUpperCase()}</span>
+                            <button class="card-bookmark-btn saved" onclick="toggleSaveItem('${b.type}', '${b.id}', '${b.title}', event); loadDashboard();">❤️</button>
+                        </div>
+                        <h3 class="card-title">${b.title}</h3>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Saved on ${new Date(b.savedAt).toLocaleDateString()}</div>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="${b.type === 'prompt' ? 'prompts.html' : b.type === 'extension' ? 'extensions.html' : b.type === 'software' ? 'software.html' : 'ai-tools.html'}" class="card-action-btn">
+                            Open in Catalog →
+                        </a>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function clearAllBookmarks() {
+            if (confirm("Are you sure you want to clear your saved items?")) {
+                localStorage.removeItem(AuthUI.getUserStorageKey(AuthUI.BOOKMARKS_KEY));
+                showToast("Saved library cleared");
+                loadDashboard();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadDashboard);
+    </script>
+</body>
+</html>

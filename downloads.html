@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Downloads - EarnifyX Lab</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-left"><button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button><a href="index.html" class="brand-logo"><div class="flask-icon"><img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28"></div><div class="brand-text"><span class="brand-title">Earnify<span>X</span>Lab</span><span class="brand-tagline">Your workspace</span></div></a></div>
+        <div class="header-right"><button class="theme-toggle-btn" title="Toggle Light / Dark Mode"><span class="theme-toggle-icon">🌙</span></button><a href="dashboard.html" class="btn btn-secondary">Dashboard</a></div>
+    </header>
+    <div class="sidebar-backdrop"></div>
+    <div class="app-container full-width">
+        <aside class="app-sidebar"><nav class="sidebar-nav-group"><a href="dashboard.html" class="sidebar-link"><span class="link-icon">🏠</span><span>Dashboard</span></a><a href="ai-tools.html" class="sidebar-link"><span class="link-icon">🤖</span><span>Explore Tools</span></a><a href="dashboard.html" class="sidebar-link"><span class="link-icon">❤️</span><span>Saved Items</span></a><a href="downloads.html" class="sidebar-link active"><span class="link-icon">📥</span><span>My Downloads</span></a><a href="profile.html" class="sidebar-link"><span class="link-icon">👤</span><span>My Profile</span></a><a href="settings.html" class="sidebar-link"><span class="link-icon">⚙️</span><span>Settings</span></a><a href="#" class="sidebar-link" onclick="confirmLogout(); return false;"><span class="link-icon">🚪</span><span>Logout</span></a></nav></aside>
+        <main class="main-content"><section class="content-section"><div class="section-header"><div><h1 class="section-title">My Downloads</h1><p class="section-subtitle">Resources and software you have downloaded.</p></div></div><div class="cards-grid-large" id="downloadsContainer"></div></section></main>
+    </div>
+    <script src="js/theme.js"></script><script src="js/auth-ui.js"></script><script src="js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!AuthUI.requireLogin()) { window.location.href = "login.html"; return; }
+            const items = AuthUI.getDownloads();
+            const container = document.getElementById("downloadsContainer");
+            container.innerHTML = items.length ? items.map(item => `<div class="item-card"><div><span class="badge badge-primary">${item.type}</span><h3 class="card-title">${item.title}</h3><p class="card-description">Downloaded ${new Date(item.downloadedAt).toLocaleDateString()}</p></div></div>`).join("") : `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);"><h3>No downloads yet</h3><p class="text-secondary" style="margin: .5rem 0 1rem;">Your downloaded resources and software will appear here.</p><a href="resources.html" class="btn btn-primary">Browse Resources</a></div>`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — EarnifyX Lab</title>
+    <meta name="description" content="EarnifyX Lab Admin Panel for publishing tools, software, prompts, and blog posts.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+</head>
+<body class="admin-page">
+
+    <!--
+        FUTURE SUPABASE ADMIN AUTH & RBAC:
+        // const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+        // if (profile.role !== 'admin') window.location.href = '/dashboard.html';
+    -->
+
+    <header class="site-header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <a href="index.html" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Admin Control Panel</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">🌙</span>
+            </button>
+            <a href="index.html" class="btn btn-secondary">Exit Admin</a>
+        </div>
+    </header>
+
+    <div class="sidebar-backdrop"></div>
+
+    <div class="app-container full-width">
+        <aside class="app-sidebar">
+            <nav class="sidebar-nav-group">
+                <a href="#tab-extensions" class="sidebar-link active admin-tab-btn" data-tab="tab-extensions">
+                    <span class="link-icon">🧩</span>
+                    <span>Manage Extensions</span>
+                </a>
+                <a href="#tab-software" class="sidebar-link admin-tab-btn" data-tab="tab-software">
+                    <span class="link-icon">💻</span>
+                    <span>Manage Software</span>
+                </a>
+                <a href="#tab-prompts" class="sidebar-link admin-tab-btn" data-tab="tab-prompts">
+                    <span class="link-icon">🧠</span>
+                    <span>Manage Prompts</span>
+                </a>
+                <a href="#tab-tools" class="sidebar-link admin-tab-btn" data-tab="tab-tools">
+                    <span class="link-icon">🤖</span>
+                    <span>Manage AI Tools</span>
+                </a>
+                <a href="#tab-blog" class="sidebar-link admin-tab-btn" data-tab="tab-blog">
+                    <span class="link-icon">📝</span>
+                    <span>Manage Blog Posts</span>
+                </a>
+                <a href="#tab-json" class="sidebar-link admin-tab-btn" data-tab="tab-json">
+                    <span class="link-icon">📦</span>
+                    <span>Export JSON Snippets</span>
+                </a>
+                <a href="#tab-users" class="sidebar-link admin-tab-btn" data-tab="tab-users">
+                    <span class="link-icon">👥</span>
+                    <span>Manage Users</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- 1. Extensions Tab -->
+            <div id="tab-extensions" class="admin-tab-content">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">🧩 Add / Manage Chrome Extensions</h2>
+                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1.5rem;">
+                        Fill out the details below to generate a new extension object ready for <code>data/extensions.js</code>.
+                    </p>
+
+                    <form onsubmit="handleAdminSubmit('Extension', event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Extension Name</label>
+                            <input type="text" required placeholder="e.g. YouTube Transcript AI" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Badge Status</label>
+                            <select style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                                <option>Free</option>
+                                <option>Premium</option>
+                                <option>New</option>
+                            </select>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Short Description</label>
+                            <input type="text" required placeholder="One-line summary for creator cards..." style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <button type="submit" class="btn btn-primary">Generate & Copy Object</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 2. Software Tab -->
+            <div id="tab-software" class="admin-tab-content" style="display: none;">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">💻 Add Software & Desktop Apps</h2>
+                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1.5rem;">
+                        Publish native creator tools to <code>data/software.js</code>.
+                    </p>
+
+                    <form onsubmit="handleAdminSubmit('Software', event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Software Name</label>
+                            <input type="text" required placeholder="e.g. EarnifyX Video Studio" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Platform</label>
+                            <input type="text" required value="Windows / Mac / Web" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <button type="submit" class="btn btn-primary">Generate & Copy Object</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 3. Prompts Tab -->
+            <div id="tab-prompts" class="admin-tab-content" style="display: none;">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">🧠 Add Master Prompts</h2>
+                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1.5rem;">
+                        Add tested ChatGPT / Claude / Midjourney prompts to <code>data/prompts.js</code>.
+                    </p>
+
+                    <form onsubmit="handleAdminSubmit('Prompt', event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Prompt Title</label>
+                            <input type="text" required placeholder="e.g. Viral TikTok Retention Script" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.3rem;">Raw Prompt Content</label>
+                            <textarea rows="6" required placeholder="Act as a senior copywriter..." style="width: 100%; padding: 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.85rem;"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Publish Prompt Object</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 4. AI Tools Tab -->
+            <div id="tab-tools" class="admin-tab-content" style="display: none;">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">🤖 Add AI Tool to Directory</h2>
+                    <form onsubmit="handleAdminSubmit('AI Tool', event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <input type="text" required placeholder="Tool Name (e.g. Perplexity AI)" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <button type="submit" class="btn btn-primary">Publish AI Tool</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 5. Blog Tab -->
+            <div id="tab-blog" class="admin-tab-content" style="display: none;">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">📝 Publish Blog Post</h2>
+                    <form onsubmit="handleAdminSubmit('Blog Post', event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <input type="text" required placeholder="Article Title" style="width: 100%; height: 40px; padding: 0 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                        <textarea rows="6" placeholder="Article Markdown content..." style="width: 100%; padding: 0.75rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: var(--font-mono);"></textarea>
+                        <button type="submit" class="btn btn-primary">Generate Article Entry</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 6. JSON Snippet Tab -->
+            <div id="tab-json" class="admin-tab-content" style="display: none;">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">📦 Ready-to-Paste Data Snippet</h2>
+                    <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 1rem;">
+                        Copy this snippet directly into your respective <code>data/*.js</code> file.
+                    </p>
+                    <div id="jsonOutput" class="prompt-full-box">// Submit any form above to view formatted code snippet</div>
+                </div>
+            </div>
+
+            <div id="tab-users" class="admin-tab-content" style="display: none;">
+                <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem;">
+                    <div class="flex items-center justify-between" style="gap: 1rem; margin-bottom: 1.5rem;">
+                        <div><h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">👥 User Management</h2><p class="text-secondary" style="font-size: 0.88rem;">View account details available in this frontend demo.</p></div>
+                        <span class="badge badge-warning">Local demo data</span>
+                    </div>
+                    <div id="adminUserSummary" style="background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1rem; margin-bottom: 1rem;"></div>
+                    <div style="overflow-x: auto;"><table style="width: 100%; border-collapse: collapse; font-size: 0.88rem;"><thead><tr style="text-align: left; border-bottom: 1px solid var(--border-color);"><th style="padding: .75rem 0;">Name</th><th style="padding: .75rem 0;">Email</th><th style="padding: .75rem 0;">Role</th><th style="padding: .75rem 0;">Updated</th></tr></thead><tbody id="adminUsersTable"></tbody></table></div>
+                    <p class="text-muted" style="font-size: .78rem; margin-top: 1rem;">// FUTURE ROLE BASED ACCESS: Only Supabase-authorized admins can access or modify users. Browser localStorage is not secure.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // FUTURE ROLE BASED ACCESS: Verify the authenticated user's admin role server-side with Supabase before rendering admin actions.
+        // FUTURE USER DATABASE: Admin user management will use Supabase profiles and policies.
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.AuthUI && !AuthUI.requireLogin()) window.location.href = "login.html";
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabs = document.querySelectorAll(".admin-tab-btn");
+            const contents = document.querySelectorAll(".admin-tab-content");
+            renderAdminUsers();
+
+            tabs.forEach(tab => {
+                tab.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    tabs.forEach(t => t.classList.remove("active"));
+                    contents.forEach(c => c.style.display = "none");
+
+                    tab.classList.add("active");
+                    const targetId = tab.getAttribute("data-tab");
+                    const targetContent = document.getElementById(targetId);
+                    if (targetContent) targetContent.style.display = "block";
+                });
+            });
+        });
+
+        function renderAdminUsers() {
+            const currentUser = AuthUI.getUser();
+            const users = AuthUI.getUsers();
+            const summary = document.getElementById("adminUserSummary");
+            const table = document.getElementById("adminUsersTable");
+            if (!summary || !table) return;
+            summary.innerHTML = `<strong>Current account:</strong> ${currentUser ? currentUser.name : "Unknown"} · ${currentUser ? currentUser.email : "-"} · <span class="badge badge-primary">${currentUser && currentUser.role ? currentUser.role : "user"}</span>`;
+            table.innerHTML = users.length ? users.map(user => `<tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: .75rem 0;">${user.name || "-"}</td><td style="padding: .75rem 0;">${user.email}</td><td style="padding: .75rem 0;">${user.role || "user"}</td><td style="padding: .75rem 0;">${user.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : "-"}</td></tr>`).join("") : `<tr><td colspan="4" style="padding: 1rem 0; color: var(--text-secondary);">No demo users yet.</td></tr>`;
+        }
+
+        function handleAdminSubmit(type, e) {
+            e.preventDefault();
+            const jsonBox = document.getElementById("jsonOutput");
+            const sample = `{\n  id: "${type.toLowerCase()}-${Date.now()}",\n  name: "New ${type} Entry",\n  badge: "New",\n  badgeType: "primary",\n  date: "${new Date().toLocaleDateString()}"\n}`;
+            jsonBox.textContent = sample;
+            showToast(`✅ Generated ${type} structure! Check the 'Export JSON' tab.`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile — EarnifyX Lab</title>
+    <meta name="description" content="Manage your EarnifyX Lab profile and account preferences.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+            <a href="index.html" class="brand-logo">
+                <div class="flask-icon">
+                    <img src="assets/icons/logo.svg" alt="EarnifyX Lab Logo" width="28" height="28">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">Earnify<span>X</span>Lab</span>
+                    <span class="brand-tagline">Tools • Prompts • Resources</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-toggle-btn" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+                <span class="theme-toggle-icon">🌙</span>
+            </button>
+            <a href="dashboard.html" class="btn btn-secondary">Dashboard</a>
+        </div>
+    </header>
+
+    <div class="sidebar-backdrop"></div>
+
+    <div class="app-container full-width">
+        <aside class="app-sidebar">
+            <nav class="sidebar-nav-group">
+                <a href="index.html" class="sidebar-link">
+                    <span class="link-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="ai-tools.html" class="sidebar-link">
+                    <span class="link-icon">🤖</span>
+                    <span>AI Tools</span>
+                </a>
+                <a href="extensions.html" class="sidebar-link">
+                    <span class="link-icon">🧩</span>
+                    <span>Chrome Extensions</span>
+                </a>
+                <a href="software.html" class="sidebar-link">
+                    <span class="link-icon">💻</span>
+                    <span>Software & Apps</span>
+                </a>
+                <a href="prompts.html" class="sidebar-link">
+                    <span class="link-icon">🧠</span>
+                    <span>Master Prompts</span>
+                </a>
+                <a href="dashboard.html" class="sidebar-link">
+                    <span class="link-icon">❤️</span>
+                    <span>Saved Items</span>
+                </a>
+                <a href="profile.html" class="sidebar-link active">
+                    <span class="link-icon">👤</span>
+                    <span>My Account</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2.2rem; box-shadow: var(--shadow-xs);">
+                <div class="flex items-center gap-3" style="margin-bottom: 1.5rem;">
+                    <div style="width: 64px; height: 64px; border-radius: var(--radius-full); background: var(--accent-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; font-weight: 800;">
+                        S
+                    </div>
+                    <div>
+                        <h1 id="profileName" style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary);">Suraj Kumar</h1>
+                        <p id="profileEmail" class="text-muted" style="font-size: 0.88rem;">creator@earnifyx.lab</p>
+                        <p id="memberSince" class="text-muted" style="font-size: 0.78rem;">Member since -</p>
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+                    <div>
+                        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Display Name</label>
+                        <input type="text" id="editName" value="Suraj Kumar" 
+                               style="max-width: 400px; width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); outline: none;">
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem;">Creator Niche</label>
+                        <select style="max-width: 400px; width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); outline: none;">
+                            <option>YouTube / Video Creator</option>
+                            <option>AI Engineer / Indie Hacker</option>
+                            <option>Writer / Newsletter Operator</option>
+                            <option>Social Media Manager</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-primary" onclick="saveProfileChanges()">Edit Profile</button>
+                        <button class="btn btn-secondary" onclick="showToast('Password changes will be handled by Supabase Auth.')">Change Password</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/theme.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!AuthUI.requireLogin()) { window.location.href = "login.html"; return; }
+            const user = AuthUI.getUser();
+            if (user && user.name) {
+                document.getElementById("profileName").textContent = user.name;
+                document.getElementById("profileEmail").textContent = user.email || "creator@earnifyx.lab";
+                document.getElementById("editName").value = user.name;
+                document.getElementById("memberSince").textContent = `Member since ${new Date(user.memberSince || Date.now()).toLocaleDateString()}`;
+            }
+        });
+
+        function saveProfileChanges() {
+            const newName = document.getElementById("editName").value;
+            const user = AuthUI.getUser();
+            user.name = newName;
+            AuthUI.setUser(user);
+            document.getElementById("profileName").textContent = newName;
+            showToast("✅ Profile updated successfully!");
+        }
+    </script>
+</body>
+</html>
