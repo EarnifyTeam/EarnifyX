@@ -28,6 +28,7 @@
 
   .hero-visual {
     margin-top: 1rem;
+    min-height: 330px;
   }
 
   .footer-inner {
@@ -103,6 +104,35 @@
     grid-template-columns: 1fr;
     padding: 1rem;
     gap: 1.5rem;
+  }
+
+  .hero-banner {
+    padding: 1.5rem;
+  }
+
+  .hero-visual {
+    min-height: 285px;
+  }
+
+  .hero-photo-frame {
+    bottom: 34px;
+  }
+
+  .hero-visual-img {
+    height: 450px;
+    object-position: center 23%;
+    transform: scale(1.3);
+  }
+
+  .hero-laptop {
+    left: 0;
+    right: 0;
+    bottom: -48px;
+    height: 122px;
+  }
+
+  .hero-laptop-screen {
+    height: 84px;
   }
 
   /* Mobile Slide-out Sidebar Drawer */
