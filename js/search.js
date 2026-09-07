@@ -555,10 +555,6 @@ const SpotlightSearch = {
                         <span class="spotlight-nav-icon">🧠</span>
                         <span class="spotlight-nav-name">Prompts</span>
                     </a>
-                    <a href="admin-dashboard/" class="spotlight-nav-card" onclick="SpotlightSearch.close()">
-                        <span class="spotlight-nav-icon">⚙️</span>
-                        <span class="spotlight-nav-name">Admin</span>
-                    </a>
                 </div>
             `;
 
