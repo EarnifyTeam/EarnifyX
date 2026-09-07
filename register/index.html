@@ -184,10 +184,13 @@
                            style="width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.9rem; outline: none;">
                 </div>
 
-                <div class="flex items-center gap-2" style="margin-bottom: 1.25rem;">
+                <div class="flex items-center gap-2" style="margin-bottom: 1.1rem;">
                     <input type="checkbox" id="terms" required style="accent-color: var(--accent-primary);">
                     <label for="terms" style="font-size: 0.82rem; color: var(--text-secondary);">I agree to the Terms &amp; Privacy Policy</label>
                 </div>
+
+                <!-- Security Captcha Widget -->
+                <div id="registerCaptchaContainer"></div>
 
                 <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
                     Create Account
@@ -209,9 +212,16 @@
 
     <script src="js/theme.js"></script>
     <script src="js/auth-ui.js"></script>
+    <script src="js/captcha.js"></script>
     <script src="js/main.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.EarnifyCaptcha) {
+                window.EarnifyCaptcha.init('registerCaptchaContainer');
+            }
+        });
+
         function handleOAuthSignup(provider) {
             showToast(`${provider} authentication will be connected with Firebase Auth.`);
         }
@@ -230,7 +240,12 @@
             }
 
             if (pass !== confirm) {
-                showToast("&#9888;&#65039; Passwords do not match!");
+                showToast("⚠️ Passwords do not match!");
+                return;
+            }
+
+            // Verify Captcha before registering
+            if (window.EarnifyCaptcha && !window.EarnifyCaptcha.validate('registerCaptchaContainer')) {
                 return;
             }
 
@@ -249,13 +264,16 @@
                     uid: user.uid,
                     role: "user"
                 });
-                showToast(`&#127881; Welcome ${name}! Account created.`);
+                showToast(`🎉 Welcome ${name}! Account created.`);
                 setTimeout(() => {
                     window.location.href = "dashboard/";
                 }, 800);
             } catch (error) {
                 console.error(error);
                 showToast(error?.message || "Account creation failed. Please try again.");
+                if (window.EarnifyCaptcha) {
+                    window.EarnifyCaptcha.refresh('registerCaptchaContainer');
+                }
             }
         }
     </script>

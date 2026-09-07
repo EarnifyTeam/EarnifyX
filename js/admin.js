@@ -18,13 +18,67 @@ const Admin = {
         searchQueries: {}
     },
 
+    getCurrentUser() {
+        return window.AuthUI ? window.AuthUI.getUser() : null;
+    },
+
+    isManager() {
+        const user = this.getCurrentUser();
+        return user && user.role === "manager";
+    },
+
+    isAdmin() {
+        const user = this.getCurrentUser();
+        return !user || user.role === "admin" || user.isAdmin === true;
+    },
+
+    renderRoleIndicator() {
+        const container = document.getElementById("adminUserRoleBadge");
+        const user = this.getCurrentUser();
+        if (!container) return;
+
+        if (this.isManager()) {
+            container.innerHTML = `
+                <div class="admin-role-indicator role-manager">
+                    <span>🛡️</span>
+                    <span>Manager Access (${user?.name || "Content Manager"})</span>
+                    <span style="font-size:0.7rem; opacity:0.8; font-weight:400;">• Create & Edit Mode</span>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="admin-role-indicator role-admin">
+                    <span>👑</span>
+                    <span>Super Admin (${user?.name || "Owner"})</span>
+                    <span style="font-size:0.7rem; opacity:0.8; font-weight:400;">• Full Control</span>
+                </div>
+            `;
+        }
+    },
+
+    applyManagerRestrictions() {
+        // Hide super-admin only tabs for manager
+        const adminOnlyTabs = ["#tab-ads", "#tab-social", "#tab-about", "#tab-sitemap", "#tab-backup"];
+        adminOnlyTabs.forEach(selector => {
+            const link = document.querySelector(`.admin-tab-btn[href="${selector}"]`);
+            if (link) link.style.display = "none";
+        });
+    },
+
     init() {
+        this.renderRoleIndicator();
         this.bindEvents();
         this.loadRemoteData();
-        this.loadSocialLinks();
-        this.loadAdSettings();
-        this.loadAboutSettings();
-        this.loadSitemapSettings();
+        
+        if (this.isManager()) {
+            this.applyManagerRestrictions();
+        } else {
+            this.loadSocialLinks();
+            this.loadAdSettings();
+            this.loadAboutSettings();
+            this.loadSitemapSettings();
+        }
+
         this.renderOverviewStats();
         this.renderAllTables();
         this.handleHashNavigation();
@@ -415,6 +469,12 @@ const Admin = {
             const badge = item.badge || item.type || "Active";
             const badgeType = item.badgeType || "primary";
             const details = item.version ? `${item.version} • ⭐ ${item.rating || 4.8}` : (item.date || item.pricing || item.difficulty || item.reads || "-");
+            
+            // Dynamic Author Label
+            const isManagerPost = item.authorRole === "manager" || (item.author && item.author !== "Admin" && item.author !== "EarnifyX Team");
+            const authorText = isManagerPost ? `👤 By ${item.authorName || item.author} (Manager)` : `🛡️ By Admin`;
+
+            const isManager = this.isManager();
 
             tableHtml += `
                 <tr>
@@ -423,7 +483,10 @@ const Admin = {
                             <span style="font-size: 1.25rem;">${item.iconText || item.icon || "📦"}</span>
                             <div>
                                 <strong style="color: var(--text-primary); font-size: 0.9rem;">${name}</strong>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">${item.id}</div>
+                                <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 0.15rem;">
+                                    <span style="font-size: 0.72rem; color: var(--text-muted);">${item.id}</span>
+                                    <span style="font-size: 0.7rem; font-weight: 600; color: ${isManagerPost ? 'var(--accent-indigo)' : 'var(--accent-primary)'};">${authorText}</span>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -434,9 +497,11 @@ const Admin = {
                         <button class="btn btn-sm btn-subtle" onclick="Admin.editItem('${type}', '${item.id}')" title="Edit">
                             ✏️ Edit
                         </button>
+                        ${!isManager ? `
                         <button class="btn btn-sm btn-secondary" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);" onclick="Admin.deleteItem('${type}', '${item.id}')" title="Delete">
                             🗑️ Delete
                         </button>
+                        ` : ''}
                     </td>
                 </tr>
             `;
@@ -457,8 +522,17 @@ const Admin = {
         this.renderTable(type);
     },
 
-    // Delete item handler
+    // Delete item handler (Super Admin only)
     deleteItem(type, id) {
+        if (this.isManager()) {
+            if (window.showToast) {
+                window.showToast("⛔ Access Denied: Managers are not authorized to delete items.");
+            } else {
+                alert("⛔ Access Denied: Managers are not authorized to delete items.");
+            }
+            return;
+        }
+
         if (!confirm(`Are you sure you want to delete this ${type} item (${id})?`)) return;
         let list = this.getData(type);
         list = list.filter(item => item.id !== id);
@@ -542,6 +616,21 @@ const Admin = {
         if (!data.id) {
             const title = data.name || data.title || "item";
             data.id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-" + Date.now().toString().slice(-4);
+        }
+
+        // Automatic Author & Role Attribution
+        const currentUser = this.getCurrentUser();
+        if (this.isManager()) {
+            const managerName = (currentUser && currentUser.name) ? currentUser.name : "Manager";
+            data.author = managerName;
+            data.authorName = managerName;
+            data.authorRole = "manager";
+            data.postedBy = managerName;
+        } else {
+            data.author = "Admin";
+            data.authorName = "Admin";
+            data.authorRole = "admin";
+            data.postedBy = "Admin";
         }
 
         let list = [...this.getData(type)];

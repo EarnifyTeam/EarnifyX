@@ -5,6 +5,18 @@
 
 const Components = {
     /**
+     * Generate dynamic author badge (Admin vs Manager)
+     */
+    getAuthorBadge(item) {
+        if (!item) return `<span class="card-author-badge admin-author">🛡️ By Admin</span>`;
+        if (item.authorRole === 'manager' || (item.author && item.author !== 'Admin' && item.author !== 'EarnifyX Team')) {
+            const name = item.authorName || item.author;
+            return `<span class="card-author-badge manager-author" title="Posted by ${name} (Manager)">👤 By ${name}</span>`;
+        }
+        return `<span class="card-author-badge admin-author" title="Posted by Admin">🛡️ By Admin</span>`;
+    },
+
+    /**
      * Render Chrome Extension Card
      */
     createExtensionCard(ext) {
@@ -19,6 +31,7 @@ const Components = {
                         <span class="badge badge-${ext.badgeType || 'success'}">${ext.badge}</span>
                     </div>
                     <h3 class="card-title">${ext.name}</h3>
+                    ${this.getAuthorBadge(ext)}
                     <p class="card-description">${ext.shortDescription}</p>
                 </div>
                 <div class="card-footer-action">
@@ -50,6 +63,7 @@ const Components = {
                         <span class="badge badge-${soft.badgeType || 'primary'}">${soft.badge}</span>
                     </div>
                     <h3 class="card-title">${soft.name}</h3>
+                    ${this.getAuthorBadge(soft)}
                     <p class="card-description">${soft.shortDescription}</p>
                 </div>
                 <div class="card-footer-action">
@@ -82,7 +96,8 @@ const Components = {
                         </div>
                         <span class="badge badge-${prompt.badgeType || 'success'}">${prompt.badge}</span>
                     </div>
-                    <h3 class="card-title" style="margin-bottom: 0.5rem;">${prompt.title}</h3>
+                    <h3 class="card-title" style="margin-bottom: 0.35rem;">${prompt.title}</h3>
+                    ${this.getAuthorBadge(prompt)}
                     <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; font-size: 0.72rem; color: var(--text-muted);">
                         ${prompt.niche ? `<span class="prompt-category-tag">Niche: ${prompt.niche}</span>` : ""}
                         ${prompt.model ? `<span class="prompt-category-tag">Model: ${prompt.model}</span>` : ""}
@@ -120,6 +135,7 @@ const Components = {
                         <span class="badge badge-${tool.badgeType || 'primary'}">${tool.pricing}</span>
                     </div>
                     <h3 class="card-title">${tool.name}</h3>
+                    ${this.getAuthorBadge(tool)}
                     <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem;">${tool.category} • ⭐ ${tool.rating}</div>
                     <p class="card-description">${tool.shortDescription}</p>
                 </div>
@@ -152,6 +168,7 @@ const Components = {
                         <span class="badge badge-${res.badgeType}">${res.badge}</span>
                     </div>
                     <h3 class="card-title">${res.title}</h3>
+                    ${this.getAuthorBadge(res)}
                     <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem;">${res.category} • ⬇️ ${res.downloads}</div>
                     <p class="card-description">${res.description}</p>
                 </div>
@@ -185,6 +202,7 @@ const Components = {
                         <span>${post.readTime}</span>
                     </div>
                     <h3 class="article-title">${post.title}</h3>
+                    ${this.getAuthorBadge(post)}
                     <p class="card-description" style="-webkit-line-clamp: 3;">${post.shortDescription}</p>
                     <div style="margin-top: auto; padding-top: 1rem;">
                         <button class="card-action-btn" onclick="openBlogModal('${post.id}')">
@@ -210,6 +228,7 @@ const Components = {
                         <span>⏱️ ${tut.time}</span>
                     </div>
                     <h3 class="article-title">${tut.title}</h3>
+                    ${this.getAuthorBadge(tut)}
                     <p class="card-description">${tut.description}</p>
                     <div style="margin-top: auto; padding-top: 1rem;">
                         <button class="card-action-btn" onclick="openTutorialModal('${tut.id}')">

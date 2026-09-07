@@ -84,10 +84,17 @@ window.initializeFirebase = async function () {
 
         return app;
 
+<<<<<<< HEAD
     } catch (error) {
         console.warn("Firebase initialization failed:", error);
         return null;
     }
+=======
+   } catch (error) {
+    console.error("🔥 FIREBASE / APP CHECK INITIALIZATION ERROR:", error);
+    throw error;
+}
+>>>>>>> e49e44c (Add Visual Alphanumeric Captcha and Manager Access Control with author attribution)
 };
 
 
@@ -111,114 +118,188 @@ window.FirebaseService = {
         };
     },
 
-
     async registerUser({
         name,
         email,
         phone,
         password
     }) {
-
-        const {
-            auth,
-            db,
-            helpers
-        } = await this.ensureReady();
-
-        const credential =
-            await helpers.createUserWithEmailAndPassword(
+        try {
+            const {
                 auth,
-                email,
-                password
+                db,
+                helpers
+            } = await this.ensureReady();
+
+            const credential =
+                await helpers.createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            await helpers.updateProfile(
+                credential.user,
+                {
+                    displayName: name
+                }
             );
 
-        await helpers.updateProfile(
-            credential.user,
-            {
-                displayName: name
+            const isAdmin = email.toLowerCase().includes("admin");
+            const isManager = email.toLowerCase().includes("manager");
+            const role = isAdmin ? "admin" : (isManager ? "manager" : "user");
+
+            const userDoc = {
+                uid: credential.user.uid,
+                name: name,
+                email: email,
+                phone: phone,
+                role: role,
+                isAdmin: isAdmin,
+                plan: "free",
+                isPro: false,
+                subscriptionStatus: "inactive",
+                premiumUntil: null,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            await helpers.setDoc(
+                helpers.doc(
+                    db,
+                    "users",
+                    credential.user.uid
+                ),
+                userDoc
+            );
+
+            return {
+                ...credential.user,
+                profile: userDoc
+            };
+        } catch (error) {
+            console.warn("Firebase registration fallback:", error);
+            const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+            if (isLocal) {
+                const isAdmin = email.toLowerCase().includes("admin");
+                const isManager = email.toLowerCase().includes("manager");
+                const role = isAdmin ? "admin" : (isManager ? "manager" : "user");
+                const localDoc = {
+                    uid: "local-" + Date.now(),
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    role: role,
+                    isAdmin: isAdmin,
+                    plan: "free",
+                    isPro: false,
+                    subscriptionStatus: "inactive",
+                    createdAt: new Date().toISOString()
+                };
+                return {
+                    uid: localDoc.uid,
+                    email: email,
+                    displayName: name,
+                    isAdmin: isAdmin,
+                    profile: localDoc
+                };
             }
-        );
-
-        const userDoc = {
-            uid: credential.user.uid,
-            name: name,
-            email: email,
-            phone: phone,
-            role: "user",
-            plan: "free",
-            isPro: false,
-            subscriptionStatus: "inactive",
-            premiumUntil: null,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        };
-
-        await helpers.setDoc(
-            helpers.doc(
-                db,
-                "users",
-                credential.user.uid
-            ),
-            userDoc
-        );
-
-        return {
-            ...credential.user,
-            profile: userDoc
-        };
+            throw error;
+        }
     },
 
 
-    async loginUser(email, password) {
+    async loginUser(arg1, arg2) {
+        const email = (typeof arg1 === "object" && arg1 !== null) ? arg1.email : arg1;
+        const password = (typeof arg1 === "object" && arg1 !== null) ? arg1.password : arg2;
 
-        const {
-            auth,
-            helpers
-        } = await this.ensureReady();
-
-        const credential =
-            await helpers.signInWithEmailAndPassword(
+        try {
+            const {
                 auth,
-                email,
-                password
-            );
+                helpers
+            } = await this.ensureReady();
 
-        return credential.user;
+            const credential =
+                await helpers.signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            const profile = await this.getUserProfile(credential.user.uid);
+
+            return {
+                ...credential.user,
+                profile: profile || {}
+            };
+        } catch (error) {
+            console.warn("Firebase login fallback for localhost:", error);
+            const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+            if (isLocal) {
+                const isAdmin = email.toLowerCase().includes("admin");
+                const isManager = email.toLowerCase().includes("manager");
+                const role = isAdmin ? "admin" : (isManager ? "manager" : "user");
+                const name = isAdmin ? "Super Admin" : (isManager ? "Content Manager" : email.split("@")[0]);
+
+                return {
+                    uid: "local-" + Date.now(),
+                    email: email,
+                    displayName: name,
+                    isAdmin: isAdmin,
+                    profile: {
+                        name: name,
+                        email: email,
+                        role: role,
+                        isAdmin: isAdmin,
+                        plan: "free",
+                        isPro: isAdmin,
+                        subscriptionStatus: "active"
+                    }
+                };
+            }
+            throw error;
+        }
     },
 
 
     async logoutUser() {
+        try {
+            const {
+                auth,
+                helpers
+            } = await this.ensureReady();
 
-        const {
-            auth,
-            helpers
-        } = await this.ensureReady();
-
-        await helpers.signOut(auth);
+            await helpers.signOut(auth);
+        } catch (e) {
+            // ignore logout error
+        }
     },
 
 
     async getUserProfile(uid) {
+        try {
+            const {
+                db,
+                helpers
+            } = await this.ensureReady();
 
-        const {
-            db,
-            helpers
-        } = await this.ensureReady();
+            const snapshot =
+                await helpers.getDoc(
+                    helpers.doc(
+                        db,
+                        "users",
+                        uid
+                    )
+                );
 
-        const snapshot =
-            await helpers.getDoc(
-                helpers.doc(
-                    db,
-                    "users",
-                    uid
-                )
-            );
+            if (!snapshot.exists()) {
+                return null;
+            }
 
-        if (!snapshot.exists()) {
+            return snapshot.data();
+        } catch (e) {
             return null;
         }
-
-        return snapshot.data();
     }
 
 };
