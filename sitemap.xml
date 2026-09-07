@@ -32,6 +32,22 @@
     <loc>https://earnifyxlab.in/tutorials/</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://earnifyxlab.in/about/</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://earnifyxlab.in/privacy-policy/</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://earnifyxlab.in/terms/</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://earnifyxlab.in/disclaimer/</loc>
+    <priority>0.4</priority>
+  </url>
 </urlset>
 
 
