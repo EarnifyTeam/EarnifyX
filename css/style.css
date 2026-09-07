@@ -3085,3 +3085,29 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-color);
 }
+
+/* Admin header: no public nav, so keep the right controls from crowding the brand */
+.admin-header-spacer {
+  flex: 1;
+  min-width: 0.5rem;
+}
+
+.admin-page .header-right {
+  flex-shrink: 0;
+}
+
+.admin-page .brand-logo {
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .admin-page #adminUserRoleBadge .admin-role-indicator span:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-page #adminUserRoleBadge {
+    display: none;
+  }
+}
