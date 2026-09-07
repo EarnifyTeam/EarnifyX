@@ -146,12 +146,6 @@
             </div>
 
             <form id="loginForm" onsubmit="handleFormLogin(event)">
-                <!-- FUTURE SUPABASE AUTHENTICATION
-                     const { data, error } = await supabase.auth.signInWithPassword({
-                         email: emailInput.value,
-                         password: passwordInput.value,
-                     });
-                -->
                 <div style="margin-bottom: 1.1rem;">
                     <label
                         style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;"
@@ -166,7 +160,7 @@
                     <div class="flex items-center justify-between" style="margin-bottom: 0.4rem;">
                         <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);"
                             for="password">Password</label>
-                        <a href="#" onclick="showToast('Password reset will be handled by Supabase Auth.')"
+                        <a href="#" onclick="handleForgotPassword(event)"
                             style="font-size: 0.78rem; color: var(--accent-primary);">Forgot Password?</a>
                     </div>
                     <input type="password" id="password" required placeholder="••••••••"
@@ -213,89 +207,86 @@
             }
         });
 
-        function handleOAuthLogin(provider) {
-            // FUTURE SUPABASE AUTHENTICATION: Connect provider with signInWithOAuth().
-            showToast(`${provider} authentication will be connected with Supabase.`);
+        const AUTH_ERROR_MESSAGES = {
+            "auth/invalid-credential": "Incorrect email or password.",
+            "auth/wrong-password": "Incorrect email or password.",
+            "auth/user-not-found": "No account found with this email. Please create an account first.",
+            "auth/invalid-email": "Please enter a valid email address.",
+            "auth/too-many-requests": "Too many attempts. Please wait a moment and try again.",
+            "auth/network-request-failed": "Network error. Please check your internet connection.",
+            "auth/popup-closed-by-user": "Google sign-in was cancelled.",
+            "auth/user-disabled": "This account has been disabled. Please contact support."
+        };
+
+        function friendlyAuthError(error, fallback) {
+            return AUTH_ERROR_MESSAGES[error?.code] || error?.message || fallback;
+        }
+
+        function finishLogin(session) {
+            AuthUI.setUser(session);
+            showToast(`Welcome back, ${session.name}! Redirecting...`);
+            const hasPanelAccess = session.role === "admin" || session.role === "manager";
+            const next = new URLSearchParams(window.location.search).get("next");
+            const targetUrl = (next === "admin-dashboard" && hasPanelAccess) ? "admin-dashboard/"
+                : (hasPanelAccess ? "admin-dashboard/" : "dashboard/");
+            setTimeout(() => { window.location.href = targetUrl; }, 400);
+        }
+
+        async function handleOAuthLogin(provider) {
+            try {
+                const session = await window.FirebaseService.loginWithGoogle();
+                finishLogin(session);
+            } catch (error) {
+                console.error(error);
+                showToast(friendlyAuthError(error, `${provider} sign-in failed. Please try again.`));
+            }
+        }
+
+        async function handleForgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            if (!email) {
+                showToast("Enter your email above first, then click Forgot Password.");
+                document.getElementById("email").focus();
+                return;
+            }
+            try {
+                await window.FirebaseService.sendPasswordReset(email);
+                showToast(`📧 Password reset link sent to ${email}. Check your inbox.`);
+            } catch (error) {
+                console.error(error);
+                showToast(friendlyAuthError(error, "Could not send the reset email. Please try again."));
+            }
         }
 
         async function handleFormLogin(e) {
             e.preventDefault();
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value;
+            const submitBtn = e.target.querySelector("button[type='submit']");
 
             if (!email || !password) {
                 showToast("Please enter your email and password.");
                 return;
             }
 
-            // Verify Captcha before login
             if (window.EarnifyCaptcha && !window.EarnifyCaptcha.validate('loginCaptchaContainer')) {
                 return;
             }
 
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Signing in...";
             try {
-                let user;
-                if (window.FirebaseService) {
-                    try {
-                        user = await window.FirebaseService.loginUser(email, password);
-                    } catch (fbErr) {
-                        console.warn("Firebase login failed:", fbErr);
-                    }
-                }
-
-                if (!user) {
-                    const isAdmin = email.toLowerCase().includes("admin");
-                    const isManager = email.toLowerCase().includes("manager");
-                    const role = isAdmin ? "admin" : (isManager ? "manager" : "user");
-                    const displayName = isAdmin ? "Super Admin" : (isManager ? "Rohit Manager" : email.split("@")[0]);
-
-                    user = {
-                        uid: "user-" + Date.now(),
-                        email: email,
-                        displayName: displayName,
-                        isAdmin: isAdmin,
-                        profile: {
-                            name: displayName,
-                            email: email,
-                            role: role,
-                            isAdmin: isAdmin,
-                            plan: "free"
-                        }
-                    };
-                }
-
-                const profileData = user.profile || {};
-                const isAdminUser = user.isAdmin === true || profileData.isAdmin === true || profileData.role === "admin" || email.toLowerCase().includes("admin");
-                const isManagerUser = profileData.role === "manager" || email.toLowerCase().includes("manager");
-                const userRole = isAdminUser ? "admin" : (isManagerUser ? "manager" : (profileData.role || "user"));
-
-                const profile = {
-                    name: profileData.name || user.displayName || (isAdminUser ? "Super Admin" : (isManagerUser ? "Content Manager" : email.split("@")[0])),
-                    email: user.email || email,
-                    phone: profileData.phone || "",
-                    isPro: profileData.isPro === true || isAdminUser,
-                    plan: profileData.plan || (isAdminUser ? "pro" : "free"),
-                    subscriptionStatus: profileData.subscriptionStatus || "active",
-                    premiumUntil: profileData.premiumUntil || null,
-                    memberSince: new Date().toISOString(),
-                    uid: user.uid,
-                    role: userRole,
-                    isAdmin: isAdminUser
-                };
-
-                AuthUI.setUser(profile);
-                showToast(`Welcome back, ${profile.name}! Redirecting...`);
-                
-                const targetUrl = (userRole === "admin" || userRole === "manager") ? "admin-dashboard/" : "dashboard/";
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 300);
+                const session = await window.FirebaseService.loginUser(email, password);
+                finishLogin(session);
             } catch (error) {
                 console.error(error);
-                showToast(error?.message || "Login failed. Please check your email and password.");
+                showToast(friendlyAuthError(error, "Login failed. Please check your email and password."));
                 if (window.EarnifyCaptcha) {
                     window.EarnifyCaptcha.refresh('loginCaptchaContainer');
                 }
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Login";
             }
         }
     </script>

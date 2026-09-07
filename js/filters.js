@@ -7,17 +7,26 @@ window.setupFilters = function ({ containerId, dataArray, cardGenerator, filterK
     const container = document.getElementById(containerId);
     if (!container) return;
 
+    // Re-running (e.g. after the live catalog arrives) only swaps the data and re-renders
+    if (container.__filterState) {
+        container.__filterState.dataArray = dataArray;
+        container.__filterState.render();
+        return;
+    }
+
     let activeFilter = "All";
     let searchQuery = "";
+    const state = { dataArray, render: null };
+    container.__filterState = state;
 
     const nicheBar = document.getElementById("promptNicheFilters");
     if (nicheBar && filterKey === "niche") {
-        const niches = [...new Set(dataArray.map(item => item.niche).filter(Boolean))].sort();
+        const niches = [...new Set(state.dataArray.map(item => item.niche).filter(Boolean))].sort();
         nicheBar.innerHTML = niches.map(niche => `<button class="filter-pill" data-filter="${niche}">${niche}</button>`).join("");
     }
 
     function render() {
-        let filtered = dataArray;
+        let filtered = state.dataArray;
 
         // Filter by category
         if (activeFilter !== "All") {
@@ -83,6 +92,8 @@ window.setupFilters = function ({ containerId, dataArray, cardGenerator, filterK
             render();
         });
     }
+
+    state.render = render;
 
     // Initial render
     render();

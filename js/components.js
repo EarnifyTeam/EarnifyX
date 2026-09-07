@@ -5,6 +5,23 @@
 
 const Components = {
     /**
+     * Return a copy of the item with every string field HTML-escaped so card
+     * templates can interpolate admin/localStorage data safely.
+     */
+    safe(item) {
+        if (!item || typeof item !== "object") return item;
+        const esc = window.escapeHtml || (v => String(v ?? "")
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"));
+        const out = {};
+        for (const [key, value] of Object.entries(item)) {
+            if (typeof value === "string") out[key] = esc(value);
+            else if (Array.isArray(value)) out[key] = value.map(v => typeof v === "string" ? esc(v) : v);
+            else out[key] = value;
+        }
+        return out;
+    },
+
+    /**
      * Generate dynamic author badge (Admin vs Manager)
      */
     getAuthorBadge(item) {
@@ -20,6 +37,7 @@ const Components = {
      * Render Chrome Extension Card
      */
     createExtensionCard(ext) {
+        ext = Components.safe(ext);
         const isSaved = window.AuthUI ? window.AuthUI.isSaved("extension", ext.id) : false;
         return `
             <div class="item-card" data-id="${ext.id}" data-category="${ext.category}">
@@ -31,7 +49,7 @@ const Components = {
                         <span class="badge badge-${ext.badgeType || 'success'}">${ext.badge}</span>
                     </div>
                     <h3 class="card-title">${ext.name}</h3>
-                    ${this.getAuthorBadge(ext)}
+                    ${Components.getAuthorBadge(ext)}
                     <p class="card-description">${ext.shortDescription}</p>
                 </div>
                 <div class="card-footer-action">
@@ -52,9 +70,10 @@ const Components = {
      * Render Software & Apps Card
      */
     createSoftwareCard(soft) {
+        soft = Components.safe(soft);
         const isSaved = window.AuthUI ? window.AuthUI.isSaved("software", soft.id) : false;
         return `
-            <div class="item-card" data-id="${soft.id}" data-category="${soft.tags[0] || 'App'}">
+            <div class="item-card" data-id="${soft.id}" data-category="${(soft.tags && soft.tags[0]) || 'App'}">
                 <div>
                     <div class="card-top">
                         <div class="card-icon-box" style="background-color: ${soft.iconBg}; color: ${soft.iconColor};">
@@ -63,7 +82,7 @@ const Components = {
                         <span class="badge badge-${soft.badgeType || 'primary'}">${soft.badge}</span>
                     </div>
                     <h3 class="card-title">${soft.name}</h3>
-                    ${this.getAuthorBadge(soft)}
+                    ${Components.getAuthorBadge(soft)}
                     <p class="card-description">${soft.shortDescription}</p>
                 </div>
                 <div class="card-footer-action">
@@ -84,7 +103,13 @@ const Components = {
      * Render Master Prompt Card
      */
     createPromptCard(prompt) {
+        const locked = window.isPromptLocked ? window.isPromptLocked(prompt) : Boolean(prompt.locked);
+        prompt = Components.safe(prompt);
         const isSaved = window.AuthUI ? window.AuthUI.isSaved("prompt", prompt.id) : false;
+        // Admin-created prompts often have no summary: fall back to the start of the prompt itself
+        const summary = (prompt.shortDescription || "").trim().length > 3
+            ? prompt.shortDescription
+            : (prompt.promptText || "").slice(0, 160) + ((prompt.promptText || "").length > 160 ? "…" : "");
         const detectedFormat = prompt.contentType || (prompt.tags || []).find(tag => ["Video", "Image", "Audio", "Shorts/Reels"].includes(tag));
         return `
             <div class="prompt-card" data-id="${prompt.id}" data-category="${prompt.category}">
@@ -97,21 +122,21 @@ const Components = {
                         <span class="badge badge-${prompt.badgeType || 'success'}">${prompt.badge}</span>
                     </div>
                     <h3 class="card-title" style="margin-bottom: 0.35rem;">${prompt.title}</h3>
-                    ${this.getAuthorBadge(prompt)}
+                    ${Components.getAuthorBadge(prompt)}
                     <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; font-size: 0.72rem; color: var(--text-muted);">
                         ${prompt.niche ? `<span class="prompt-category-tag">Niche: ${prompt.niche}</span>` : ""}
                         ${prompt.model ? `<span class="prompt-category-tag">Model: ${prompt.model}</span>` : ""}
                         ${detectedFormat ? `<span class="prompt-category-tag">Format: ${detectedFormat}</span>` : ""}
                     </div>
                     <div class="prompt-body-preview">
-                        ${prompt.locked ? (prompt.previewText || prompt.shortDescription) : prompt.shortDescription}
+                        ${locked ? (prompt.previewText || summary) : summary}
                     </div>
                 </div>
                 <div class="prompt-footer">
                     <button class="btn btn-sm btn-secondary" onclick="openPromptModal('${prompt.id}')">
-                        ${prompt.locked ? '🔒 View Locked' : 'View Prompt →'}
+                        ${locked ? '🔒 View Locked' : 'View Prompt →'}
                     </button>
-                    ${prompt.locked 
+                    ${locked 
                         ? `<button class="btn btn-sm btn-primary" onclick="openUnlockModal('${prompt.title.replace(/'/g, "\\'")}')">Unlock</button>`
                         : `<button class="btn btn-sm btn-subtle" onclick="copyPromptText('${prompt.id}', event)">📋 Copy</button>`
                     }
@@ -124,6 +149,7 @@ const Components = {
      * Render AI Tool Card
      */
     createToolCard(tool) {
+        tool = Components.safe(tool);
         const isSaved = window.AuthUI ? window.AuthUI.isSaved("tool", tool.id) : false;
         return `
             <div class="item-card" data-id="${tool.id}" data-category="${tool.category}">
@@ -135,7 +161,7 @@ const Components = {
                         <span class="badge badge-${tool.badgeType || 'primary'}">${tool.pricing}</span>
                     </div>
                     <h3 class="card-title">${tool.name}</h3>
-                    ${this.getAuthorBadge(tool)}
+                    ${Components.getAuthorBadge(tool)}
                     <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem;">${tool.category} • ⭐ ${tool.rating}</div>
                     <p class="card-description">${tool.shortDescription}</p>
                 </div>
@@ -157,6 +183,7 @@ const Components = {
      * Render Resource Card
      */
     createResourceCard(res) {
+        res = Components.safe(res);
         const isSaved = window.AuthUI ? window.AuthUI.isSaved("resource", res.id) : false;
         return `
             <div class="item-card" data-id="${res.id}" data-category="${res.category}">
@@ -168,7 +195,7 @@ const Components = {
                         <span class="badge badge-${res.badgeType}">${res.badge}</span>
                     </div>
                     <h3 class="card-title">${res.title}</h3>
-                    ${this.getAuthorBadge(res)}
+                    ${Components.getAuthorBadge(res)}
                     <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem;">${res.category} • ⬇️ ${res.downloads}</div>
                     <p class="card-description">${res.description}</p>
                 </div>
@@ -190,6 +217,7 @@ const Components = {
      * Render Blog Card
      */
     createBlogCard(post) {
+        post = Components.safe(post);
         return `
             <article class="article-card" data-id="${post.id}">
                 <img src="${post.thumbnail}" alt="${post.title}" class="article-thumb" loading="lazy" />
@@ -202,7 +230,7 @@ const Components = {
                         <span>${post.readTime}</span>
                     </div>
                     <h3 class="article-title">${post.title}</h3>
-                    ${this.getAuthorBadge(post)}
+                    ${Components.getAuthorBadge(post)}
                     <p class="card-description" style="-webkit-line-clamp: 3;">${post.shortDescription}</p>
                     <div style="margin-top: auto; padding-top: 1rem;">
                         <button class="card-action-btn" onclick="openBlogModal('${post.id}')">
@@ -218,6 +246,7 @@ const Components = {
      * Render Tutorial Card
      */
     createTutorialCard(tut) {
+        tut = Components.safe(tut);
         return `
             <article class="article-card" data-id="${tut.id}">
                 <img src="${tut.thumbnail}" alt="${tut.title}" class="article-thumb" loading="lazy" />
@@ -228,7 +257,7 @@ const Components = {
                         <span>⏱️ ${tut.time}</span>
                     </div>
                     <h3 class="article-title">${tut.title}</h3>
-                    ${this.getAuthorBadge(tut)}
+                    ${Components.getAuthorBadge(tut)}
                     <p class="card-description">${tut.description}</p>
                     <div style="margin-top: auto; padding-top: 1rem;">
                         <button class="card-action-btn" onclick="openTutorialModal('${tut.id}')">

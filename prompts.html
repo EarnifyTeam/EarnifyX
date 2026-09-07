@@ -266,7 +266,7 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             if (window.PROMPTS_DATA && window.setupFilters) {
                 setupFilters({
                     containerId: "promptsCatalogContainer",

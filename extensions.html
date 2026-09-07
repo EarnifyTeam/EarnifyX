@@ -238,7 +238,7 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             if (window.EXTENSIONS_DATA && window.setupFilters) {
                 setupFilters({
                     containerId: "extensionsCatalogContainer",

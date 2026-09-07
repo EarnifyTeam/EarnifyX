@@ -29,13 +29,17 @@
         }
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
+    // Also called by main.js after it injects a header into pages that ship without one
+    window.initThemeToggle = function () {
         const activeTheme = document.documentElement.getAttribute("data-theme") || "light";
         updateThemeIcon(activeTheme);
 
-        const toggleButtons = document.querySelectorAll(".theme-toggle-btn");
-        toggleButtons.forEach(btn => {
+        document.querySelectorAll(".theme-toggle-btn").forEach(btn => {
+            if (btn.dataset.themeBound) return;
+            btn.dataset.themeBound = "true";
             btn.addEventListener("click", window.toggleTheme);
         });
-    });
+    };
+
+    document.addEventListener("DOMContentLoaded", window.initThemeToggle);
 })();

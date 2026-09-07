@@ -240,7 +240,7 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             if (window.SOFTWARE_DATA && window.setupFilters) {
                 setupFilters({
                     containerId: "softwareCatalogContainer",
@@ -253,6 +253,5 @@
     </script>
 </body>
 </html>
-
 
 

@@ -29,7 +29,58 @@ const Admin = {
 
     isAdmin() {
         const user = this.getCurrentUser();
-        return !user || user.role === "admin" || user.isAdmin === true;
+        return Boolean(user) && (user.role === "admin" || user.isAdmin === true);
+    },
+
+    singularLabel(type) {
+        const labels = {
+            extensions: "Extension", software: "Software", prompts: "Prompt", tools: "Tool",
+            resources: "Resource", blog: "Blog Post", tutorials: "Tutorial"
+        };
+        return labels[type] || type;
+    },
+
+    hasPanelAccess() {
+        return this.isAdmin() || this.isManager();
+    },
+
+    /**
+     * Verify the signed-in Firebase account before showing anything.
+     * The cached localStorage session is never trusted on its own.
+     */
+    async verifyAccess() {
+        const shell = document.querySelector(".app-container");
+        if (shell) shell.style.visibility = "hidden";
+
+        let session = null;
+        if (window.FirebaseService) {
+            try {
+                await window.initializeFirebase();
+                if (window.__earnifyxFirebaseInitialized) {
+                    session = await window.FirebaseService.getVerifiedSession();
+                } else {
+                    session = null;
+                }
+            } catch (error) {
+                console.warn("Admin access verification failed:", error);
+                session = null;
+            }
+        }
+
+        if (!session) {
+            if (window.AuthUI) window.AuthUI.logout();
+            window.location.replace("login/?next=admin-dashboard");
+            return false;
+        }
+
+        if (!this.hasPanelAccess()) {
+            if (window.showToast) window.showToast("This account does not have admin access.");
+            setTimeout(() => window.location.replace("dashboard/"), 900);
+            return false;
+        }
+
+        if (shell) shell.style.visibility = "";
+        return true;
     },
 
     renderRoleIndicator() {
@@ -41,7 +92,7 @@ const Admin = {
             container.innerHTML = `
                 <div class="admin-role-indicator role-manager">
                     <span>🛡️</span>
-                    <span>Manager Access (${user?.name || "Content Manager"})</span>
+                    <span>Manager Access (${window.escapeHtml ? window.escapeHtml(user?.name || "Content Manager") : "Content Manager"})</span>
                     <span style="font-size:0.7rem; opacity:0.8; font-weight:400;">• Create & Edit Mode</span>
                 </div>
             `;
@@ -49,7 +100,7 @@ const Admin = {
             container.innerHTML = `
                 <div class="admin-role-indicator role-admin">
                     <span>👑</span>
-                    <span>Super Admin (${user?.name || "Owner"})</span>
+                    <span>Super Admin (${window.escapeHtml ? window.escapeHtml(user?.name || "Owner") : "Owner"})</span>
                     <span style="font-size:0.7rem; opacity:0.8; font-weight:400;">• Full Control</span>
                 </div>
             `;
@@ -57,15 +108,22 @@ const Admin = {
     },
 
     applyManagerRestrictions() {
-        // Hide super-admin only tabs for manager
-        const adminOnlyTabs = ["#tab-ads", "#tab-social", "#tab-about", "#tab-sitemap", "#tab-backup"];
-        adminOnlyTabs.forEach(selector => {
-            const link = document.querySelector(`.admin-tab-btn[href="${selector}"]`);
-            if (link) link.style.display = "none";
+        // Managers only get the content tabs; site-wide settings and backups stay admin-only
+        const link = document.querySelector('.admin-tab-btn[href="#tab-backup"]');
+        if (link) link.style.display = "none";
+
+        document.querySelectorAll("#tab-overview .admin-form-box").forEach(box => {
+            if (box.querySelector("form")) box.style.display = "none";
+        });
+        document.querySelectorAll("#tab-overview [onclick*='exportAllBackupJSON']").forEach(btn => {
+            btn.style.display = "none";
         });
     },
 
-    init() {
+    async init() {
+        const allowed = await this.verifyAccess();
+        if (!allowed) return;
+
         this.renderRoleIndicator();
         this.bindEvents();
         this.loadRemoteData();
@@ -260,7 +318,7 @@ const Admin = {
             const types = ["extensions", "software", "prompts", "tools", "resources", "blog", "tutorials"];
             for (const type of types) {
                 const data = await window.FirebaseService.loadDataFromFirestore(type);
-                if (Array.isArray(data) && data.length) {
+                if (Array.isArray(data)) {
                     const keyMap = {
                         extensions: "earnifyx_data_extensions",
                         software: "earnifyx_data_software",
@@ -388,6 +446,9 @@ const Admin = {
 
             if (targetTab) targetTab.classList.add("active");
             targetContent.style.display = "block";
+
+            document.querySelector(".admin-sidebar")?.classList.remove("open");
+            document.querySelector(".sidebar-backdrop")?.classList.remove("active");
             window.location.hash = tabId;
             this.state.currentTab = tabId;
             window.scrollTo({ top: 0, behavior: "smooth" });
@@ -463,16 +524,18 @@ const Admin = {
                     <tbody>
         `;
 
+        const esc = window.escapeHtml || (v => String(v ?? ""));
         items.forEach(item => {
-            const name = item.name || item.title || "Untitled";
-            const cat = item.category || item.platform || "-";
-            const badge = item.badge || item.type || "Active";
-            const badgeType = item.badgeType || "primary";
-            const details = item.version ? `${item.version} • ⭐ ${item.rating || 4.8}` : (item.date || item.pricing || item.difficulty || item.reads || "-");
+            const name = esc(item.name || item.title || "Untitled");
+            const cat = esc(item.category || item.platform || "-");
+            const badge = esc(item.badge || item.type || "Active");
+            const badgeType = esc(item.badgeType || "primary");
+            const details = esc(item.version ? `${item.version} • ⭐ ${item.rating || 4.8}` : (item.date || item.pricing || item.difficulty || item.reads || "-"));
+            const safeId = esc(item.id);
             
             // Dynamic Author Label
             const isManagerPost = item.authorRole === "manager" || (item.author && item.author !== "Admin" && item.author !== "EarnifyX Team");
-            const authorText = isManagerPost ? `👤 By ${item.authorName || item.author} (Manager)` : `🛡️ By Admin`;
+            const authorText = isManagerPost ? `👤 By ${esc(item.authorName || item.author)} (Manager)` : `🛡️ By Admin`;
 
             const isManager = this.isManager();
 
@@ -484,7 +547,7 @@ const Admin = {
                             <div>
                                 <strong style="color: var(--text-primary); font-size: 0.9rem;">${name}</strong>
                                 <div style="display: flex; align-items: center; gap: 0.4rem; margin-top: 0.15rem;">
-                                    <span style="font-size: 0.72rem; color: var(--text-muted);">${item.id}</span>
+                                    <span style="font-size: 0.72rem; color: var(--text-muted);">${safeId}</span>
                                     <span style="font-size: 0.7rem; font-weight: 600; color: ${isManagerPost ? 'var(--accent-indigo)' : 'var(--accent-primary)'};">${authorText}</span>
                                 </div>
                             </div>
@@ -494,11 +557,11 @@ const Admin = {
                     <td><span class="badge badge-${badgeType}">${badge}</span></td>
                     <td style="font-size: 0.82rem; color: var(--text-secondary);">${details}</td>
                     <td style="text-align: right; white-space: nowrap;">
-                        <button class="btn btn-sm btn-subtle" onclick="Admin.editItem('${type}', '${item.id}')" title="Edit">
+                        <button class="btn btn-sm btn-subtle" onclick="Admin.editItem('${type}', '${safeId}')" title="Edit">
                             ✏️ Edit
                         </button>
                         ${!isManager ? `
-                        <button class="btn btn-sm btn-secondary" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);" onclick="Admin.deleteItem('${type}', '${item.id}')" title="Delete">
+                        <button class="btn btn-sm btn-secondary" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);" onclick="Admin.deleteItem('${type}', '${safeId}')" title="Delete">
                             🗑️ Delete
                         </button>
                         ` : ''}
@@ -569,7 +632,7 @@ const Admin = {
 
         const submitBtn = form.querySelector("button[type='submit']");
         if (submitBtn) {
-            submitBtn.textContent = `💾 Update ${type.slice(0, -1) || type}`;
+            submitBtn.textContent = `💾 Update ${Admin.singularLabel(type) || type}`;
         }
 
         const cancelBtn = document.getElementById(`cancelEditBtn_${type}`);
@@ -586,7 +649,7 @@ const Admin = {
         if (form) {
             form.reset();
             const submitBtn = form.querySelector("button[type='submit']");
-            if (submitBtn) submitBtn.textContent = `➕ Add ${type.slice(0, -1) || type}`;
+            if (submitBtn) submitBtn.textContent = `➕ Add ${Admin.singularLabel(type) || type}`;
         }
 
         const cancelBtn = document.getElementById(`cancelEditBtn_${type}`);

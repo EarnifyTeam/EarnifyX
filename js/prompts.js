@@ -4,13 +4,20 @@
  */
 
 // Copy prompt text to clipboard
+// Pro members see every prompt unlocked
+window.isPromptLocked = function (prompt) {
+    if (!prompt || !prompt.locked) return false;
+    const user = window.AuthUI ? window.AuthUI.getUser() : null;
+    return !(user && user.isPro === true);
+};
+
 window.copyPromptText = async function (promptId, event) {
     if (event) event.stopPropagation();
 
     const prompt = (window.PROMPTS_DATA || []).find(p => p.id === promptId);
     if (!prompt) return;
 
-    if (prompt.locked) {
+    if (window.isPromptLocked(prompt)) {
         openUnlockModal(prompt.title);
         return;
     }
@@ -36,9 +43,11 @@ window.copyPromptText = async function (promptId, event) {
 
 // Open prompt details modal
 window.openPromptModal = function (promptId) {
-    const prompt = (window.PROMPTS_DATA || []).find(p => p.id === promptId);
-    if (!prompt) return;
-    if (window.AuthUI) AuthUI.recordViewed("Prompts", prompt.title);
+    const raw = (window.PROMPTS_DATA || []).find(p => p.id === promptId);
+    if (!raw) return;
+    if (window.AuthUI) AuthUI.recordViewed("Prompts", raw.title);
+    const locked = window.isPromptLocked(raw);
+    const prompt = window.Components ? window.Components.safe(raw) : raw;
 
     const modalOverlay = document.getElementById("globalModalOverlay");
     const modalContent = document.getElementById("globalModalContent");
@@ -51,30 +60,30 @@ window.openPromptModal = function (promptId) {
                 <span class="text-muted" style="font-size: 0.8rem;">Category: ${prompt.category}</span>
             </div>
             <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary);">${prompt.title}</h2>
-            <p class="text-secondary" style="font-size: 0.9rem; margin-top: 0.35rem;">${prompt.shortDescription}</p>
+            ${(prompt.shortDescription || "").trim().length > 3 ? `<p class="text-secondary" style="font-size: 0.9rem; margin-top: 0.35rem;">${prompt.shortDescription}</p>` : ""}
         </div>
 
         <div>
             <div class="flex items-center justify-between">
                 <span style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Prompt Template</span>
-                ${!prompt.locked ? `<span style="font-size: 0.78rem; color: var(--text-muted);">Recommended for: ${prompt.model}</span>` : ''}
+                ${!locked ? `<span style="font-size: 0.78rem; color: var(--text-muted);">Recommended for: ${prompt.model}</span>` : ''}
             </div>
 
             <div class="prompt-full-box">
-                ${prompt.locked ? (prompt.previewText || 'This prompt is locked. Upgrade to EarnifyX Pro to unlock full access.') : prompt.promptText.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                ${locked ? (prompt.previewText || 'This prompt is locked. Upgrade to EarnifyX Pro to unlock full access.') : prompt.promptText}
             </div>
         </div>
 
         <div class="flex items-center justify-between" style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-            ${prompt.locked ? `
-                <button class="btn btn-primary" style="width: 100%;" onclick="openUnlockModal('${prompt.title.replace(/'/g, "\\'")}')">
+            ${locked ? `
+                <button class="btn btn-primary" style="width: 100%;" onclick="openUnlockModal('${prompt.title}')">
                     🔒 Unlock Full Prompt with Pro
                 </button>
             ` : `
                 <button class="btn btn-primary" onclick="copyPromptText('${prompt.id}'); closeModal();">
                     📋 Copy Full Prompt
                 </button>
-                <button class="btn btn-secondary" onclick="toggleSaveItem('prompt', '${prompt.id}', '${prompt.title.replace(/'/g, "\\'")}', event)">
+                <button class="btn btn-secondary" onclick="toggleSaveItem('prompt', '${prompt.id}', '${prompt.title}', event)">
                     ❤️ Save to Library
                 </button>
             `}
@@ -97,7 +106,7 @@ window.openUnlockModal = function (title) {
                 Unlock EarnifyX Premium
             </h2>
             <p class="text-secondary" style="font-size: 0.9rem; max-width: 440px; margin: 0 auto 1.5rem auto;">
-                Get instant unlimited access to <strong>${title}</strong>, plus our full library of 500+ Master Prompts, exclusive software downloads, and automation templates.
+                Get instant unlimited access to <strong>${window.escapeHtml ? window.escapeHtml(title) : title}</strong>, plus our full library of 500+ Master Prompts, exclusive software downloads, and automation templates.
             </p>
 
             <div style="background-color: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; text-align: left;">

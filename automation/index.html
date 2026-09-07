@@ -234,12 +234,12 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             const container = document.getElementById("automationContainer");
             if (container) {
                 // Collect automation specific items from datasets
-                const autoSoft = (window.SOFTWARE_DATA || []).filter(s => s.tags.includes("Automation"));
-                const autoExt = (window.EXTENSIONS_DATA || []).filter(e => e.tags.includes("Automation"));
+                const autoSoft = (window.SOFTWARE_DATA || []).filter(s => (s.tags || []).includes("Automation"));
+                const autoExt = (window.EXTENSIONS_DATA || []).filter(e => (e.tags || []).includes("Automation"));
                 const autoPrompts = (window.PROMPTS_DATA || []).filter(p => p.category === "Automation");
 
                 let html = "";
@@ -247,12 +247,11 @@
                 html += autoExt.map(Components.createExtensionCard).join("");
                 html += autoPrompts.map(Components.createPromptCard).join("");
 
-                container.innerHTML = html;
+                container.innerHTML = html || window.emptyStateHtml("No automation tools yet", "New automation tools are being added. Check back soon!");
             }
         });
     </script>
 </body>
 </html>
-
 
 

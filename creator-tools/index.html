@@ -235,11 +235,11 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             const container = document.getElementById("creatorToolsContainer");
             if (container) {
-                const creatorSoft = (window.SOFTWARE_DATA || []).filter(s => s.tags.includes("Creator"));
-                const creatorExt = (window.EXTENSIONS_DATA || []).filter(e => e.tags.includes("Creator"));
+                const creatorSoft = (window.SOFTWARE_DATA || []).filter(s => (s.tags || []).includes("Creator"));
+                const creatorExt = (window.EXTENSIONS_DATA || []).filter(e => (e.tags || []).includes("Creator"));
                 const creatorPrompts = (window.PROMPTS_DATA || []).filter(p => p.category === "YouTube" || p.category === "Social Media");
 
                 let html = "";
@@ -247,12 +247,11 @@
                 html += creatorExt.map(Components.createExtensionCard).join("");
                 html += creatorPrompts.map(Components.createPromptCard).join("");
 
-                container.innerHTML = html;
+                container.innerHTML = html || window.emptyStateHtml("No creator tools yet", "New creator tools are being added. Check back soon!");
             }
         });
     </script>
 </body>
 </html>
-
 
 

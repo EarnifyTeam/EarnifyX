@@ -1,10 +1,7 @@
 /**
  * EarnifyX Lab - Frontend session and saved-item state
- * 
- * FUTURE BACKEND INTEGRATION:
- * // Replace localStorage state with Supabase Auth:
- * // const { data: { user } } = await supabase.auth.getUser();
- * // const { data, error } = await supabase.from('bookmarks').select('*').eq('user_id', user.id);
+ * The session cache in localStorage is a UI convenience only; roles are
+ * re-verified against Firebase Auth/Firestore on every page load.
  */
 
 const AuthUI = {
@@ -27,37 +24,21 @@ const AuthUI = {
         return Boolean(this.getUser());
     },
 
+    /**
+     * Resolve the trusted session from Firebase. Returns the verified session
+     * profile, or null when nobody is signed in (the local cache is cleared then).
+     */
     async waitForFirebaseSession() {
         if (!window.FirebaseService) return this.getUser();
         try {
             await window.initializeFirebase();
-            const { auth, helpers } = await window.FirebaseService.ensureReady();
-            return await new Promise(resolve => {
-                let settled = false;
-                const finish = user => {
-                    if (settled) return;
-                    settled = true;
-                    resolve(user);
-                };
-                helpers.onAuthStateChanged(auth, async firebaseUser => {
-                    if (!firebaseUser) {
-                        finish(this.getUser());
-                        return;
-                    }
-                    const profile = await window.FirebaseService.getUserProfile(firebaseUser);
-                    this.setUser({
-                        ...profile,
-                        uid: firebaseUser.uid,
-                        name: profile.name || firebaseUser.displayName || firebaseUser.email.split("@")[0],
-                        email: firebaseUser.email,
-                        role: profile.role || "user",
-                        plan: profile.plan || "free",
-                        isPro: profile.isPro === true,
-                        memberSince: profile.createdAt || profile.memberSince || new Date().toISOString()
-                    });
-                    finish(this.getUser());
-                });
-            });
+            if (!window.__earnifyxFirebaseInitialized) return this.getUser();
+            const session = await window.FirebaseService.getVerifiedSession();
+            if (!session) {
+                localStorage.removeItem(this.USER_KEY);
+                return null;
+            }
+            return session;
         } catch (error) {
             console.warn("Firebase session check failed:", error);
             return this.getUser();
@@ -71,7 +52,6 @@ const AuthUI = {
         const record = { ...userData, role: userData.role || "user", updatedAt: new Date().toISOString() };
         if (index >= 0) users[index] = { ...users[index], ...record };
         else users.push(record);
-        // FUTURE USER DATABASE: Replace this browser-only directory with Supabase profiles.
         localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
     },
 
@@ -129,7 +109,6 @@ const AuthUI = {
             status = true;
         }
 
-        // FUTURE: Store user bookmarks in Supabase database.
         localStorage.setItem(this.getUserStorageKey(this.BOOKMARKS_KEY), JSON.stringify(bookmarks));
         return status;
     },
@@ -161,7 +140,6 @@ const AuthUI = {
         const downloads = this.getDownloads();
         if (!downloads.some(item => item.type === type && item.id === id)) {
             downloads.unshift({ type, id, title, downloadedAt: new Date().toISOString() });
-            // FUTURE: Store user downloads in Supabase database.
             localStorage.setItem(this.getUserStorageKey(this.DOWNLOADS_KEY), JSON.stringify(downloads));
         }
         return true;
@@ -214,7 +192,6 @@ window.showAuthPrompt = function () {
 
 window.confirmLogout = function () {
     if (!window.confirm("Are you sure you want to logout?")) return;
-    // FUTURE SUPABASE AUTH: Supabase session termination belongs here.
     AuthUI.logout();
     window.location.href = "./";
 };
@@ -243,7 +220,7 @@ function renderAuthUI(user) {
     const welcomeBtn = document.querySelector(".btn-login-account");
     if (welcomeTitle) {
         if (user) {
-            welcomeTitle.innerHTML = `<span>Welcome back, ${user.name || "Creator"}</span> <span>👋</span>`;
+            welcomeTitle.innerHTML = `<span>Welcome back, ${window.escapeHtml ? window.escapeHtml(user.name || "Creator") : "Creator"}</span> <span>👋</span>`;
             if (welcomeSubtitle) welcomeSubtitle.textContent = "Ready to create something amazing today?";
             if (welcomeBtn) {
                 welcomeBtn.textContent = "Go to Dashboard →";
@@ -281,22 +258,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!window.FirebaseService) return;
     try {
         await window.initializeFirebase();
+        if (!window.__earnifyxFirebaseInitialized) return;
         const { auth, helpers } = await window.FirebaseService.ensureReady();
         helpers.onAuthStateChanged(auth, async firebaseUser => {
-            if (!firebaseUser) return;
-
-            const profile = await window.FirebaseService.getUserProfile(firebaseUser);
-            AuthUI.setUser({
-                ...profile,
-                uid: firebaseUser.uid,
-                name: profile.name || firebaseUser.displayName || firebaseUser.email.split("@")[0],
-                email: firebaseUser.email,
-                role: profile.role || "user",
-                plan: profile.plan || "free",
-                isPro: profile.isPro === true,
-                memberSince: profile.createdAt || profile.memberSince || new Date().toISOString()
-            });
-            renderAuthUI(AuthUI.getUser());
+            if (!firebaseUser) {
+                // Firebase says nobody is signed in: drop any stale cached session
+                if (AuthUI.getUser()) {
+                    localStorage.removeItem(AuthUI.USER_KEY);
+                    renderAuthUI(null);
+                }
+                return;
+            }
+            const session = await window.FirebaseService.sessionFromFirebaseUser(firebaseUser);
+            AuthUI.setUser(session);
+            renderAuthUI(session);
         });
     } catch (error) {
         console.warn("Firebase auth state sync failed:", error);

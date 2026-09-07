@@ -21,7 +21,7 @@
 
     <!-- Header -->
         <!-- Top Navigation Header -->
-    <header class="site-header">
+     <header class="site-header">
         <div class="header-left">
             <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
                 ☰
@@ -39,16 +39,22 @@
 
         <!-- Center Top Navigation Menu -->
         <nav class="header-nav" aria-label="Main Navigation">
-            <a href="ai-tools/" class="header-nav-link">🤖 AI Tools</a>
             <a href="extensions/" class="header-nav-link">🧩 Extensions</a>
             <a href="software/" class="header-nav-link">💻 Software</a>
-            <a href="prompts/" class="header-nav-link active">🧠 PromptBhandar</a>
+            <a href="prompts/" class="header-nav-link">🧠 Prompt Bhandar</a>
             <a href="resources/" class="header-nav-link">📦 Resources</a>
             <div class="header-dropdown">
                 <button class="header-dropdown-btn" type="button" aria-haspopup="true" aria-expanded="false">
                     <span>More</span> <span class="dropdown-chevron">▾</span>
                 </button>
                 <div class="header-dropdown-menu">
+                    <a href="ai-tools/" class="dropdown-item">
+                        <span class="item-icon">🤖</span>
+                        <div class="item-text">
+                            <span class="item-title">AI Tools</span>
+                            <span class="item-sub">Directory & platforms</span>
+                        </div>
+                    </a>
                     <a href="automation/" class="dropdown-item">
                         <span class="item-icon">⚡</span>
                         <div class="item-text">
@@ -261,7 +267,7 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             if (window.PROMPTS_DATA && window.setupFilters) {
                 setupFilters({
                     containerId: "promptsCatalogContainer",
@@ -274,6 +280,5 @@
     </script>
 </body>
 </html>
-
 
 

@@ -230,47 +230,62 @@
             const resultsContainer = document.getElementById("searchResultsContainer");
             const meta = document.getElementById("searchResultsMeta");
 
-            function renderResults(query) {
-                const results = query && query.trim() !== "" 
-                    &#9776; GlobalSearch.query(query)
-                    : GlobalSearch.getAllData();
+            const esc = window.escapeHtml || (v => String(v ?? ""));
+            const pageFor = {
+                extensions: "extensions/", software: "software/", prompts: "prompts/", tools: "ai-tools/",
+                resources: "resources/", blog: "blog/", tutorials: "tutorials/"
+            };
+            let currentResults = [];
 
-                meta.textContent = query && query.trim() !== "" 
-                    &#9776; `Found ${results.length} results matching "${query}"`
+            function renderResults(query) {
+                const hasQuery = query && query.trim() !== "";
+                currentResults = hasQuery ? GlobalSearch.query(query) : GlobalSearch.getAllData();
+                const results = currentResults;
+
+                meta.textContent = hasQuery
+                    ? `Found ${results.length} results matching "${query}"`
                     : `Showing all ${results.length} platform items`;
 
                 if (results.length === 0) {
                     resultsContainer.innerHTML = `
                         <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
                             <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔍</div>
-                            <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">No items matched "${query}"</h3>
+                            <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">No items matched "${esc(query)}"</h3>
                             <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">Try searching for broad terms like "YouTube", "AI", "Extension", or "Prompt"</p>
                         </div>
                     `;
                     return;
                 }
 
-                resultsContainer.innerHTML = results.map(item => `
+                resultsContainer.innerHTML = results.map((item, index) => `
                     <div class="item-card">
                         <div>
                             <div class="card-top">
-                                <div class="card-icon-box" style="background: var(--bg-surface-subtle); color: var(--accent-primary);">
+                                <div class="card-icon-box" style="background: ${esc(item.iconBg)}; color: ${esc(item.iconColor)};">
                                     ${item.icon}
                                 </div>
-                                <span class="badge badge-${item.typeBadge}">${item.type}</span>
+                                <span class="badge badge-primary">${esc(item.type)}</span>
                             </div>
-                            <h3 class="card-title">${item.title}</h3>
-                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">Category: ${item.category}</div>
-                            <p class="card-description">${item.description}</p>
+                            <h3 class="card-title">${esc(item.title)}</h3>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">Category: ${esc(item.category)}</div>
+                            <p class="card-description">${esc(item.description)}</p>
                         </div>
                         <div class="card-footer-action">
-                            <a href="${item.url}" class="card-action-btn">
-                                Open in ${item.type} →
-                            </a>
+                            <button type="button" class="card-action-btn" data-result-index="${index}">
+                                ${esc(item.action || "Open")} →
+                            </button>
+                            <a href="${pageFor[item.categoryGroup] || "./"}#${esc(item.id)}" class="card-bookmark-btn" title="Open ${esc(item.type)} page">↗</a>
                         </div>
                     </div>
                 `).join("");
             }
+
+            resultsContainer.addEventListener("click", (e) => {
+                const btn = e.target.closest("[data-result-index]");
+                if (!btn) return;
+                const item = currentResults[Number(btn.dataset.resultIndex)];
+                if (item && typeof item.modalFn === "function") item.modalFn();
+            });
 
             // Parse URL parameters
             const urlParams = new URLSearchParams(window.location.search);
@@ -284,10 +299,11 @@
             searchInput.addEventListener("input", (e) => {
                 renderResults(e.target.value);
             });
+
+            document.addEventListener("earnifyx:data-updated", () => renderResults(searchInput.value));
         });
     </script>
 </body>
 </html>
-
 
 

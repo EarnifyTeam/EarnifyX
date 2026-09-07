@@ -391,7 +391,7 @@
                                 <p>Get daily flash tool alerts, instant AI updates, and secret creator prompts straight on your WhatsApp.</p>
                             </div>
                         </div>
-                        <a href="https://whatsapp.com/channel" data-social-link="whatsapp" target="_blank" rel="noopener noreferrer" class="community-btn whatsapp-btn">
+                        <a href="https://whatsapp.com/channel/0029VbD422MGOj9lYSbcc72c" data-social-link="whatsapp" target="_blank" rel="noopener noreferrer" class="community-btn whatsapp-btn">
                             <span>💬 Join WhatsApp Channel</span>
                             <span>↗</span>
                         </a>
@@ -431,7 +431,7 @@
                                 <p>Download raw prompt templates, cheat sheets, code snippets, and free software packages directly.</p>
                             </div>
                         </div>
-                        <a href="https://t.me" data-social-link="telegram" target="_blank" rel="noopener noreferrer" class="community-btn telegram-btn">
+                        <a href="https://t.me/+HEQvM-fugAgwZjZl" data-social-link="telegram" target="_blank" rel="noopener noreferrer" class="community-btn telegram-btn">
                             <span>✈️ Join Telegram VIP</span>
                             <span>↗</span>
                         </a>
@@ -506,9 +506,9 @@
                 </p>
                 <div class="footer-social-links">
                     <a href="https://youtube.com" data-social-link="youtube" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="YouTube">📺</a>
-                    <a href="https://t.me" data-social-link="telegram" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Telegram">✈️</a>
+                    <a href="https://t.me/+HEQvM-fugAgwZjZl" data-social-link="telegram" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Telegram">✈️</a>
                     <a href="https://instagram.com" data-social-link="instagram" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="Instagram">📷</a>
-                    <a href="https://whatsapp.com" data-social-link="whatsapp" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="WhatsApp">💬</a>
+                    <a href="https://whatsapp.com/channel/0029VbD422MGOj9lYSbcc72c" data-social-link="whatsapp" target="_blank" rel="noopener noreferrer" class="social-icon-btn" title="WhatsApp">💬</a>
                 </div>
             </div>
 
@@ -577,36 +577,42 @@
 
     <!-- Homepage Initialization Script -->
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             // Render selected cards on homepage (4-6 max per section)
             const extContainer = document.getElementById("homeExtensionsContainer");
             if (extContainer && window.EXTENSIONS_DATA) {
                 extContainer.innerHTML = window.EXTENSIONS_DATA.slice(0, 5).map(Components.createExtensionCard).join("");
+                window.toggleHomeSection(extContainer, window.EXTENSIONS_DATA.length > 0);
             }
 
             const softContainer = document.getElementById("homeSoftwareContainer");
             if (softContainer && window.SOFTWARE_DATA) {
                 softContainer.innerHTML = window.SOFTWARE_DATA.slice(0, 5).map(Components.createSoftwareCard).join("");
+                window.toggleHomeSection(softContainer, window.SOFTWARE_DATA.length > 0);
             }
 
             const promptContainer = document.getElementById("homePromptsContainer");
             if (promptContainer && window.PROMPTS_DATA) {
                 promptContainer.innerHTML = window.PROMPTS_DATA.slice(0, 5).map(Components.createPromptCard).join("");
+                window.toggleHomeSection(promptContainer, window.PROMPTS_DATA.length > 0);
             }
 
             const toolsContainer = document.getElementById("homeToolsContainer");
             if (toolsContainer && window.TOOLS_DATA) {
                 toolsContainer.innerHTML = window.TOOLS_DATA.slice(0, 5).map(Components.createToolCard).join("");
+                window.toggleHomeSection(toolsContainer, window.TOOLS_DATA.length > 0);
             }
 
             const resContainer = document.getElementById("homeResourcesContainer");
             if (resContainer && window.RESOURCES_DATA) {
                 resContainer.innerHTML = window.RESOURCES_DATA.slice(0, 3).map(Components.createResourceCard).join("");
+                window.toggleHomeSection(resContainer, window.RESOURCES_DATA.length > 0);
             }
 
             const blogContainer = document.getElementById("homeBlogContainer");
             if (blogContainer && window.BLOG_DATA) {
                 blogContainer.innerHTML = window.BLOG_DATA.slice(0, 3).map(Components.createBlogCard).join("");
+                window.toggleHomeSection(blogContainer, window.BLOG_DATA.length > 0);
             }
         });
     </script>

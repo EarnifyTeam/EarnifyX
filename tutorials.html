@@ -222,10 +222,12 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             const container = document.getElementById("tutorialsCatalogContainer");
             if (container && window.TUTORIALS_DATA) {
-                container.innerHTML = window.TUTORIALS_DATA.map(Components.createTutorialCard).join("");
+                container.innerHTML = window.TUTORIALS_DATA.length
+                    ? window.TUTORIALS_DATA.map(Components.createTutorialCard).join("")
+                    : window.emptyStateHtml("No tutorials yet", "New tutorials are on the way. Check back soon!");
             }
         });
     </script>

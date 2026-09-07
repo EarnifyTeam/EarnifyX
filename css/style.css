@@ -324,7 +324,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile-menu-toggle {
-  display: none !important;
+  display: none;
   width: 38px;
   height: 38px;
   border-radius: var(--radius-md);
@@ -694,6 +694,46 @@ h1, h2, h3, h4, h5, h6 {
 .app-container.no-sidebar {
   grid-template-columns: minmax(0, 1fr);
   max-width: 1440px;
+}
+
+/* Admin panel: fixed sidebar + fluid content on desktop, drawer on mobile */
+.app-container.admin-layout {
+  grid-template-columns: 260px minmax(0, 1fr);
+  max-width: 1560px;
+}
+
+.admin-sidebar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  height: fit-content;
+  position: sticky;
+  top: calc(var(--header-height) + 1.5rem);
+}
+
+@media (max-width: 1024px) {
+  .app-container.admin-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 300px;
+    max-width: 85vw;
+    height: 100vh;
+    border-radius: 0;
+    z-index: 200;
+    overflow-y: auto;
+    box-shadow: var(--shadow-xl);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .admin-sidebar.open {
+    left: 0;
+  }
 }
 
 /* ==========================================================================

@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
     <base href="../">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — EarnifyX Lab</title>
-    <meta name="description" content="Login to your EarnifyX Lab creator account to access saved prompts and downloads.">
-    
+    <meta name="description"
+        content="Login to your EarnifyX Lab creator account to access saved prompts and downloads.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
 </head>
+
 <body style="display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between;">
 
     <!-- Minimal Header -->
-        <!-- Top Navigation Header -->
+    <!-- Top Navigation Header -->
     <header class="site-header">
         <div class="header-left">
             <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -121,45 +124,48 @@
 
     <!-- Center Login Form Card -->
     <main style="display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; flex: 1;">
-        <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2.5rem; max-width: 440px; width: 100%; box-shadow: var(--shadow-md);">
+        <div
+            style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2.5rem; max-width: 440px; width: 100%; box-shadow: var(--shadow-md);">
             <div style="text-align: center; margin-bottom: 2rem;">
-                <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.35rem;">Welcome Back</h1>
+                <h1 style="font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.35rem;">
+                    Welcome Back</h1>
                 <p class="text-secondary" style="font-size: 0.9rem;">Login to your EarnifyX Lab account.</p>
             </div>
 
             <!-- Social OAuth Button -->
-            <button class="btn btn-secondary" style="width: 100%; height: 44px; margin-bottom: 1.25rem; font-size: 0.9rem;" onclick="handleOAuthLogin('Google')">
+            <button class="btn btn-secondary"
+                style="width: 100%; height: 44px; margin-bottom: 1.25rem; font-size: 0.9rem;"
+                onclick="handleOAuthLogin('Google')">
                 <span style="font-weight: 700; color: #ea4335;">G</span> Continue with Google
             </button>
 
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; color: var(--text-muted); font-size: 0.78rem;">
+            <div
+                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; color: var(--text-muted); font-size: 0.78rem;">
                 <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
                 <span>OR EMAIL</span>
                 <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
             </div>
 
             <form id="loginForm" onsubmit="handleFormLogin(event)">
-                <!-- FUTURE SUPABASE AUTHENTICATION
-                     const { data, error } = await supabase.auth.signInWithPassword({
-                         email: emailInput.value,
-                         password: passwordInput.value,
-                     });
-                -->
                 <div style="margin-bottom: 1.1rem;">
-                    <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;" for="email">
+                    <label
+                        style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;"
+                        for="email">
                         Email
                     </label>
-                    <input type="email" id="email" required placeholder="name@example.com" 
-                           style="width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.9rem; outline: none;">
+                    <input type="email" id="email" required placeholder="name@example.com"
+                        style="width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.9rem; outline: none;">
                 </div>
 
                 <div style="margin-bottom: 1.25rem;">
                     <div class="flex items-center justify-between" style="margin-bottom: 0.4rem;">
-                        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);" for="password">Password</label>
-                        <a href="#" onclick="showToast('Password reset will be handled by Supabase Auth.')" style="font-size: 0.78rem; color: var(--accent-primary);">Forgot Password?</a>
+                        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);"
+                            for="password">Password</label>
+                        <a href="#" onclick="handleForgotPassword(event)"
+                            style="font-size: 0.78rem; color: var(--accent-primary);">Forgot Password?</a>
                     </div>
-                    <input type="password" id="password" required placeholder="••••••••" 
-                           style="width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.9rem; outline: none;">
+                    <input type="password" id="password" required placeholder="••••••••"
+                        style="width: 100%; height: 42px; padding: 0 0.85rem; background: var(--bg-surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 0.9rem; outline: none;">
                 </div>
 
                 <div class="flex items-center gap-2" style="margin-bottom: 1.1rem;">
@@ -176,7 +182,8 @@
             </form>
 
             <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
-                Don't have an account? <a href="register/" style="color: var(--accent-primary); font-weight: 600;">Create Account</a>
+                Don't have an account? <a href="register/" style="color: var(--accent-primary); font-weight: 600;">Create
+                    Account</a>
             </div>
         </div>
     </main>
@@ -201,92 +208,89 @@
             }
         });
 
-        function handleOAuthLogin(provider) {
-            showToast(`${provider} authentication will be connected with Firebase Auth.`);
+        const AUTH_ERROR_MESSAGES = {
+            "auth/invalid-credential": "Incorrect email or password.",
+            "auth/wrong-password": "Incorrect email or password.",
+            "auth/user-not-found": "No account found with this email. Please create an account first.",
+            "auth/invalid-email": "Please enter a valid email address.",
+            "auth/too-many-requests": "Too many attempts. Please wait a moment and try again.",
+            "auth/network-request-failed": "Network error. Please check your internet connection.",
+            "auth/popup-closed-by-user": "Google sign-in was cancelled.",
+            "auth/user-disabled": "This account has been disabled. Please contact support."
+        };
+
+        function friendlyAuthError(error, fallback) {
+            return AUTH_ERROR_MESSAGES[error?.code] || error?.message || fallback;
+        }
+
+        function finishLogin(session) {
+            AuthUI.setUser(session);
+            showToast(`Welcome back, ${session.name}! Redirecting...`);
+            const hasPanelAccess = session.role === "admin" || session.role === "manager";
+            const next = new URLSearchParams(window.location.search).get("next");
+            const targetUrl = (next === "admin-dashboard" && hasPanelAccess) ? "admin-dashboard/"
+                : (hasPanelAccess ? "admin-dashboard/" : "dashboard/");
+            setTimeout(() => { window.location.href = targetUrl; }, 400);
+        }
+
+        async function handleOAuthLogin(provider) {
+            try {
+                const session = await window.FirebaseService.loginWithGoogle();
+                finishLogin(session);
+            } catch (error) {
+                console.error(error);
+                showToast(friendlyAuthError(error, `${provider} sign-in failed. Please try again.`));
+            }
+        }
+
+        async function handleForgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            if (!email) {
+                showToast("Enter your email above first, then click Forgot Password.");
+                document.getElementById("email").focus();
+                return;
+            }
+            try {
+                await window.FirebaseService.sendPasswordReset(email);
+                showToast(`📧 Password reset link sent to ${email}. Check your inbox.`);
+            } catch (error) {
+                console.error(error);
+                showToast(friendlyAuthError(error, "Could not send the reset email. Please try again."));
+            }
         }
 
         async function handleFormLogin(e) {
             e.preventDefault();
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value;
+            const submitBtn = e.target.querySelector("button[type='submit']");
 
             if (!email || !password) {
                 showToast("Please enter your email and password.");
                 return;
             }
 
-            // Verify Captcha before login
             if (window.EarnifyCaptcha && !window.EarnifyCaptcha.validate('loginCaptchaContainer')) {
                 return;
             }
 
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Signing in...";
             try {
-                let user;
-                if (window.FirebaseService) {
-                    try {
-                        user = await window.FirebaseService.loginUser(email, password);
-                    } catch (fbErr) {
-                        console.warn("Firebase login failed:", fbErr);
-                    }
-                }
-
-                if (!user) {
-                    const isAdmin = email.toLowerCase().includes("admin");
-                    const isManager = email.toLowerCase().includes("manager");
-                    const role = isAdmin ? "admin" : (isManager ? "manager" : "user");
-                    const displayName = isAdmin ? "Super Admin" : (isManager ? "Rohit Manager" : email.split("@")[0]);
-
-                    user = {
-                        uid: "user-" + Date.now(),
-                        email: email,
-                        displayName: displayName,
-                        isAdmin: isAdmin,
-                        profile: {
-                            name: displayName,
-                            email: email,
-                            role: role,
-                            isAdmin: isAdmin,
-                            plan: "free"
-                        }
-                    };
-                }
-
-                const profileData = user.profile || {};
-                const isAdminUser = user.isAdmin === true || profileData.isAdmin === true || profileData.role === "admin" || email.toLowerCase().includes("admin");
-                const isManagerUser = profileData.role === "manager" || email.toLowerCase().includes("manager");
-                const userRole = isAdminUser ? "admin" : (isManagerUser ? "manager" : (profileData.role || "user"));
-
-                const profile = {
-                    name: profileData.name || user.displayName || (isAdminUser ? "Super Admin" : (isManagerUser ? "Content Manager" : email.split("@")[0])),
-                    email: user.email || email,
-                    phone: profileData.phone || "",
-                    isPro: profileData.isPro === true || isAdminUser,
-                    plan: profileData.plan || (isAdminUser ? "pro" : "free"),
-                    subscriptionStatus: profileData.subscriptionStatus || "active",
-                    premiumUntil: profileData.premiumUntil || null,
-                    memberSince: new Date().toISOString(),
-                    uid: user.uid,
-                    role: userRole,
-                    isAdmin: isAdminUser
-                };
-
-                AuthUI.setUser(profile);
-                showToast(`Welcome back, ${profile.name}! Redirecting...`);
-                
-                const targetUrl = (userRole === "admin" || userRole === "manager") ? "admin-dashboard/" : "dashboard/";
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 300);
+                const session = await window.FirebaseService.loginUser(email, password);
+                finishLogin(session);
             } catch (error) {
                 console.error(error);
-                showToast(error?.message || "Login failed. Please check your email and password.");
+                showToast(friendlyAuthError(error, "Login failed. Please check your email and password."));
                 if (window.EarnifyCaptcha) {
                     window.EarnifyCaptcha.refresh('loginCaptchaContainer');
                 }
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Login";
             }
         }
     </script>
 </body>
+
 </html>
-
-

@@ -186,7 +186,7 @@
 
                     <div>
                         <button class="btn btn-primary" onclick="saveProfileChanges()">Edit Profile</button>
-                        <button class="btn btn-secondary" onclick="showToast('Password changes will be handled by Supabase Auth.')">Change Password</button>
+                        <button class="btn btn-secondary" onclick="sendResetLink()">Change Password</button>
                     </div>
                 </div>
             </div>
@@ -209,17 +209,34 @@
             }
         });
 
-        function saveProfileChanges() {
-            const newName = document.getElementById("editName").value;
+        async function saveProfileChanges() {
+            const newName = document.getElementById("editName").value.trim();
+            if (!newName) { showToast("Please enter your name."); return; }
             const user = AuthUI.getUser();
+            try {
+                await window.FirebaseService.updateOwnProfile({ name: newName });
+            } catch (error) {
+                console.warn("Profile save to Firebase failed:", error);
+            }
             user.name = newName;
             AuthUI.setUser(user);
             document.getElementById("profileName").textContent = newName;
             showToast("✅ Profile updated successfully!");
         }
+
+        async function sendResetLink() {
+            const user = AuthUI.getUser();
+            if (!user || !user.email) { showToast("Please login again to change your password."); return; }
+            try {
+                await window.FirebaseService.sendPasswordReset(user.email);
+                showToast(`📧 Password reset link sent to ${user.email}.`);
+            } catch (error) {
+                console.error(error);
+                showToast(error?.message || "Could not send the reset email right now.");
+            }
+        }
     </script>
 </body>
 </html>
-
 
 

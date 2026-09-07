@@ -144,13 +144,6 @@
             </div>
 
             <form id="signupForm" onsubmit="handleFormSignup(event)">
-                <!-- FUTURE SUPABASE AUTHENTICATION
-                     const { data, error } = await supabase.auth.signUp({
-                         email: emailInput.value,
-                         password: passwordInput.value,
-                         options: { data: { full_name: nameInput.value } }
-                     });
-                -->
                 <div style="margin-bottom: 1.1rem;">
                     <label
                         style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem;"
@@ -242,9 +235,33 @@
             }
         });
 
-        function handleOAuthSignup(provider) {
-            // FUTURE SUPABASE AUTHENTICATION: Connect provider with signInWithOAuth().
-            showToast(`${provider} authentication will be connected with Supabase.`);
+        const AUTH_ERROR_MESSAGES = {
+            "auth/email-already-in-use": "An account with this email already exists. Please login instead.",
+            "auth/invalid-email": "Please enter a valid email address.",
+            "auth/weak-password": "Password is too weak. Use at least 6 characters.",
+            "auth/network-request-failed": "Network error. Please check your internet connection.",
+            "auth/popup-closed-by-user": "Google sign-in was cancelled.",
+            "auth/too-many-requests": "Too many attempts. Please wait a moment and try again."
+        };
+
+        function friendlyAuthError(error, fallback) {
+            return AUTH_ERROR_MESSAGES[error?.code] || error?.message || fallback;
+        }
+
+        function finishSignup(session, greeting) {
+            AuthUI.setUser(session);
+            showToast(greeting);
+            setTimeout(() => { window.location.href = "dashboard/"; }, 800);
+        }
+
+        async function handleOAuthSignup(provider) {
+            try {
+                const session = await window.FirebaseService.loginWithGoogle();
+                finishSignup(session, `🎉 Welcome ${session.name}! You're signed in with Google.`);
+            } catch (error) {
+                console.error(error);
+                showToast(friendlyAuthError(error, `${provider} sign-in failed. Please try again.`));
+            }
         }
 
         async function handleFormSignup(e) {
@@ -254,9 +271,15 @@
             const phone = document.getElementById("phone").value.trim();
             const pass = document.getElementById("password").value;
             const confirm = document.getElementById("confirmPassword").value;
+            const submitBtn = e.target.querySelector("button[type='submit']");
 
             if (!name || !email || !phone || !pass || !confirm) {
                 showToast("Please complete all fields before creating your account.");
+                return;
+            }
+
+            if (pass.length < 6) {
+                showToast("⚠️ Password must be at least 6 characters.");
                 return;
             }
 
@@ -265,36 +288,23 @@
                 return;
             }
 
-            // Verify Captcha before registering
             if (window.EarnifyCaptcha && !window.EarnifyCaptcha.validate('registerCaptchaContainer')) {
                 return;
             }
 
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Creating account...";
             try {
-                await window.initializeFirebase();
-                const user = await window.FirebaseService.registerUser({ name, email, phone, password: pass });
-                AuthUI.setUser({
-                    name,
-                    email: user.email,
-                    phone,
-                    isPro: false,
-                    plan: "free",
-                    subscriptionStatus: "inactive",
-                    premiumUntil: null,
-                    memberSince: new Date().toISOString(),
-                    uid: user.uid,
-                    role: "user"
-                });
-                showToast(`🎉 Welcome ${name}! Account created.`);
-                setTimeout(() => {
-                    window.location.href = "dashboard/";
-                }, 800);
+                const session = await window.FirebaseService.registerUser({ name, email, phone, password: pass });
+                finishSignup(session, `🎉 Welcome ${name}! Account created.`);
             } catch (error) {
                 console.error(error);
-                showToast(error?.message || "Account creation failed. Please try again.");
+                showToast(friendlyAuthError(error, "Account creation failed. Please try again."));
                 if (window.EarnifyCaptcha) {
                     window.EarnifyCaptcha.refresh('registerCaptchaContainer');
                 }
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Create Account";
             }
         }
     </script>

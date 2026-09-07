@@ -241,7 +241,7 @@
     <script src="js/main.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        window.whenDataReady(() => {
             if (window.TOOLS_DATA && window.setupFilters) {
                 setupFilters({
                     containerId: "aiToolsCatalogContainer",
@@ -254,6 +254,5 @@
     </script>
 </body>
 </html>
-
 
 
