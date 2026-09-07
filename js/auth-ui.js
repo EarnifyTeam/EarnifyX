@@ -20,6 +20,15 @@ const AuthUI = {
         }
     },
 
+    // Admins and managers land on the admin panel; everyone else on the user dashboard
+    hasPanelAccess(user = this.getUser()) {
+        return Boolean(user) && (user.role === "admin" || user.role === "manager" || user.isAdmin === true);
+    },
+
+    dashboardUrl(user = this.getUser()) {
+        return this.hasPanelAccess(user) ? "admin-dashboard/" : "dashboard/";
+    },
+
     isAuthenticated() {
         return Boolean(this.getUser());
     },
@@ -197,6 +206,8 @@ window.confirmLogout = function () {
 };
 
 function renderAuthUI(user) {
+    const dashUrl = AuthUI.dashboardUrl(user);
+    const dashLabel = AuthUI.hasPanelAccess(user) ? "Admin Panel" : "Dashboard";
     if (user) {
         document.body.classList.add("authenticated-view");
     } else {
@@ -207,12 +218,16 @@ function renderAuthUI(user) {
     });
     document.querySelectorAll(".public-auth-actions").forEach(container => {
         if (!user) return;
-        container.innerHTML = `<a href="dashboard/" class="btn btn-subtle">Dashboard</a><button class="btn btn-primary" onclick="confirmLogout()">Logout</button>`;
+        container.innerHTML = `<a href="${dashUrl}" class="btn btn-subtle">${dashLabel}</a><button class="btn btn-primary" onclick="confirmLogout()">Logout</button>`;
     });
     document.querySelectorAll(".header-auth-actions").forEach(container => {
         if (!user) return;
-        container.innerHTML = `<a href="dashboard/" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">Dashboard</a><button class="btn btn-primary" style="font-size: 0.88rem;" onclick="confirmLogout()">Logout</button>`;
+        container.innerHTML = `<a href="${dashUrl}" class="btn btn-subtle" style="font-size: 0.88rem; font-weight: 600;">${dashLabel}</a><button class="btn btn-primary" style="font-size: 0.88rem;" onclick="confirmLogout()">Logout</button>`;
     });
+
+    if (AuthUI.hasPanelAccess(user)) {
+        document.querySelectorAll('a[href="dashboard/"]').forEach(link => link.setAttribute("href", "admin-dashboard/"));
+    }
 
     // Dynamic Welcome Card Sync
     const welcomeTitle = document.querySelector(".welcome-title");
@@ -223,8 +238,8 @@ function renderAuthUI(user) {
             welcomeTitle.innerHTML = `<span>Welcome back, ${window.escapeHtml ? window.escapeHtml(user.name || "Creator") : "Creator"}</span> <span>👋</span>`;
             if (welcomeSubtitle) welcomeSubtitle.textContent = "Ready to create something amazing today?";
             if (welcomeBtn) {
-                welcomeBtn.textContent = "Go to Dashboard →";
-                welcomeBtn.setAttribute("href", "dashboard/");
+                welcomeBtn.textContent = AuthUI.hasPanelAccess(user) ? "Open Admin Panel →" : "Go to Dashboard →";
+                welcomeBtn.setAttribute("href", dashUrl);
             }
         } else {
             welcomeTitle.innerHTML = `<span>Welcome to EarnifyX</span> <span>👋</span>`;

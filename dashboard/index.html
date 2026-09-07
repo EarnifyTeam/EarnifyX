@@ -232,9 +232,14 @@
 
     <script>
         async function loadDashboard() {
-            await AuthUI.waitForFirebaseSession();
+            const session = await AuthUI.waitForFirebaseSession();
             if (!AuthUI.requireLogin()) {
                 window.location.href = "login/";
+                return;
+            }
+            // Admin and manager accounts use the admin panel instead of the user dashboard
+            if (AuthUI.hasPanelAccess(session || AuthUI.getUser())) {
+                window.location.replace("admin-dashboard/");
                 return;
             }
             const bookmarks = AuthUI.getBookmarks();

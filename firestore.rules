@@ -18,7 +18,8 @@ service cloud.firestore {
         && request.resource.data.isPro == false
         && request.resource.data.plan == 'free';
 
-      allow read: if signedIn() && request.auth.uid == userId;
+      // Users read their own profile; admins can list everyone for the Team & Managers tab
+      allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
 
       allow update: if signedIn()
         && request.auth.uid == userId

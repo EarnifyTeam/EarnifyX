@@ -109,8 +109,10 @@ const Admin = {
 
     applyManagerRestrictions() {
         // Managers only get the content tabs; site-wide settings and backups stay admin-only
-        const link = document.querySelector('.admin-tab-btn[href="#tab-backup"]');
-        if (link) link.style.display = "none";
+        ["#tab-backup", "#tab-team"].forEach(selector => {
+            const link = document.querySelector(`.admin-tab-btn[href="${selector}"]`);
+            if (link) link.style.display = "none";
+        });
 
         document.querySelectorAll("#tab-overview .admin-form-box").forEach(box => {
             if (box.querySelector("form")) box.style.display = "none";
@@ -135,6 +137,7 @@ const Admin = {
             this.loadAdSettings();
             this.loadAboutSettings();
             this.loadSitemapSettings();
+            this.loadTeam();
         }
 
         this.renderOverviewStats();
@@ -309,6 +312,112 @@ const Admin = {
         link.remove();
         URL.revokeObjectURL(url);
         if (window.showToast) window.showToast("✅ sitemap.xml generated and downloaded.");
+    },
+
+    // ---- Team & Managers ----
+    team: [],
+
+    async loadTeam() {
+        const container = document.getElementById("teamTableContainer");
+        if (!container || !window.FirebaseService) return;
+        try {
+            await window.initializeFirebase();
+            this.team = await window.FirebaseService.listUsers();
+            this.team.sort((x, y) => String(x.name || "").localeCompare(String(y.name || "")));
+            this.renderTeamTable();
+        } catch (error) {
+            console.warn("Team list could not be loaded:", error);
+            container.innerHTML = `<p class="text-secondary" style="font-size: 0.88rem;">Could not load users (${window.escapeHtml(error.message || error)}). Make sure the latest firestore.rules are published and you are logged in as admin.</p>`;
+        }
+    },
+
+    renderTeamTable() {
+        const container = document.getElementById("teamTableContainer");
+        if (!container) return;
+        const esc = window.escapeHtml;
+        const q = (document.getElementById("teamSearchInput")?.value || "").trim().toLowerCase();
+        const me = this.getCurrentUser();
+        const rows = this.team.filter(u => !q || String(u.name || "").toLowerCase().includes(q) || String(u.email || "").toLowerCase().includes(q));
+
+        if (!rows.length) {
+            container.innerHTML = `<p class="text-secondary" style="font-size: 0.88rem;">${this.team.length ? "No users match your search." : "No registered users yet."}</p>`;
+            return;
+        }
+
+        const roleBadge = role => role === "admin"
+            ? '<span class="badge badge-warning">👑 Admin</span>'
+            : role === "manager" ? '<span class="badge badge-primary">🛡️ Manager</span>' : '<span class="badge badge-success">User</span>';
+
+        container.innerHTML = `
+            <div style="overflow-x: auto;">
+                <table class="admin-data-table">
+                    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th style="text-align: right;">Change Role</th></tr></thead>
+                    <tbody>
+                        ${rows.map(u => {
+                            const role = u.role || "user";
+                            const isMe = me && (u.uid === me.uid || (u.email || "").toLowerCase() === (me.email || "").toLowerCase());
+                            const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "-";
+                            const actions = isMe
+                                ? '<span class="text-muted" style="font-size:0.8rem;">Cannot change own role</span>'
+                                : [
+                                    role !== "manager" ? `<button class="btn btn-sm btn-primary" onclick="Admin.changeUserRole('${esc(u.uid)}', 'manager')">Make Manager</button>` : "",
+                                    role !== "user" ? `<button class="btn btn-sm btn-secondary" onclick="Admin.changeUserRole('${esc(u.uid)}', 'user')">Remove Access</button>` : ""
+                                ].join(" ");
+                            return `<tr>
+                                <td><strong style="color: var(--text-primary);">${esc(u.name || "-")}</strong>${isMe ? ' <span class="text-muted" style="font-size:0.72rem;">(you)</span>' : ""}</td>
+                                <td style="font-size: 0.85rem;">${esc(u.email || "-")}</td>
+                                <td>${roleBadge(role)}</td>
+                                <td style="font-size: 0.82rem; color: var(--text-secondary);">${esc(joined)}</td>
+                                <td style="text-align: right; white-space: nowrap;">${actions}</td>
+                            </tr>`;
+                        }).join("")}
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-muted" style="font-size: 0.75rem; margin-top: 0.75rem;">${this.team.length} registered user${this.team.length === 1 ? "" : "s"}. Role changes apply the next time that person logs in or refreshes.</p>
+        `;
+    },
+
+    async changeUserRole(uid, role) {
+        const user = this.team.find(u => u.uid === uid);
+        const label = role === "manager" ? "give Manager access to" : "remove admin-panel access from";
+        if (!confirm(`Are you sure you want to ${label} ${user?.email || "this user"}?`)) return;
+        try {
+            await window.FirebaseService.setUserRole(uid, role);
+            if (user) { user.role = role; user.isAdmin = role === "admin"; }
+            this.renderTeamTable();
+            if (window.showToast) window.showToast(role === "manager" ? `🛡️ ${user?.name || "User"} is now a Manager.` : `Access removed for ${user?.name || "user"}.`);
+        } catch (error) {
+            console.error(error);
+            if (window.showToast) window.showToast(error.message || "Could not update role. Check admin permission and Firestore rules.");
+        }
+    },
+
+    async addManagerByEmail(event) {
+        event.preventDefault();
+        const input = document.getElementById("teamManagerEmail");
+        const email = input.value.trim();
+        if (!email) return;
+        try {
+            await window.initializeFirebase();
+            let user = this.team.find(u => (u.email || "").toLowerCase() === email.toLowerCase());
+            if (!user) user = await window.FirebaseService.findUserByEmail(email);
+            if (!user) {
+                if (window.showToast) window.showToast(`No account found for ${email}. Ask them to register on the website first.`, 4500);
+                return;
+            }
+            if (user.role === "manager" || user.role === "admin") {
+                if (window.showToast) window.showToast(`${user.name || email} already has ${user.role} access.`);
+                return;
+            }
+            await window.FirebaseService.setUserRole(user.uid, "manager");
+            input.value = "";
+            await this.loadTeam();
+            if (window.showToast) window.showToast(`🛡️ ${user.name || email} now has Manager access!`);
+        } catch (error) {
+            console.error(error);
+            if (window.showToast) window.showToast(error.message || "Could not grant access. Check admin permission and Firestore rules.");
+        }
     },
 
     async loadRemoteData() {

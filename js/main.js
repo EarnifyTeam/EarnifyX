@@ -129,6 +129,7 @@ window.whenDataReady = function (callback) {
     document.addEventListener("earnifyx:data-updated", run);
 };
 
+
 window.emptyStateHtml = function (title, text) {
     return `
         <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
@@ -144,22 +145,6 @@ window.toggleHomeSection = function (container, hasItems) {
     if (!container) return;
     const section = container.closest("section") || container.parentElement;
     if (section) section.style.display = hasItems ? "" : "none";
-};
-
-window.emptyStateHtml = function (title, text) {
-    return `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
-            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🧪</div>
-            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">${window.escapeHtml(title)}</h3>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">${window.escapeHtml(text)}</p>
-        </div>
-    `;
-};
-
-// Hide a homepage section (the container's nearest <section>) when its dataset is empty
-window.toggleHomeSection = function (container, visible) {
-    const section = container && container.closest("section");
-    if (section) section.style.display = visible ? "" : "none";
 };
 
 // Kick off the catalog sync as early as possible (skipped inside the admin panel, which manages data itself)
@@ -181,7 +166,7 @@ window.initializeFirebase = function () {
                 { initializeApp },
                 { getAnalytics, isSupported: analyticsSupported },
                 { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, onAuthStateChanged, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup },
-                { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs },
+                { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs, query, where, orderBy, limit },
                 { initializeAppCheck, ReCaptchaEnterpriseProvider }
             ] = await Promise.all([
                 import("https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js"),
@@ -235,7 +220,11 @@ window.initializeFirebase = function () {
                 getDoc,
                 updateDoc,
                 collection,
-                getDocs
+                getDocs,
+                query,
+                where,
+                orderBy,
+                limit
             };
             window.__earnifyxFirebaseInitialized = true;
             return app;
@@ -491,6 +480,38 @@ window.FirebaseService = {
             throw new Error("Admin claim is missing. Set admin: true on this account, then logout and login again.");
         }
         return tokenResult;
+    },
+
+    /** Admin only: list registered users (requires the admin custom claim; see firestore.rules). */
+    async listUsers(max = 200) {
+        const { db, helpers } = await this.ensureReady();
+        const snapshot = await helpers.getDocs(helpers.query(helpers.collection(db, "users"), helpers.limit(max)));
+        return snapshot.docs.map(d => ({ uid: d.id, ...d.data() }));
+    },
+
+    async findUserByEmail(email) {
+        const { db, helpers } = await this.ensureReady();
+        const snapshot = await helpers.getDocs(helpers.query(
+            helpers.collection(db, "users"),
+            helpers.where("email", "==", String(email).trim()),
+            helpers.limit(1)
+        ));
+        if (snapshot.empty) return null;
+        const d = snapshot.docs[0];
+        return { uid: d.id, ...d.data() };
+    },
+
+    /** Admin only: change a user's role (user | manager | admin). */
+    async setUserRole(uid, role) {
+        if (!["user", "manager", "admin"].includes(role)) throw new Error("Invalid role.");
+        const { db, helpers } = await this.ensureReady();
+        await this.requireAdminClaim();
+        await helpers.updateDoc(helpers.doc(db, "users", uid), {
+            role,
+            isAdmin: role === "admin",
+            updatedAt: new Date().toISOString()
+        });
+        return true;
     },
 
     async loadSiteSettings(type) {
