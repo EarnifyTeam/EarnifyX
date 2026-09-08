@@ -1,0 +1,8 @@
+{
+  "name": "PromptX",
+  "description": "Transform Images & Videos into AI-Ready Prompts for Google Veo, Gemini, ChatGPT, Midjourney, FLUX, Stable Diffusion, and more. Powered by Earnify Labs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

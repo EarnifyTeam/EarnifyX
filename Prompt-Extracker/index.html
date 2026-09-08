@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" className="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PromptX — AI Image & Video Prompt Generator | Earnify Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+            colors: {
+              brand: {
+                50: '#f5f3ff',
+                100: '#ede9fe',
+                200: '#ddd6fe',
+                300: '#c4b5fd',
+                400: '#a78bfa',
+                500: '#8b5cf6',
+                600: '#7c3aed',
+                700: '#6d28d9',
+                primary: '#6C5CE7',
+                secondary: '#7C4DFF',
+                accent: '#8B5CF6',
+              },
+              dark: {
+                bg: '#09090B',
+                card: '#111827',
+                cardHover: '#161e31',
+                border: 'rgba(255, 255, 255, 0.08)',
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shimmer': 'shimmer 2.5s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'glow': 'glow 3s ease-in-out infinite alternate',
+            },
+            keyframes: {
+              shimmer: {
+                '0%': { backgroundPosition: '-1000px 0' },
+                '100%': { backgroundPosition: '1000px 0' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-8px)' },
+              },
+              glow: {
+                '0%': { opacity: '0.4', filter: 'blur(20px)' },
+                '100%': { opacity: '0.8', filter: 'blur(35px)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #09090B;
+        color: #FFFFFF;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        overflow-x: hidden;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #09090B; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #27272A; 
+        border-radius: 9999px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3F3F46; 
+      }
+      /* Glassmorphism utility class */
+      .glass-card {
+        background: rgba(17, 24, 39, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .glass-input {
+        background: rgba(9, 9, 11, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .glow-purple {
+        box-shadow: 0 0 30px -5px rgba(108, 92, 231, 0.3);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-[#09090B] text-white selection:bg-[#7C4DFF]/30 selection:text-white antialiased">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
